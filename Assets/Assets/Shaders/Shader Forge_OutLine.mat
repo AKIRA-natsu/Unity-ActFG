@@ -21,7 +21,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _OutlineWidth: 0.0005
+    - _OutlineWidth: 0.000001
     - _node_7238: 0
     m_Colors:
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
