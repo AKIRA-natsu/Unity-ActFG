@@ -12,6 +12,9 @@ ModelImporter:
   - first:
       74: 8415186874247963320
     second: Armature|Wallk (2)
+  - first:
+      74: 8415186874247963320
+    second: Armature|Wallk (1)
   externalObjects: {}
   materials:
     materialImportMode: 2
