@@ -5,6 +5,18 @@ using Debug = UnityEngine.Debug;
 
 namespace Util.Tools {
     public static class UtilTools {
+        #region GameObject
+        /// <summary>
+        /// 不销毁对象
+        /// </summary>
+        /// <param name="go"></param>
+        /// <returns></returns>
+        public static GameObject DontDestory(this GameObject go) {
+            GameObject.DontDestroyOnLoad(go);
+            return go;
+        }
+        #endregion
+
         #region 代码耗时
         public static void CodeCost(this Action action) {
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
