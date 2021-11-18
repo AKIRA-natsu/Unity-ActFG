@@ -46,7 +46,7 @@ namespace ActFG.Manager {
                 ObjectPoolDic[gameobjectName] = new Queue<GameObject>();
                 return go;
             } catch (System.Exception ex) {
-                Debug.Log($"CreateError[{gameobjectName}]  ".StringColor(Color.red) + ex);
+                DebugManager.Instance.Debug($"CreateError[{gameobjectName}]  ".StringColor(Color.red) + ex);
             }
             return null;
         }

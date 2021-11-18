@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using Color = UnityEngine.Color;
-using Debug = UnityEngine.Debug;
+using ActFG.Manager;
 
 namespace Util.Tools {
     public static class UtilTools {
@@ -23,7 +23,7 @@ namespace Util.Tools {
             stopwatch.Start();
             action?.Invoke();
             stopwatch.Stop();
-            Debug.Log(action.Method.ToString().StringColor(Color.yellow) + " => " + stopwatch.Elapsed.TotalMilliseconds);
+            DebugManager.Instance.Debug(action.Method.ToString().StringColor(Color.yellow) + " => " + stopwatch.Elapsed.TotalMilliseconds);
         }
         #endregion
 
@@ -35,7 +35,7 @@ namespace Util.Tools {
         /// <param name="color"></param>
         /// <returns></returns>
         public static string StringColor(this string str, string color) {
-            return "<color=" + color + ">" + str + "</color>";
+            return $"<color={color}>{str}</color>";
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Util.Tools {
         /// <param name="color"></param>
         /// <returns></returns>
         public static string StringColor(this string Str, Color color) {
-            return "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">" + Str + "</color>";
+            return $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{Str}</color>";
         }
         #endregion
 

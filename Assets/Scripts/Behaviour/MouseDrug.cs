@@ -1,7 +1,8 @@
 using UnityEngine;
 using Util.Tools;
+using ActFG.Manager;
 
-namespace ActFG.Action {
+namespace ActFG.Behaviour {
     /// <summary>
     /// 拖拽 xy轴
     /// </summary>
@@ -26,11 +27,11 @@ namespace ActFG.Action {
             if (currentPos.x <= 0 || currentPos.x >= Screen.width
                 || currentPos.y <= 0 || currentPos.y >= Screen.height)
             {
-                Debug.Log("超出屏幕边界");
+                DebugManager.Instance.Debug("超出屏幕边界");
                 return;
             }
             this.transform.position = Camera.main.ScreenToWorldPoint(currentPos) + Offset;
-            Debug.Log("移动位置到".StringColor(Color.red) + this.transform.position);
+            DebugManager.Instance.Debug("移动位置到".StringColor(Color.red) + this.transform.position);
         }
     }
 }

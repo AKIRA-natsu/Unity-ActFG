@@ -42,9 +42,9 @@ namespace ActFG.Manager {
         /// <param name="action">消息体</param>
         public static void RemoveListener(string key, MsgDeletege action) {
             if (!_Msg.ContainsKey(key)) {
-                Debug.Log($"message dont contains {key}".StringColor(Color.red));
+                DebugManager.Instance.Debug($"message dont contains {key}".StringColor(Color.red));
                 if (!_Msg.ContainsValue(action)) {
-                    Debug.Log($"message dont contains {action}".StringColor(Color.red));
+                    DebugManager.Instance.Debug($"message dont contains {action}".StringColor(Color.red));
                     return;
                 }
                 _Msg[key] -= action;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Util.Tools;
+using ActFG.Manager;
 
 namespace ActFG.Entity {
     /// <summary>
@@ -28,7 +29,7 @@ namespace ActFG.Entity {
         /// <returns></returns>
         public Msg SetData(string key, object value) {
             if (data.ContainsKey(key)) {
-                Debug.Log($"Msg has contains {key}".StringColor(Color.red));
+                DebugManager.Instance.Debug($"Msg has contains {key}".StringColor(Color.red));
             } else {
                 data[key] = value;
                 return this;

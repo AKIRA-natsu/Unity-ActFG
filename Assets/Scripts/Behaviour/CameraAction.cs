@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ActFG.Action {
+namespace ActFG.Behaviour {
     /// <summary>
     /// 摄像机射线
     /// </summary>
