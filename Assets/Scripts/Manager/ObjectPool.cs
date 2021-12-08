@@ -1,8 +1,9 @@
-using System.IO;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using Util.Tools;
+using System.Linq;
 
 namespace ActFG.Manager {
     /// <summary>
@@ -23,12 +24,11 @@ namespace ActFG.Manager {
         /// 创建对象
         /// Dictionary中包含并且隐藏去除，不然创建（创建不放进队列）
         /// </summary>
-        /// <param name="gameobjectName"></param>
-        /// <param name="path">Resources/{path}</param>
+        /// <param name="go"></param>
         /// <returns></returns>
-        public GameObject CreateGameObject(string gameobjectName, string path = null) {
-            if (ObjectPoolDic.ContainsKey(gameobjectName)) {
-                var queue = ObjectPoolDic[gameobjectName];
+        public GameObject CreateGameObject(GameObject go) {
+            if (ObjectPoolDic.ContainsKey(go.name)) {
+                var queue = ObjectPoolDic[go.name];
                 for (int i = 0; i < queue.Count; i++) {
                     var tmpGo = queue.Dequeue();
                     if (!tmpGo.activeSelf) {
@@ -39,14 +39,13 @@ namespace ActFG.Manager {
                 }
             }
             // 创建
+            // Debug.Log($"没有{go.name}，创建".StringColor(Color.red));
             try {
-                if (!string.IsNullOrEmpty(path))
-                    gameobjectName = Path.Combine(path, gameobjectName);
-                GameObject go = Instantiate(Resources.Load<GameObject>(gameobjectName));
-                ObjectPoolDic[gameobjectName] = new Queue<GameObject>();
+                go = Instantiate(go);
+                ObjectPoolDic[go.name] = new Queue<GameObject>();
                 return go;
             } catch (System.Exception ex) {
-                DebugManager.Instance.Debug($"CreateError[{gameobjectName}]  ".StringColor(Color.red) + ex);
+                Debug.LogError($"CreateError[{go.name}] => " + ex);
             }
             return null;
         }
@@ -57,11 +56,65 @@ namespace ActFG.Manager {
         /// </summary>
         /// <param name="go"></param>
         public void DestoryGameObject(GameObject go) {
-            go.SetActive(false);
-            go.transform.parent = this.transform;
-            // name contains (clone)
-            var goName = go.name.Split('(')[0];
+            // if name contains (clone)
+            var goName = go.name;
+            if (go.name.Contains('('))
+                goName = go.name.Split('(')[0];
+            if (!ObjectPoolDic.ContainsKey(goName)) {
+                ObjectPoolDic[goName] = new Queue<GameObject>();
+            }
             ObjectPoolDic[goName].Enqueue(go);
+            // 
+            go.SetActive(false);
+            var temp = this.transform.Find(goName);
+            if (temp == null) {
+                temp = new GameObject(goName).transform;
+                temp.SetParent(this.transform);
+            }
+            go.SetParent(temp);
+        }
+
+        /// <summary>
+        /// 重置除name以外所有对象
+        /// </summary>
+        /// <param name="name"></param>
+        public void ResetGameObject(string name) {
+            foreach (var kvp in ObjectPoolDic) {
+                if (!kvp.Key.Equals(name))
+                    for (int i = 0; i < kvp.Value.Count; i++) {
+                        var go = kvp.Value.Dequeue();
+                        go.SetActive(true);
+                        kvp.Value.Enqueue(go);
+                    }
+            }
+        }
+
+        // <summary>
+        /// 重置对象池中所有对象
+        /// （设置显示）
+        /// </summary>
+        public void ResetGameObject() {
+            foreach (var queue in ObjectPoolDic.Values) {
+                for (int i = 0; i < queue.Count; i++) {
+                    var go = queue.Dequeue();
+                    go.SetActive(true);
+                    queue.Enqueue(go);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 销毁对象池中所有对象
+        /// （设置隐藏）
+        /// </summary>
+        public void DestoryAll() {
+            foreach (var queue in ObjectPoolDic.Values) {
+                for (int i = 0; i < queue.Count; i++) {
+                    var go = queue.Dequeue();
+                    go.SetActive(false);
+                    queue.Enqueue(go);
+                }
+            }
         }
 
         /// <summary>

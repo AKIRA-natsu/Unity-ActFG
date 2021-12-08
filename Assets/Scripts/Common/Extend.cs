@@ -4,7 +4,18 @@ using Color = UnityEngine.Color;
 using ActFG.Manager;
 
 namespace Util.Tools {
-    public static class UtilTools {
+    public static class Extend {
+        #region ResourceLoad
+        /// <summary>
+        /// 加载
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static T Load<T>(this string path) {
+            return (T)(object)Resources.Load(path);
+        }
+        #endregion
+
         #region GameObject
         /// <summary>
         /// 不销毁对象
@@ -14,6 +25,17 @@ namespace Util.Tools {
         public static GameObject DontDestory(this GameObject go) {
             GameObject.DontDestroyOnLoad(go);
             return go;
+        }
+
+        /// <summary>
+        /// 设置父节点
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static GameObject SetParent(this GameObject child, Transform parent) {
+            child.transform.SetParent(parent);
+            return child;
         }
         #endregion
 

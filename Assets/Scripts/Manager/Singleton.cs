@@ -13,6 +13,11 @@ namespace ActFG.Manager {
 
         public static T Instance {
             get {
+                if (instance == null) {
+                    // 忘记实例的保险
+                    GameObject manager = new GameObject($"[{typeof(T).Name}]");
+                    instance = manager.AddComponent(typeof(T)) as T;
+                }
                 return instance;
             }
         }
