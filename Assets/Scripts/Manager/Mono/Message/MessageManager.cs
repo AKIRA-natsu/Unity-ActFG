@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Util.Tools;
 using ActFG.Entity;
+using ActFG.Util.Tools;
 
 namespace ActFG.Manager {
     /// <summary>
     /// 消息管理
     /// </summary>
-    public class MessageManager : Singleton<MessageManager> {
+    public class MessageManager : MonoSingleton<MessageManager> {
         public delegate void MsgDeletege(Msg obj);
         private static Dictionary<string, MsgDeletege> _Msg = new Dictionary<string, MsgDeletege>();
 
@@ -42,9 +41,9 @@ namespace ActFG.Manager {
         /// <param name="action">消息体</param>
         public static void RemoveListener(string key, MsgDeletege action) {
             if (!_Msg.ContainsKey(key)) {
-                DebugManager.Instance.Debug($"message dont contains {key}".StringColor(Color.red));
+                Debug.Log($"message dont contains {key}".StringColor(Color.red));
                 if (!_Msg.ContainsValue(action)) {
-                    DebugManager.Instance.Debug($"message dont contains {action}".StringColor(Color.red));
+                    Debug.Log($"message dont contains {action}".StringColor(Color.red));
                     return;
                 }
                 _Msg[key] -= action;

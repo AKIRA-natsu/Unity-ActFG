@@ -1,6 +1,5 @@
 using UnityEngine;
-using Util.Tools;
-using ActFG.Manager;
+using ActFG.Util.Tools;
 
 namespace ActFG.Behaviour {
     /// <summary>
@@ -27,11 +26,11 @@ namespace ActFG.Behaviour {
             if (currentPos.x <= 0 || currentPos.x >= Screen.width
                 || currentPos.y <= 0 || currentPos.y >= Screen.height)
             {
-                DebugManager.Instance.Debug("超出屏幕边界");
+                Debug.Log("超出屏幕边界");
                 return;
             }
             this.transform.position = Camera.main.ScreenToWorldPoint(currentPos) + Offset;
-            DebugManager.Instance.Debug("移动位置到".StringColor(Color.red) + this.transform.position);
+            Debug.Log("移动位置到".StringColor(Color.red) + this.transform.position);
         }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 using Color = UnityEngine.Color;
 using ActFG.Manager;
 
-namespace Util.Tools {
+namespace ActFG.Util.Tools {
     public static class Extend {
         #region ResourceLoad
         /// <summary>
@@ -45,7 +45,7 @@ namespace Util.Tools {
             stopwatch.Start();
             action?.Invoke();
             stopwatch.Stop();
-            DebugManager.Instance.Debug(action.Method.ToString().StringColor(Color.yellow) + " => " + stopwatch.Elapsed.TotalMilliseconds);
+            Debug.Log(action.Method.ToString().StringColor(Color.yellow) + " => " + stopwatch.Elapsed.TotalMilliseconds);
         }
         #endregion
 

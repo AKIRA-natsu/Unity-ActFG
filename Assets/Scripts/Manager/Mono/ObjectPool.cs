@@ -1,15 +1,13 @@
-using System;
-using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using Util.Tools;
-using System.Linq;
+using ActFG.Util.Tools;
 
 namespace ActFG.Manager {
     /// <summary>
     /// 对象池
     /// </summary>
-    public class ObjectPool : Singleton<ObjectPool> {
+    public class ObjectPool : MonoSingleton<ObjectPool> {
 
         private Dictionary<string, Queue<GameObject>> ObjectPoolDic;
 
