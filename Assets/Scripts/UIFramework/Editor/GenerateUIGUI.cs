@@ -14,7 +14,8 @@ namespace ActFG.ToolEditor {
     public class GenerateUIGUI : EditorWindow {
         [MenuItem("Tools/UI/CreateUI(GUI)")]
         public static void Open() {
-            GetWindow<GenerateUIGUI>();
+            var gui = GetWindow<GenerateUIGUI>();
+            gui.titleContent = new GUIContent("自动生成UI");
         }
 
         private WinEnum chooseWinEnum = WinEnum.Main;
