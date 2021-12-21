@@ -1,3 +1,4 @@
+using System.Globalization;
 using System;
 using UnityEngine;
 
@@ -30,7 +31,20 @@ namespace ActFG.Util.Tools {
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static GameObject Instantiate(this GameObject obj) {
-            return GameObject.Instantiate(obj);
+            var go = GameObject.Instantiate(obj);
+            go.name = obj.name;
+            return go;
+        }
+
+        /// <summary>
+        /// 实例化
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
+        public static GameObject Instantiate(this GameObject obj, Vector3 position, Vector3 rotation) {
+            return GameObject.Instantiate(obj, position, Quaternion.Euler(rotation));
         }
 
         /// <summary>
@@ -58,10 +72,39 @@ namespace ActFG.Util.Tools {
         /// </summary>
         /// <param name="child"></param>
         /// <param name="parent"></param>
+        /// <param name="isUI">
+        ///     <para>是否是 UI</para>
+        ///     <para>UI情况下防止父物体对子物体的影响</para>
+        ///     <para>参考： https://blog.csdn.net/qq_42672770/article/details/109180796</para>
+        /// </param>
         /// <returns></returns>
-        public static GameObject SetParent(this GameObject child, GameObject parent) {
-            child.transform.SetParent(parent.transform);
+        public static GameObject SetParent(this GameObject child, GameObject parent, bool isUI = false) {
+            child.transform.SetParent(parent.transform, !isUI);
             return child;
+        }
+
+        /// <summary>
+        /// 获得子物体组件
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="path"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T GetComponent<T>(this GameObject parent, string path) {
+            var child = parent.transform.Find(path);
+            return child.GetComponent<T>();
+        }
+
+        /// <summary>
+        /// 获得子物体组件
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="path"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T GetComponent<T>(this Transform parent, string path) {
+            var child = parent.Find(path);
+            return child.GetComponent<T>();
         }
         #endregion
         

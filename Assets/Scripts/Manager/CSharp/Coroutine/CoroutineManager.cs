@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using ActFG.Manager;
+using UnityEngine;
 
 namespace ActFG.Coroutine {
     public class CoroutineManager : Singleton<CoroutineManager> {
