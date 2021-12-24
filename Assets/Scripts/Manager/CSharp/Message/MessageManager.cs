@@ -1,70 +1,69 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 using ActFG.Manager;
 using ActFG.Util.Tools;
 
 namespace ActFG.Message {
     /// <summary>
     /// 消息管理
+    /// 参考：https://blog.csdn.net/u014361280/article/details/104199926
     /// </summary>
     public class MessageManager : Singleton<MessageManager> {
         public delegate void MsgDeletege(Msg obj);
-        private Dictionary<string, MsgDeletege> _Msg = new Dictionary<string, MsgDeletege>();
+        private Dictionary<int, MsgDeletege> MsgMap = new Dictionary<int, MsgDeletege>();
 
         /// <summary>
-        /// 添加消息
+        /// 防止 new
         /// </summary>
-        /// <param name="key">消息名称</param>
-        /// <param name="action">消息体</param>
-        public void AddListener(string key, MsgDeletege action) {
-            if (!_Msg.ContainsKey(key)) {
-                _Msg[key] = action;
-            } else {
-                _Msg[key] += action;
-            }
+        private MessageManager() {}
+
+        /// <summary>
+        /// 注册监听
+        /// </summary>
+        /// <param name="type">消息类型</param>
+        /// <param name="handle">事件</param>
+        public void RegisterListener(int type, MsgDeletege handle) {
+            if (handle == null) return;
+
+            MsgDeletege myHandle = null;
+            MsgMap.TryGetValue(type, out myHandle);
+            MsgMap[type] = (MsgDeletege)Delegate.Combine(myHandle, handle);
         }
 
         /// <summary>
-        /// 删除消息
+        /// 移除监听
         /// </summary>
-        /// <param name="key">消息名称</param>
-        /// <param name="action">消息体</param>
-        public void RemoveListener(string key, MsgDeletege action) {
-            if (!_Msg.ContainsKey(key)) {
-                Debug.Log($"message dont contains {key}".StringColor(Color.red));
-                if (!_Msg.ContainsValue(action)) {
-                    Debug.Log($"message dont contains {action}".StringColor(Color.red));
-                    return;
-                }
-                _Msg[key] -= action;
-            }
+        /// <param name="type">消息名称</param>
+        /// <param name="handle">事件</param>
+        public void RemoveListener(int type, MsgDeletege handle) {
+            if (handle == null) return;
+            MsgMap[type] = (MsgDeletege)Delegate.Remove(MsgMap[type], handle);
         }
 
         /// <summary>
         /// 清空
         /// </summary>
-        public void RemoveAllListener() {
-            _Msg.Clear();
+        public void Clear() {
+            MsgMap.Clear();
         }
 
         /// <summary>
         /// 发送消息
         /// </summary>
-        /// <param name="key"></param>
-        public void SendMsg(string key) {
-            if (_Msg.ContainsKey(key)) {
-                _Msg[key]?.Invoke(null);
-            }
-        }
-
-        /// <summary>
-        /// 发送消息
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="msg"></param>
-        public void SendMsg(string key, Msg msg) {
-            if (_Msg.ContainsKey(key)) {
-                _Msg[key]?.Invoke(msg);
+        /// <param name="type"></param>
+        /// <param name="data"></param>
+        public void SendMsg(int type, object data = null) {
+            MsgDeletege handle;
+            if (MsgMap.TryGetValue(type, out handle)) {
+                Msg evt = new Msg(type, data);
+                try {
+                    if (handle != null)
+                    {
+                        handle(evt);
+                    }
+                } catch (System.Exception e) {
+                    $"SendMessage: \n{evt.Type.ToString()},\n {e.Message},\n {e.StackTrace},\n {e}".Error();
+                }
             }
         }
     }

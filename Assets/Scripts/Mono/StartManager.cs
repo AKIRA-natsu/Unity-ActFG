@@ -4,7 +4,7 @@ namespace ActFG.Manager {
     public class StartManager : MonoBehaviour {
 
         private void Awake() {
-            UIDataManager.Instance.Awake();
+            UIManager.Instance.Awake();
         }
 
         private void Start() {

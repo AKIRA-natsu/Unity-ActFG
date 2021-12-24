@@ -7,6 +7,8 @@ namespace ActFG.Coroutine {
     public class CoroutineManager : Singleton<CoroutineManager> {
         private LinkedList<Coroutine> coroutineList = new LinkedList<Coroutine>();
         private LinkedList<Coroutine> coroutinesToStop = new LinkedList<Coroutine>();
+
+        private CoroutineManager() {}
     
         /// <summary>
         /// 开启一个协程

@@ -9,6 +9,8 @@ namespace ActFG.Manager {
     public class UIPanelManager : Singleton<UIPanelManager> {
         private Stack<UIComponent> stackPanel = new Stack<UIComponent>();
 
+        private UIPanelManager() {}
+
         /// <summary>
         /// <para>UI 入栈，此操作会显示 UI</para>
         /// <para>只显示一个 UI ，别的 UI 如果开启会暂停</para>

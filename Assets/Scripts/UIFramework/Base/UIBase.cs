@@ -15,7 +15,7 @@
         /// </summary>
         public virtual void OnEnter() {}
         /// <summary>
-        /// 继续执行
+        /// 恢复
         /// </summary>
         public virtual void OnResume() {}
         /// <summary>

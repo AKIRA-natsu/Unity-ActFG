@@ -4,6 +4,7 @@ using UnityEngine;
 using ActFG.Coroutine;
 using ActFG.UIFramework;
 using ActFG.Util.Tools;
+using ActFG.Attribute;
 
 namespace ActFG.Manager {
     /// <summary>
@@ -11,6 +12,28 @@ namespace ActFG.Manager {
     /// </summary>
     public class UIManager : Singleton<UIManager> {
         private Dictionary<WinEnum, UIComponent> UIMap = new Dictionary<WinEnum, UIComponent>();
+
+        private UIManager() {}
+
+        /// <summary>
+        /// <para>启动只运行一次</para>
+        /// <para>Map 添加 UICom</para>
+        /// <para>UI Awake</para>
+        /// </summary>
+        public void Awake() {
+            var wins = AttributeHelp<WinAttribute>.Handle();
+            foreach (var win in wins) {
+                // attribute运行了两次！
+                var com = (UIComponent)AttributeHelp<WinAttribute>.Type2Obj(win);
+                var info = win.GetCustomAttributes(false)[0] as WinAttribute;
+                // 注册在UIDataManager
+                UIDataManager.Instance.Register(com, info.data);
+                // 注册在UIManager
+                AddUI(info.data.@enum, com);
+                // Awake UI
+                com.Awake();
+            }
+        }
 
         /// <summary>
         /// 添加 UI

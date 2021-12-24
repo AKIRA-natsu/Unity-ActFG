@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ActFG.Coroutine {
     /// <summary>
     /// 迭代器对象
-    /// /// </summary>
+    /// </summary>
     public sealed class Coroutine {
         private IEnumerator _routine;
 
