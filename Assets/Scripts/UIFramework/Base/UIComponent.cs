@@ -3,7 +3,7 @@ using ActFG.Util.Tools;
 using ActFG.Manager;
 
 namespace ActFG.UIFramework {
-    public class UIComponent : UIBase{
+    public class UIComponent : UIBase {
         public GameObject gameObject { get; private set; }
         public Transform transform { get; private set; }
 

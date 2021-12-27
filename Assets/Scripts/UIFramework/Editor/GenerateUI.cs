@@ -53,10 +53,10 @@ namespace ActFG.UIFramework {{
                         #endregion
                     
                     File.WriteAllText(filePath, content);
-                    $"生成完毕\n路劲为{filePath}".StringColor(Color.yellow).Log();
+                    $"生成完毕\n路劲为{filePath}".StringColor(Color.cyan).Log();
                     AssetDatabase.Refresh();
                 } else {
-                    $"已经存在该文件".StringColor(Color.yellow).Log();
+                    $"已经存在该文件".StringColor(Color.cyan).Log();
                 }
             }
         }
@@ -98,10 +98,10 @@ namespace ActFG.UIFramework {{
                     #endregion
                     
                 File.WriteAllText(filePath, content);
-                $"生成完毕\n路劲为{filePath}".StringColor(Color.yellow).Log();
+                $"生成完毕\n路劲为{filePath}".StringColor(Color.cyan).Log();
                 AssetDatabase.Refresh();
             } else {
-                $"已经存在该文件".StringColor(Color.yellow).Log();
+                $"已经存在该文件".StringColor(Color.cyan).Log();
             }
         }
     }

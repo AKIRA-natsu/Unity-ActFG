@@ -47,7 +47,7 @@ namespace ActFG.ToolEditor {
             // button
             if (GUILayout.Button("生成 UI Prefab & Script")) {
                 if (obj == null) {
-                    $"没有选择物体".StringColor(Color.red).Error();
+                    $"没有选择物体".StringColor(Color.red).Log();
                     return;
                 }
                 GenerateUI.CreateUI(chooseWinEnum, chooseWinType, obj);

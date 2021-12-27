@@ -26,9 +26,9 @@ namespace ActFG.Manager {
                 // attribute运行了两次！
                 var com = (UIComponent)AttributeHelp<WinAttribute>.Type2Obj(win);
                 var info = win.GetCustomAttributes(false)[0] as WinAttribute;
-                // 注册在UIDataManager
+                // 注册在 UIDataManager
                 UIDataManager.Instance.Register(com, info.data);
-                // 注册在UIManager
+                // 注册在 UIManager
                 AddUI(info.data.@enum, com);
                 // Awake UI
                 com.Awake();
