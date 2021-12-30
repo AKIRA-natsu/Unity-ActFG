@@ -18,9 +18,9 @@ namespace ActFG.ToolEditor {
             gui.titleContent = new GUIContent("自动生成UI");
         }
 
-        private WinEnum chooseWinEnum = WinEnum.Main;
+        private WinEnum chooseWinEnum = WinEnum.None;
         private string winName = "";
-        private WinType chooseWinType = WinType.Normal;
+        private WinType chooseWinType = WinType.None;
 
         private void OnGUI() {
             GameObject obj = null;
@@ -48,6 +48,10 @@ namespace ActFG.ToolEditor {
             if (GUILayout.Button("生成 UI Prefab & Script")) {
                 if (obj == null) {
                     $"没有选择物体".StringColor(Color.red).Log();
+                    return;
+                }
+                if (chooseWinEnum == WinEnum.None || chooseWinType == WinType.None) {
+                    $"没有选择UI标签或类型".StringColor(Color.red).Log();
                     return;
                 }
                 GenerateUI.CreateUI(chooseWinEnum, chooseWinType, obj);
