@@ -15,7 +15,7 @@ namespace ActFG.UIFramework {
                 $"{parent.name} dont find".StringColor(Color.red).Log();
             }
             // 初始化创建
-            this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>().Instantiate().SetParent(parent, true);
+            this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>().Instantiate().SetParent(parent.transform, true);
             this.transform = gameObject.transform;
         }
 
