@@ -8,7 +8,8 @@ using ActFG.Util.Tools;
 
 namespace ActFG.Manager {
     /// <summary>
-    /// 对象池
+    /// <para>对象池</para>
+    /// <para>FIXME: 没有限制最大个数，自动回收，以及对象池统一放在一起</para>
     /// </summary>
     public class ObjectPool : Singleton<ObjectPool> {
 
