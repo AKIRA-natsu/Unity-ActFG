@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 using ActFG.UIFramework;
-using ActFG.Util.Tools;
 
 namespace ActFG.ToolEditor {
     /// <summary>
@@ -47,14 +46,14 @@ namespace ActFG.ToolEditor {
             // button
             if (GUILayout.Button("生成 UI Prefab & Script")) {
                 if (obj == null) {
-                    $"没有选择物体".StringColor(Color.red).Log();
+                    $"没有选择物体".Colorful(Color.red).Log();
                     return;
                 }
                 if (chooseWinEnum == WinEnum.None || chooseWinType == WinType.None) {
-                    $"没有选择UI标签或类型".StringColor(Color.red).Log();
+                    $"没有选择UI标签或类型".Colorful(Color.red).Log();
                     return;
                 }
-                GenerateUI.CreateUI(chooseWinEnum, chooseWinType, obj);
+                GenerateUI.CreateUI(chooseWinEnum.ToString(), chooseWinType, obj);
             }
         }
     }

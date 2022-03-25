@@ -6,7 +6,7 @@ namespace ActFG.UIFramework {
     /// </summary>
     public enum WinEnum {
         [Remark("空")]
-        None = 0,
+        None = 100,
         [Remark("主界面")]
         Main,
         [Remark("暂停界面")]

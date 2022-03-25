@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using ActFG.UIFramework;
 using ActFG.Attribute;
-using ActFG.Util.Tools;
 
 namespace ActFG.Manager {
     /// <summary>
@@ -33,7 +32,7 @@ namespace ActFG.Manager {
         public WinData GetUIData(UIComponent com) {
             if (!ComDataMap.ContainsKey(com)) {
                 $"ComMap dont contain {com}".Error();
-                return null;
+                return default;
             }
             return ComDataMap[com];
         }

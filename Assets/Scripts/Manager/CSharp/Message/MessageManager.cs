@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ActFG.Manager;
-using ActFG.Util.Tools;
 
 namespace ActFG.Message {
     /// <summary>

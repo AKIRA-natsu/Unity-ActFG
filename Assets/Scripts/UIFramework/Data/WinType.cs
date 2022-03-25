@@ -6,7 +6,7 @@ namespace ActFG.UIFramework {
     /// </summary>
     public enum WinType {
         [Remark("空")]
-        None = 100,
+        None = 200,
         [Remark("正常UI 隐藏游戏本体")]
         Normal,
         [Remark("过场 与游戏并存 并且可以操控（过场动画等）")]

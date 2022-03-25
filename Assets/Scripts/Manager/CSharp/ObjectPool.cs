@@ -4,7 +4,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using ActFG.Manager.Interface;
-using ActFG.Util.Tools;
 
 namespace ActFG.Manager {
     /// <summary>
@@ -94,10 +93,10 @@ namespace ActFG.Manager {
             ObjectPoolDic[goName].Enqueue(go);
             // 
             go.SetActive(false);
-            var temp = ExistPool().transform.Find(goName);
+            var temp = ExistPool().transform.Find(goName).gameObject;
             if (temp == null) {
-                temp = new GameObject(goName).transform;
-                temp.SetParent(ExistPool().transform);
+                temp = new GameObject(goName);
+                temp.SetParent(ExistPool());
             }
             go.SetParent(temp);
         }
@@ -118,7 +117,7 @@ namespace ActFG.Manager {
         /// </summary>
         /// <param name="name"></param>
         /// <param name="parent"></param>
-        public void ResetGO(string name, Transform parent) {
+        public void ResetGO(string name, GameObject parent) {
             var queue = ObjectPoolDic[name];
             while (queue.Count != 0) {
                 var go = queue.Dequeue();

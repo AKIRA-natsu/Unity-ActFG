@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 using ActFG.UIFramework;
-using ActFG.Util.Tools;
 using ActFG.Attribute;
 
 namespace ActFG.ToolEditor {
@@ -63,7 +62,7 @@ namespace ActFG.ToolEditor {
                         // 水平绘制
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(name, GUILayout.Width(150));
-                        EditorGUILayout.LabelField(remark.remark);
+                        EditorGUILayout.LabelField(remark.Remark);
                         EditorGUILayout.EndHorizontal();
                     }
                     EditorGUILayout.Space();
@@ -81,7 +80,7 @@ namespace ActFG.ToolEditor {
                     // button
                     if (GUILayout.Button("添加 UI 标签")) {
                         if (string.IsNullOrEmpty(enumName)) {
-                            $"没有输入标签名称".StringColor(Color.red).Log();
+                            $"没有输入标签名称".Colorful(Color.red).Log();
                             return;
                         }
                         AddEnum();
@@ -113,7 +112,7 @@ $@"        [Remark(""{enumRemark}"")]
         {enumName},";
             code.Insert(code.Count - 2, AddCode);
             File.WriteAllLines(path, code.ToArray());
-            $"{path}\n添加{enumName}成功".StringColor(Color.cyan).Log();
+            $"{path}\n添加{enumName}成功".Colorful(Color.cyan).Log();
         }
 
         /// <summary>
@@ -133,7 +132,7 @@ $@"        [Remark(""{enumRemark}"")]
             code.RemoveAt(index - 1);
             code.RemoveAt(index - 1);
             File.WriteAllLines(path, code.ToArray());
-            $"删除{removeName}成功".StringColor(Color.cyan).Log();
+            $"删除{removeName}成功".Colorful(Color.cyan).Log();
             remove = 0;
             removeName = "";
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using ActFG.Util.Tools;
 
 namespace ActFG.Behaviour {
     public class EmenyBehaviour : EmenyBehaviourBase {
@@ -82,7 +81,7 @@ namespace ActFG.Behaviour {
             }
 
             NavWayPoint();
-            Debug.Log("移动".StringColor(Color.yellow) + " => " + TargetPosition);
+            Debug.Log("移动".Colorful(Color.yellow) + " => " + TargetPosition);
             if (Vector3.Distance(TargetPosition, this.transform.position) > 1.0f) {
                 agent.destination = TargetPosition;
             }

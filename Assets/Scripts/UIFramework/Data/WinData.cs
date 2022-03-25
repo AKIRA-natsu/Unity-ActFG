@@ -5,8 +5,8 @@ namespace ActFG.UIFramework {
     /// <summary>
     /// UI 数据
     /// </summary>
-    [SerializableAttribute]
-    public class WinData {
+    [Serializable]
+    public struct WinData {
         /// <summary>
         /// UI 窗口
         /// </summary>
@@ -14,7 +14,6 @@ namespace ActFG.UIFramework {
         /// <summary>
         /// UI 路劲 Resources路劲下
         /// </summary>
-        [PrefabPath]
         public string path;
         /// <summary>
         /// UI 类型

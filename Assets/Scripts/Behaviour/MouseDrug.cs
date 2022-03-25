@@ -1,5 +1,4 @@
 using UnityEngine;
-using ActFG.Util.Tools;
 
 namespace ActFG.Behaviour {
     /// <summary>
@@ -30,7 +29,7 @@ namespace ActFG.Behaviour {
                 return;
             }
             this.transform.position = Camera.main.ScreenToWorldPoint(currentPos) + Offset;
-            Debug.Log("移动位置到".StringColor(Color.red) + this.transform.position);
+            Debug.Log("移动位置到".Colorful(Color.red) + this.transform.position);
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using ActFG.Coroutine;
 using ActFG.UIFramework;
-using ActFG.Util.Tools;
 using ActFG.Attribute;
 
 namespace ActFG.Manager {
@@ -13,23 +12,29 @@ namespace ActFG.Manager {
     public class UIManager : Singleton<UIManager> {
         private Dictionary<WinEnum, UIComponent> UIMap = new Dictionary<WinEnum, UIComponent>();
 
-        private UIManager() {}
+        private UIManager() {
+            // 默认 [UI] 为UI根节点
+            var root = GameObject.Find("[UI]");
+            if (root == null)
+                $"[UI] 不存在！".Error();
+            UICanvas.Initialize(root);
+        }
 
         /// <summary>
         /// <para>启动只运行一次</para>
         /// <para>Map 添加 UICom</para>
         /// <para>UI Awake</para>
         /// </summary>
-        public void Awake() {
+        public void Initialize() {
             var wins = AttributeHelp<WinAttribute>.Handle();
             foreach (var win in wins) {
                 // attribute运行了两次！
                 var com = (UIComponent)AttributeHelp<WinAttribute>.Type2Obj(win);
                 var info = win.GetCustomAttributes(false)[0] as WinAttribute;
                 // 注册在 UIDataManager
-                UIDataManager.Instance.Register(com, info.data);
+                UIDataManager.Instance.Register(com, info.Data);
                 // 注册在 UIManager
-                AddUI(info.data.@enum, com);
+                AddUI(info.Data.@enum, com);
                 // Awake UI
                 com.Awake();
             }
@@ -40,7 +45,7 @@ namespace ActFG.Manager {
         /// </summary>
         public void AddUI(WinEnum @enum, UIComponent com) {
             if (UIMap.ContainsKey(@enum)) {
-                $"UI has contained {@enum}".StringColor(Color.red).Log();
+                $"UI has contained {@enum}".Colorful(Color.red).Log();
                 return;
             }
             UIMap[@enum] = com;
@@ -53,7 +58,7 @@ namespace ActFG.Manager {
         /// <returns></returns>
         public UIComponent GetUI(WinEnum @enum) {
             if (!UIMap.ContainsKey(@enum)) {
-                $"UI dont contains {@enum}".StringColor(Color.red).Log();
+                $"UI dont contains {@enum}".Colorful(Color.red).Log();
                 return null;
             }
             return UIMap[@enum];
@@ -92,6 +97,15 @@ namespace ActFG.Manager {
         private IEnumerator SwitchUI(WinEnum cur, WinEnum tar, float time) {
             yield return new Coroutine.WaitForSeconds(time);
             UIMap[cur].Hide();
+            UIMap[tar].Show();
+        }
+
+        public void Open(WinEnum tar, float time = 0f) {
+            CoroutineManager.Instance.Start(OpenUI(tar, time));
+        }
+
+        private IEnumerator OpenUI(WinEnum tar, float time) {
+            yield return new Coroutine.WaitForSeconds(time);
             UIMap[tar].Show();
         }
     }

@@ -5,7 +5,6 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using ActFG.Util.Tools;
 
 namespace ActFG.ToolEditor {
     /// <summary>
@@ -75,7 +74,7 @@ namespace ActFG.ToolEditor {
             EditorGUILayout.Space();
             if (GUILayout.Button("生成脚本")) {
                 if (string.IsNullOrEmpty(path)) {
-                    $"没有选择路劲".StringColor(Color.yellow).Log();
+                    $"没有选择路劲".Colorful(Color.yellow).Log();
                     return;
                 }
                 CreateScripts();
@@ -150,7 +149,7 @@ $@"
             #endregion
 
             File.WriteAllText(filePath, content);
-            $"{scriptName} script生成 => {path}".StringColor(Color.yellow).Log();
+            $"{scriptName} script生成 => {path}".Colorful(Color.yellow).Log();
             AssetDatabase.Refresh();
         }
     }
