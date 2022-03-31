@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 using ActFG.UIFramework;
-using ActFG.Attribute;
 
 namespace ActFG.ToolEditor {
     /// <summary>

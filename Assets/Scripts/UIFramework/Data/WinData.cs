@@ -1,5 +1,4 @@
 using System;
-using ActFG.Attribute;
 
 namespace ActFG.UIFramework {
     /// <summary>

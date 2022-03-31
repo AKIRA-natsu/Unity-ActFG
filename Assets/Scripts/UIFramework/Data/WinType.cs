@@ -1,5 +1,3 @@
-using ActFG.Attribute;
-
 namespace ActFG.UIFramework {
     /// <summary>
     /// UI类型

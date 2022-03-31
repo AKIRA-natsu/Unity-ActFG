@@ -13,6 +13,19 @@ namespace ActFG.Manager {
     public class ObjectPool : Singleton<ObjectPool> {
 
         private Dictionary<string, Queue<GameObject>> ObjectPoolDic = new Dictionary<string, Queue<GameObject>>();
+        private GameObject pool;
+        private GameObject Pool {
+            get {
+                if (pool == null) {
+                    pool = GameObject.Find("[ObjectPool]");
+                    if (pool == null) {
+                        // 不存在创建
+                        pool = new GameObject("[ObjectPool]").DontDestory();
+                    }
+                }
+                return pool;
+            }
+        }
 
         private ObjectPool() {}
 
@@ -93,10 +106,12 @@ namespace ActFG.Manager {
             ObjectPoolDic[goName].Enqueue(go);
             // 
             go.SetActive(false);
-            var temp = ExistPool().transform.Find(goName).gameObject;
-            if (temp == null) {
+            GameObject temp;
+            if (Pool.transform.Find(goName) == null) {
                 temp = new GameObject(goName);
-                temp.SetParent(ExistPool());
+                temp.SetParent(Pool);
+            } else {
+                temp = Pool.transform.Find(goName).gameObject;
             }
             go.SetParent(temp);
         }
@@ -164,19 +179,6 @@ namespace ActFG.Manager {
                     go.Destory();
                 }
             }
-        }
-
-        /// <summary>
-        /// 是否在dontdestory中存在pool
-        /// 不存在创建，存在获得
-        /// </summary>
-        /// <returns></returns>
-        private GameObject ExistPool() {
-            var poolGO = GameObject.Find("[ObjectPool]");
-            if (poolGO == null) {
-                poolGO = new GameObject("[ObjectPool]").DontDestory();
-            }
-            return poolGO;
         }
     }
 }

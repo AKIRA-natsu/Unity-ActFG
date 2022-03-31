@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ActFG.Manager;
-using ActFG.Attribute;
 
 namespace ActFG.UIFramework {
     public class UIComponent : UIBase {

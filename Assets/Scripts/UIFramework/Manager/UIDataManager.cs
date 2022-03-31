@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using ActFG.UIFramework;
-using ActFG.Attribute;
 
 namespace ActFG.Manager {
     /// <summary>

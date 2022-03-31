@@ -1,3 +1,0 @@
-Button Btn
-Image Img
-Text Txt

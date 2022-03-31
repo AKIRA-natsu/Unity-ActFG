@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using ActFG.Coroutine;
 using ActFG.UIFramework;
-using ActFG.Attribute;
 
 namespace ActFG.Manager {
     /// <summary>
@@ -52,16 +51,16 @@ namespace ActFG.Manager {
         }
 
         /// <summary>
-        /// 获得一个 UI
+        /// 获得UI
         /// </summary>
         /// <param name="@enum"> UI 数据 </param>
         /// <returns></returns>
-        public UIComponent GetUI(WinEnum @enum) {
+        public T GetUI<T>(WinEnum @enum) where T : UIComponent {
             if (!UIMap.ContainsKey(@enum)) {
                 $"UI dont contains {@enum}".Colorful(Color.red).Log();
                 return null;
             }
-            return UIMap[@enum];
+            return UIMap[@enum] as T;
         }
 
         /// <summary>
@@ -77,8 +76,7 @@ namespace ActFG.Manager {
         }
 
         /// <summary>
-        /// <para>切换UI</para>
-        /// <para>部分需要</para>
+        /// 切换UI
         /// </summary>
         /// <param name="cur">隐藏</param>
         /// <param name="tar">显示</param>
@@ -100,10 +98,21 @@ namespace ActFG.Manager {
             UIMap[tar].Show();
         }
 
+        /// <summary>
+        /// 打开UI
+        /// </summary>
+        /// <param name="tar"></param>
+        /// <param name="time"></param>
         public void Open(WinEnum tar, float time = 0f) {
             CoroutineManager.Instance.Start(OpenUI(tar, time));
         }
 
+        /// <summary>
+        /// 协程，打开UI
+        /// </summary>
+        /// <param name="tar"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         private IEnumerator OpenUI(WinEnum tar, float time) {
             yield return new Coroutine.WaitForSeconds(time);
             UIMap[tar].Show();
