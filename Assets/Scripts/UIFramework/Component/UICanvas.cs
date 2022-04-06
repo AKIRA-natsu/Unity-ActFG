@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ActFG.UIFramework {
+namespace AKIRA.UIFramework {
     public static class UICanvas {
         // 根节点
         public static GameObject Root { get; private set; }

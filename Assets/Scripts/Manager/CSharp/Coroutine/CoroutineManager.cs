@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using ActFG.Manager;
+using AKIRA.Manager;
 using UnityEngine;
 
-namespace ActFG.Coroutine {
+namespace AKIRA.Coroutine {
     public class CoroutineManager : Singleton<CoroutineManager> {
         private LinkedList<Coroutine> coroutineList = new LinkedList<Coroutine>();
         private LinkedList<Coroutine> coroutinesToStop = new LinkedList<Coroutine>();

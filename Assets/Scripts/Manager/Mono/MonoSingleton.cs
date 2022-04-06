@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ActFG.Manager {
+namespace AKIRA.Manager {
     /// <summary>
     /// 单例
     /// </summary>

@@ -1,6 +1,6 @@
 using System;
 
-namespace ActFG.UIFramework {
+namespace AKIRA.UIFramework {
     /// <summary>
     /// UI 数据
     /// </summary>

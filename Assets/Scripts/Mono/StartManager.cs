@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ActFG.Manager {
+namespace AKIRA.Manager {
     public class StartManager : MonoBehaviour {
 
         private void Awake() {

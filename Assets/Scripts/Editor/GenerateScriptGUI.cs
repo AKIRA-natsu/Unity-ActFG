@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace ActFG.ToolEditor {
+namespace AKIRA.ToolEditor {
     /// <summary>
     /// 自动生成 Mono 脚本 (GUI)
     /// </summary>

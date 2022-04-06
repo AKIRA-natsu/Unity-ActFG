@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using ActFG.Manager;
+using AKIRA.Manager;
 
-namespace ActFG.UIFramework {
+namespace AKIRA.UIFramework {
     public class UIComponent : UIBase {
         public GameObject gameObject { get; private set; }
         public Transform transform { get; private set; }
@@ -23,7 +23,9 @@ namespace ActFG.UIFramework {
         private void BindFields() {
             var fields = this.GetType().GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             foreach (var field in fields) {
-                var uIControl = (UIControlAttribute)field.GetCustomAttributes(false)[0];
+                var uIControls = field.GetCustomAttributes(false);
+                if (uIControls.Length == 0) continue;
+                var uIControl = uIControls[0] as UIControlAttribute;
                 field.SetValue(this, this.transform.Find(uIControl.Path).GetComponent(field.FieldType));
                 if (uIControl.Matchable)
                     MatchableList.Add(this.transform.Find(uIControl.Path).GetComponent<RectTransform>());
@@ -31,14 +33,14 @@ namespace ActFG.UIFramework {
         }
 
         /// <summary>
-        /// 显示 入栈操作在 UIPanelManager 中
+        /// 显示
         /// </summary>
         public virtual void Show() {
             this.gameObject.SetActive(true);
         }
 
         /// <summary>
-        /// 隐藏 出栈
+        /// 隐藏
         /// </summary>
         public virtual void Hide() {
             this.gameObject.SetActive(false);

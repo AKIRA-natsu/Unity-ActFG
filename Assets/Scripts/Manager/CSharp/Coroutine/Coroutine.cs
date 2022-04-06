@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace ActFG.Coroutine {
+namespace AKIRA.Coroutine {
     /// <summary>
     /// 迭代器对象
     /// </summary>

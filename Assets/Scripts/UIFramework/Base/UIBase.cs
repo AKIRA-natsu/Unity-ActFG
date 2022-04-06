@@ -1,4 +1,4 @@
-﻿namespace ActFG.UIFramework {
+﻿namespace AKIRA.UIFramework {
     /// <summary>
     /// UI 基类
     /// </summary>

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using ActFG.UIFramework;
+using AKIRA.UIFramework;
 
-namespace ActFG.Manager {
+namespace AKIRA.Manager {
     /// <summary>
     /// UI 数据管理
     /// </summary>

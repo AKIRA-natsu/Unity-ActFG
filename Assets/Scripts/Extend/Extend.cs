@@ -1,5 +1,5 @@
 using System;
-using ActFG.UIFramework;
+using AKIRA.UIFramework;
 using UnityEngine;
 
 public static class Extend {
@@ -35,8 +35,8 @@ public static class Extend {
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public static T Load<T>(this string path) {
-        return (T)(object)Resources.Load(path);
+    public static T Load<T>(this string path) where T : UnityEngine.Object {
+        return Resources.Load<T>(path);
     }
 
     /// <summary>
@@ -44,6 +44,27 @@ public static class Extend {
     /// </summary>
     /// <param name="obj"></param>
     /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T Instantiate<T>(this T com) where T : Component {
+        return GameObject.Instantiate(com.gameObject).GetComponent<T>();
+    }
+
+    /// <summary>
+    /// 实例化
+    /// </summary>
+    /// <param name="com"></param>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T Instantiate<T>(this T com, Vector3 position = default, Quaternion rotation = default) where T : Component {
+        return GameObject.Instantiate(com.gameObject, position, rotation).GetComponent<T>();
+    }
+
+    /// <summary>
+    /// 实例化
+    /// </summary>
+    /// <param name="obj"></param>
     /// <returns></returns>
     public static GameObject Instantiate(this GameObject obj) {
         var go = GameObject.Instantiate(obj);
@@ -55,31 +76,10 @@ public static class Extend {
     /// 实例化
     /// </summary>
     /// <param name="obj"></param>
-    /// <param name="trans"></param>
-    /// <returns></returns>
-    public static GameObject Instantiate(this GameObject obj, Transform trans) {
-        return Instantiate(obj, trans.position, trans.rotation);
-    }
-
-    /// <summary>
-    /// 实例化
-    /// </summary>
-    /// <param name="obj"></param>
     /// <param name="position"></param>
     /// <param name="rotation"></param>
     /// <returns></returns>
-    public static GameObject Instantiate(this GameObject obj, Vector3 position, Vector3 rotation) {
-        return Instantiate(obj, position, Quaternion.Euler(rotation));
-    }
-
-    /// <summary>
-    /// 实例化
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="position"></param>
-    /// <param name="rotation"></param>
-    /// <returns></returns>
-    public static GameObject Instantiate(this GameObject obj, Vector3 position, Quaternion rotation) {
+    public static GameObject Instantiate(this GameObject obj, Vector3 position = default, Quaternion rotation = default) {
         var go = GameObject.Instantiate(obj, position, rotation);
         go.name = obj.name;
         return go;
@@ -97,10 +97,11 @@ public static class Extend {
     /// <summary>
     /// 销毁
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="com"></param>
     /// <param name="time">销毁等待时间</param>
-    public static void Destory(this Transform obj, float time = 0) {
-        GameObject.Destroy(obj, time);
+    /// <typeparam name="T"></typeparam>
+    public static void Destory<T>(this T com, float time = 0) where T : Component {
+        GameObject.Destroy(com, time);
     }
 
     /// <summary>

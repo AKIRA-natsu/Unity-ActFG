@@ -6,9 +6,9 @@ using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using ActFG.UIFramework;
+using AKIRA.UIFramework;
 
-namespace ActFG.ToolEditor {
+namespace AKIRA.ToolEditor {
     /// <summary>
     /// 自动生成 UI 脚本 (EditorGUI)
     /// </summary>

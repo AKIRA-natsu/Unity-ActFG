@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace ActFG.Manager {
+namespace AKIRA.Manager {
     /// <summary>
     /// C# 单例
     /// 继承需要一个非公有的无参构造函数

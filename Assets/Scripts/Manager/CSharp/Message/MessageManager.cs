@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using ActFG.Manager;
+using AKIRA.Manager;
 
-namespace ActFG.Message {
+namespace AKIRA.Message {
     /// <summary>
     /// 消息管理
     /// 参考：https://blog.csdn.net/u014361280/article/details/104199926

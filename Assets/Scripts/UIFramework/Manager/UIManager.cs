@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ActFG.Coroutine;
-using ActFG.UIFramework;
+using AKIRA.Coroutine;
+using AKIRA.UIFramework;
 
-namespace ActFG.Manager {
+namespace AKIRA.Manager {
     /// <summary>
     /// UI 管理
     /// </summary>

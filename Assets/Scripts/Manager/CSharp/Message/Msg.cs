@@ -1,4 +1,4 @@
-﻿namespace ActFG.Message {
+﻿namespace AKIRA.Message {
     /// <summary>
     /// 消息体
     /// </summary>

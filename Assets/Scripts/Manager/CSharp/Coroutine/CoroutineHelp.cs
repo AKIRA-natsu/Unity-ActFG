@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ActFG.Coroutine {
+namespace AKIRA.Coroutine {
     public class Time {
         public const float deltaTime = 0.02f;
         public const int deltaMilTime = 20;

@@ -6,9 +6,9 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using ActFG.UIFramework;
+using AKIRA.UIFramework;
 
-namespace ActFG.ToolEditor {
+namespace AKIRA.ToolEditor {
     /// <summary>
     /// 添加 UI 标签 (EditorGUI)
     /// </summary>

@@ -1,5 +1,5 @@
 using System;
-using ActFG.UIFramework;
+using AKIRA.UIFramework;
 
 /// <summary>
 /// UI Attribute
