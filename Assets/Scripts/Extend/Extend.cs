@@ -1,20 +1,31 @@
 using System;
-using AKIRA.UIFramework;
 using UnityEngine;
 
 public static class Extend {
     #region 属性 字段
-
-    private static Camera mainCamera;
+    private static RectTransform canvas;
     /// <summary>
-    /// 主摄像机
+    /// 画布 RectTransform
     /// </summary>
     /// <value></value>
-    public static Camera MainCamera {
+    public static RectTransform Canvas {
         get {
-            if (mainCamera == null)
-                mainCamera = Camera.main;
-            return mainCamera;
+            if (canvas == null)
+                canvas = GameObject.Find("[UI]/Canvas").GetComponent<RectTransform>();
+            return canvas;
+        }
+    }
+
+    private static Transform player;
+    /// <summary>
+    /// 玩家 Transofrm
+    /// </summary>
+    /// <value></value>
+    public static Transform Player {
+        get {
+            if (player == null)
+                player = GameObject.FindWithTag("Player").transform;
+            return player;
         }
     }
     #endregion
@@ -208,20 +219,6 @@ public static class Extend {
     }
     #endregion
 
-    #region 代码耗时
-    /// <summary>
-    /// 代码耗时
-    /// </summary>
-    /// <param name="action"></param>
-    public static void CodeCost(this Action action) {
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-        stopwatch.Start();
-        action?.Invoke();
-        stopwatch.Stop();
-        Debug.Log(action.Method.ToString().Colorful(Color.yellow) + " => " + stopwatch.Elapsed.TotalMilliseconds);
-    }
-    #endregion
-
     #region 字体颜色
     /// <summary>
     /// 富文本
@@ -252,7 +249,7 @@ public static class Extend {
     /// <returns></returns>
     public static Vector2 ScreenToUGUI(this Vector3 screenpos) {
         Vector2 screenpos2 = new Vector2(screenpos.x - (Screen.width / 2), screenpos.y - (Screen.height / 2));
-        var UISize = UICanvas.Rect.sizeDelta;
+        var UISize = Canvas.sizeDelta;
         Vector2 uipos;
         uipos.x = (screenpos2.x / Screen.width) * UISize.x;
         uipos.y = (screenpos2.y / Screen.height) * UISize.y;
@@ -266,7 +263,7 @@ public static class Extend {
         Vector2 ScreenPoint = GameObject.FindWithTag("MainCamera").GetComponent<Camera>().WorldToScreenPoint(position);
         Vector2 ScreenSize = new Vector2(Screen.width, Screen.height);
         ScreenPoint -= ScreenSize / 2;//将屏幕坐标变换为以屏幕中心为原点
-        Vector2 anchorPos = ScreenPoint / ScreenSize * UICanvas.Rect.sizeDelta;//缩放得到UGUI坐标
+        Vector2 anchorPos = ScreenPoint / ScreenSize * Canvas.sizeDelta;//缩放得到UGUI坐标
         return anchorPos;
     }
 
@@ -381,13 +378,4 @@ public static class Extend {
     }
     #endregion
 
-    #region Enum
-    /// <summary>
-    /// 获得随机Enum
-    /// </summary>
-    public static T RandomEnum<T>() {
-        var values = Enum.GetValues(typeof(T));
-        return (T)values.GetValue(UnityEngine.Random.Range(0, values.Length));
-    }
-    #endregion
 }

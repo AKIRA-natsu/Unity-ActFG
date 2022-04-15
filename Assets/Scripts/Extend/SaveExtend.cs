@@ -1,44 +1,65 @@
-using System;
 using UnityEngine;
 
 public static class SaveExtend {
+    private const string @int = "Int32";
+    private const string @string = "String";
+    private const string @float = "Single";
+
     /// <summary>
-    /// 
+    /// PlayerPrefs save
     /// </summary>
-    /// <param name="data"></param>
     /// <param name="key"></param>
-    /// <typeparam name="T"></typeparam>
-    public static void Save<T>(this T data, string key) {
-        if (typeof(T) == typeof(int))
-            PlayerPrefs.SetInt(key, (int)(object)data);
-        else if (typeof(T) == typeof(string))
-            PlayerPrefs.SetString(key, (string)(object)data);
-        else if (typeof(T) == typeof(float))
-            PlayerPrefs.SetFloat(key, (float)(object)data);
-        else
-            Debug.LogError("type not right");
+    /// <param name="data"></param>
+    public static void Save(this string key, int data) {
+        PlayerPrefs.SetInt(key, data);
     }
 
     /// <summary>
-    /// <para>playerprefs读取</para>
-    /// <para>1: int, 2: string, 3: float</para>
+    /// PlayerPrefs save
     /// </summary>
     /// <param name="key"></param>
-    /// <param name="type"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    public static void Save(this string key, string data) {
+        PlayerPrefs.SetString(key, data);
+    }
+
+    /// <summary>
+    /// PlayerPrefs save
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="data"></param>
+    public static void Save(this string key, float data) {
+        PlayerPrefs.SetFloat(key, data);
+    }
+
+    /// <summary>
+    /// default return 1
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="default">默认返回</param>
     /// <returns></returns>
-    public static T Get<T>(this string key, int type) {
-        switch (type) {
-            case 1:
-                return (T)(object)PlayerPrefs.GetInt(key, 1);
-            case 2:
-                return (T)(object)PlayerPrefs.GetString(key, "");
-            case 3:
-                return (T)(object)PlayerPrefs.GetFloat(key);
-            default:
-                throw new Exception("type not right");
-        }
-        throw new Exception("key not found");
+    public static int GetInt(this string key, int @default = 1) {
+        return PlayerPrefs.GetInt(key, @default);
+    }
+
+    /// <summary>
+    /// default return null
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="default">默认返回</param>
+    /// <returns></returns>
+    public static string GetString(this string key, string @default = "") {
+        return PlayerPrefs.GetString(key, @default);
+    }
+
+    /// <summary>
+    /// default return 0
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="default">默认返回</param>
+    /// <returns></returns>
+    public static float GetFloat(this string key, float @default = 0) {
+        return PlayerPrefs.GetFloat(key, @default);
     }
 
     /// <summary>

@@ -11,5 +11,7 @@ namespace AKIRA.UIFramework {
         Pause,
         [Remark("设置界面")]
         Setting,
+        [Remark("测试")]
+        Test,
     }
 }

@@ -61,7 +61,7 @@ namespace AKIRA.Message {
                         handle(evt);
                     }
                 } catch (System.Exception e) {
-                    $"SendMessage: {evt.Type.ToString()}, {e.Message}, {e.StackTrace}, {e}".Error();
+                    $"SendMessage: \n{evt.Type.ToString()},\n {e.Message},\n {e.StackTrace},\n {e}".Error();
                 }
             }
         }

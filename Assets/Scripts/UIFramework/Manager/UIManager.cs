@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AKIRA.Coroutine;
 using AKIRA.UIFramework;
 
 namespace AKIRA.Manager {
@@ -9,7 +7,8 @@ namespace AKIRA.Manager {
     /// UI 管理
     /// </summary>
     public class UIManager : Singleton<UIManager> {
-        private Dictionary<WinEnum, UIComponent> UIMap = new Dictionary<WinEnum, UIComponent>();
+        // 字典表
+        private Dictionary<string, UIComponent> UIMap = new Dictionary<string, UIComponent>();
 
         private UIManager() {
             // 默认 [UI] 为UI根节点
@@ -32,90 +31,51 @@ namespace AKIRA.Manager {
                 var info = win.GetCustomAttributes(false)[0] as WinAttribute;
                 // 注册在 UIDataManager
                 UIDataManager.Instance.Register(com, info.Data);
-                // 注册在 UIManager
-                AddUI(info.Data.@enum, com);
                 // Awake UI
                 com.Awake();
+                // 注册在 UIManager
+                AddUI(com);
             }
         }
 
         /// <summary>
         /// 添加 UI
         /// </summary>
-        public void AddUI(WinEnum @enum, UIComponent com) {
-            if (UIMap.ContainsKey(@enum)) {
-                $"UI has contained {@enum}".Colorful(Color.red).Log();
+        /// <param name="com"></param>
+        private void AddUI(UIComponent com) {
+            var name = $"{com.gameObject.name}Panel";
+            if (UIMap.ContainsKey(name)) {
+                $"UI has contained {name}".Colorful(Color.red).Log();
                 return;
             }
-            UIMap[@enum] = com;
+            UIMap[name] = com;
         }
 
         /// <summary>
         /// 获得UI
         /// </summary>
-        /// <param name="@enum"> UI 数据 </param>
+        /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetUI<T>(WinEnum @enum) where T : UIComponent {
-            if (!UIMap.ContainsKey(@enum)) {
-                $"UI dont contains {@enum}".Colorful(Color.red).Log();
+        public T Get<T>() where T : UIComponent {
+            var name = typeof(T).Name;
+            if (!UIMap.ContainsKey(name)) {
+                $"UI dont contains {name}".Colorful(Color.red).Log();
                 return null;
             }
-            return UIMap[@enum] as T;
+            return UIMap[name] as T;
         }
 
         /// <summary>
         /// 销毁 UI
         /// </summary>
-        /// <param name="@enum"></param>
-        public void DestoryUI(WinEnum @enum) {
-            if (UIMap.ContainsKey(@enum)) {
-                UIMap[@enum].Destory();
-                UIDataManager.Instance.Remove(UIMap[@enum]);
-                UIMap.Remove(@enum);
+        /// <typeparam name="T"></typeparam>
+        public void Destory<T>() where T : UIComponent {
+            var name = typeof(T).Name;
+            if (UIMap.ContainsKey(name)) {
+                UIMap[name].Destory();
+                UIDataManager.Instance.Remove(UIMap[name]);
+                UIMap.Remove(name);
             }
-        }
-
-        /// <summary>
-        /// 切换UI
-        /// </summary>
-        /// <param name="cur">隐藏</param>
-        /// <param name="tar">显示</param>
-        /// <param name="time"></param>
-        public void Switch(WinEnum cur, WinEnum tar, float time = 0f) {
-            CoroutineManager.Instance.Start(SwitchUI(cur, tar, time));
-        }
-
-        /// <summary>
-        /// 协程，切换UI
-        /// </summary>
-        /// <param name="cur"></param>
-        /// <param name="tar"></param>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        private IEnumerator SwitchUI(WinEnum cur, WinEnum tar, float time) {
-            yield return new Coroutine.WaitForSeconds(time);
-            UIMap[cur].Hide();
-            UIMap[tar].Show();
-        }
-
-        /// <summary>
-        /// 打开UI
-        /// </summary>
-        /// <param name="tar"></param>
-        /// <param name="time"></param>
-        public void Open(WinEnum tar, float time = 0f) {
-            CoroutineManager.Instance.Start(OpenUI(tar, time));
-        }
-
-        /// <summary>
-        /// 协程，打开UI
-        /// </summary>
-        /// <param name="tar"></param>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        private IEnumerator OpenUI(WinEnum tar, float time) {
-            yield return new Coroutine.WaitForSeconds(time);
-            UIMap[tar].Show();
         }
     }
 }

@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AKIRA.Manager {
     /// <summary>
-    /// 单例
+    /// Mono 单例
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
-        public static T instance;
+        private static T instance;
 
         public static T Instance {
             get {
                 if (instance == null) {
-                    // 忘记实例的保险
+                    // 直接 return 初始化前被调用导致会报错
                     GameObject manager = new GameObject($"[{typeof(T).Name}]");
                     instance = manager.AddComponent(typeof(T)) as T;
                 }
@@ -22,21 +20,17 @@ namespace AKIRA.Manager {
             }
         }
 
-        public static bool IsInitialized {
-            get {
-                return instance != null;
-            }
-        }
-
         protected virtual void Awake() {
-            if (instance == null)
+            if (instance == null) {
                 instance = (T)this;
+                instance.gameObject.DontDestory();
+            }
             else
                 Destroy(gameObject);
         }
 
         protected virtual void OnDestroy() {
-            if (instance != null)
+            if (instance == this)
                 instance = null;
         }
     }

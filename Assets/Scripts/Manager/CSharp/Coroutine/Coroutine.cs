@@ -27,12 +27,12 @@ namespace AKIRA.Coroutine {
             if (!moveNext) {
                 // 事件没有到时，返回true
                 // 告诉管理器后面还有对象需要下一次继续迭代
-                Debug.Log("[Coroutine] not movenext");
+                // Debug.Log("[Coroutine] not movenext");
                 return true;
             } else {
                 // 此时等待事件或者帧都已经迭代完毕，看IEnumerator对象后续是否还有 yield return 对象
                 // 将此结果通知给管理器，管理器会在下一次迭代时决定是否继续迭代该Coroutine对象
-                Debug.Log("[Coroutine] movenext");
+                // Debug.Log("[Coroutine] movenext");
                 return _routine.MoveNext();
             }
         }

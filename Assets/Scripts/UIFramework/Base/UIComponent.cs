@@ -6,8 +6,9 @@ namespace AKIRA.UIFramework {
     public class UIComponent : UIBase {
         public GameObject gameObject { get; private set; }
         public Transform transform { get; private set; }
+
         // 可适配组件列表
-        public List<RectTransform> MatchableList = new List<RectTransform>();
+        public List<RectTransform> MatchableList { get; private set; } = new List<RectTransform>();
 
         public override void Awake() {
             base.Awake();
@@ -23,7 +24,7 @@ namespace AKIRA.UIFramework {
         private void BindFields() {
             var fields = this.GetType().GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             foreach (var field in fields) {
-                var uIControls = field.GetCustomAttributes(false);
+                var uIControls = field.GetCustomAttributes(typeof(UIControlAttribute), false);
                 if (uIControls.Length == 0) continue;
                 var uIControl = uIControls[0] as UIControlAttribute;
                 field.SetValue(this, this.transform.Find(uIControl.Path).GetComponent(field.FieldType));
@@ -37,6 +38,7 @@ namespace AKIRA.UIFramework {
         /// </summary>
         public virtual void Show() {
             this.gameObject.SetActive(true);
+            this.OnEnter();
         }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace AKIRA.UIFramework {
         /// </summary>
         public virtual void Hide() {
             this.gameObject.SetActive(false);
+            this.OnExit();
         }
 
         /// <summary>

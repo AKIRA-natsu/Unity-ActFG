@@ -27,7 +27,7 @@ namespace AKIRA.UIFramework {
             this.@enum = @enum;
             this.path = path;
             this.@type = @type;
-            this.name = path.Substring(path.LastIndexOf('/') + 1);
+            this.name = path.Substring(path.LastIndexOf('/') + 1) + "Panel";
         }
 
         public override string ToString() {

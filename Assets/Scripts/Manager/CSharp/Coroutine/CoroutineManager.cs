@@ -54,7 +54,7 @@ namespace AKIRA.Coroutine {
 
                 if (!ret) {
                     coroutineList.Remove(node);
-                    Debug.Log($"[CoroutineManager] remove {cor}");
+                    // Debug.Log($"[CoroutineManager] remove {cor}");
                 }
 
                 node = node.Next;
