@@ -1,21 +1,9 @@
 using System;
+using AKIRA.UIFramework;
 using UnityEngine;
 
 public static class Extend {
     #region 属性 字段
-    private static RectTransform canvas;
-    /// <summary>
-    /// 画布 RectTransform
-    /// </summary>
-    /// <value></value>
-    public static RectTransform Canvas {
-        get {
-            if (canvas == null)
-                canvas = GameObject.Find("[UI]/Canvas").GetComponent<RectTransform>();
-            return canvas;
-        }
-    }
-
     private static Transform player;
     /// <summary>
     /// 玩家 Transofrm
@@ -166,9 +154,19 @@ public static class Extend {
     /// <param name="path"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T GetComponent<T>(this Transform parent, string path) {
-        var child = parent.Find(path);
+    public static T GetComponent<T>(this Component parent, string path) {
+        var child = parent.transform.Find(path);
         return child.GetComponent<T>();
+    }
+
+    /// <summary>
+    /// UI 获得组件
+    /// </summary>
+    /// <param name="com"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetComponent<T>(this AKIRA.UIFramework.UIComponent com) {
+        return com.transform.GetComponent<T>();
     }
 
     /// <summary>
@@ -249,7 +247,7 @@ public static class Extend {
     /// <returns></returns>
     public static Vector2 ScreenToUGUI(this Vector3 screenpos) {
         Vector2 screenpos2 = new Vector2(screenpos.x - (Screen.width / 2), screenpos.y - (Screen.height / 2));
-        var UISize = Canvas.sizeDelta;
+        var UISize = UI.Rect.sizeDelta;
         Vector2 uipos;
         uipos.x = (screenpos2.x / Screen.width) * UISize.x;
         uipos.y = (screenpos2.y / Screen.height) * UISize.y;
@@ -263,7 +261,7 @@ public static class Extend {
         Vector2 ScreenPoint = GameObject.FindWithTag("MainCamera").GetComponent<Camera>().WorldToScreenPoint(position);
         Vector2 ScreenSize = new Vector2(Screen.width, Screen.height);
         ScreenPoint -= ScreenSize / 2;//将屏幕坐标变换为以屏幕中心为原点
-        Vector2 anchorPos = ScreenPoint / ScreenSize * Canvas.sizeDelta;//缩放得到UGUI坐标
+        Vector2 anchorPos = ScreenPoint / ScreenSize * UI.Rect.sizeDelta;//缩放得到UGUI坐标
         return anchorPos;
     }
 

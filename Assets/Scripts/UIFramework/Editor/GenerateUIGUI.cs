@@ -109,68 +109,72 @@ namespace AKIRA.ToolEditor {
             var panelPath = $"Assets/Scripts/UI/{name}Panel.cs";
             var propPath = $"Assets/Scripts/UI/{name}PanelProp.cs";
             var objPath = Application.dataPath + $"/Resources/UI/{name}.prefab";
-            if (!File.Exists(objPath)) {
-                var result = false;
-                PrefabUtility.SaveAsPrefabAsset(obj, objPath, out result);
-                if (!result) {
-                    $"保存预制体{obj}失败".Colorful(Color.red).Error();
-                    return;
-                }
-                $"保存预制体{obj}成功\n路径为{objPath}".Colorful(Color.cyan).Log();
-            } else {
-                $"已经存在预制体{obj}\n路径为{objPath}".Colorful(Color.yellow).Log();
+            
+            // 检查是否存在预制体
+            if (File.Exists(objPath)) {
+                $"已经存在预制体{obj}\n进行删除，路径为{objPath}".Colorful(Color.yellow).Log();
+                File.Delete(objPath);
             }
+            PrefabUtility.SaveAsPrefabAsset(obj, objPath, out bool result);
+            if (!result) {
+                $"保存预制体{obj}失败".Colorful(Color.red).Error();
+                return;
+            }
+            $"保存预制体{obj}成功\n路径为{objPath}".Colorful(Color.cyan).Log();
+
             objPath = objPath.Replace(".prefab", "");
             // 去掉 "UI/" 4
             objPath = objPath.Substring(objPath.Length - name.Length - 3);
 
 // =============================================================================================================================
 
-            if (!File.Exists(propPath)) {
-                string content = 
-                    #region code
+            if (File.Exists(propPath)) {
+                $"已经存在prop文件\n进行删除，路劲为{propPath}".Colorful(Color.yellow).Log();
+                File.Delete(propPath);
+            }
+            string propContent = 
+                #region code
 
-$@"using UnityEngine.UI;
+$@"using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
-namespace ActFG.UIFramework {{
+namespace AKIRA.UIFramework {{
     public class {name}PanelProp : UIComponent {{";
-                content += $"\n{LinkControlContent(obj.transform)}";
-                content += 
+                propContent += $"\n{LinkControlContent(obj.transform)}";
+                propContent += 
 $@"    }}
 }}";
-                    #endregion
+                #endregion
                     
-                File.WriteAllText(propPath, content);
-                $"生成prop.cs完毕\n路劲为{propPath}".Colorful(Color.cyan).Log();
-                AssetDatabase.Refresh();
-            } else {
-                $"已经存在prop文件\n路劲为{propPath}".Colorful(Color.yellow).Log();
-            }
+            File.WriteAllText(propPath, propContent);
+            $"生成prop.cs完毕\n路劲为{propPath}".Colorful(Color.cyan).Log();
+            AssetDatabase.Refresh();
 
 // =============================================================================================================================
             
-            if (!File.Exists(panelPath)) {
-                string content = 
-                    #region code
+            if (File.Exists(panelPath)) {
+                $"已经存在panel文件\n进行删除，路劲为{panelPath}".Colorful(Color.yellow).Log();
+                File.Delete(panelPath);
+            }
+            string panelContent = 
+                #region code
 
-$@"namespace ActFG.UIFramework {{
+$@"namespace AKIRA.UIFramework {{
     [Win(WinEnum.{@enum}, ""{objPath}"", WinType.{@type})]
     public class {name}Panel : {name}PanelProp {{
         public override void Awake() {{
             base.Awake();";
-                content += $"\n{LinkBtnListen()}";
-                content += 
+                panelContent += $"\n{LinkBtnListen()}";
+                panelContent += 
 $@"        }}
     }}
 }}";
-                    #endregion
+                #endregion
                     
-                File.WriteAllText(panelPath, content);
-                $"生成panel.cs完毕\n路劲为{panelPath}".Colorful(Color.cyan).Log();
-                AssetDatabase.Refresh();
-            } else {
-                $"已经存在panel文件\n路劲为{panelPath}".Colorful(Color.yellow).Log();
-            }
+            File.WriteAllText(panelPath, panelContent);
+            $"生成panel.cs完毕\n路劲为{panelPath}".Colorful(Color.cyan).Log();
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
@@ -189,11 +193,17 @@ $@"        }}
                 var node = nodes[i];
                 // 删去路径根节点  /_transform.name/
                 node.path = node.path.Remove(0, _transform.name.Length + 2);
-                rule.TryGetControlName(node.name, out string controlName);
-                if (!string.IsNullOrEmpty(controlName)) {
-                    content.Append($"        [UIControl(\"{node.path}\")]\n        protected {controlName} {node.path.Replace('/', '_')};\n");
+                if (rule.TryGetControlName(node.name, out string controlName)) {
+                    if (rule.CheckMatchableControl(node.name)) {
+                        // content.Append($"        [UIControl(\"{node.path}\", true)]\n        protected {controlName} {node.path.Replace('/', '_').Replace("@", "")};\n");
+                        content.Append($"        [UIControl(\"{node.path}\", true)]\n        protected {controlName} {node.name};\n");
+                    } else {
+                        // content.Append($"        [UIControl(\"{node.path}\")]\n        protected {controlName} {node.path.Replace('/', '_').Replace("@", "")};\n");
+                        content.Append($"        [UIControl(\"{node.path}\")]\n        protected {controlName} {node.name};\n");
+                    }
                     if (controlName.Equals("Button"))
-                        btns.Add(node.path.Replace('/', '_'));
+                        // btns.Add(node.path.Replace('/', '_').Replace("@", ""));
+                        btns.Add(node.name);
                 }
             }
             return content;

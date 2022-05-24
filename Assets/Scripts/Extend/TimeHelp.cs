@@ -121,6 +121,24 @@ public static class TimeHelp {
         IDMap[id] = false;
     }
 
+    /// <summary>
+    /// <para>循环执行，协程，boolean</para>
+    /// <para>需要在Update中添加<code>CoroutineManager.Instance.UpdateCoroutine();</code></para>
+    /// </summary>
+    /// <param name="com"></param>
+    /// <param name="action"></param>
+    /// <param name="continue">循环条件</param>
+    /// <param name="wait">每次循环等待时间</param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns>ID</returns>
+    public static int Repeat<T>(this T com, Action action, bool @continue, float wait = 0f) {
+        var id = DistributeID();
+        CoroutineManager.Instance.Start(CRepeat(id, action, () => {
+            return @continue;
+        }, wait));
+        return id;
+    }
+
     #endregion
 
     #region 结束执行

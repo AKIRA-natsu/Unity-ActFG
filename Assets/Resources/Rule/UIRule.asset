@@ -9,21 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a213840ed62a69747843128c86b13937, type: 3}
+  m_Script: {fileID: 11500000, guid: 2fdabd3e36b708c47bba7bf628238738, type: 3}
   m_Name: UIRule
   m_EditorClassIdentifier: 
   rules:
-  - controlName: Button
-    ruleNames:
-    - Btn
-  - controlName: Image
-    ruleNames:
-    - Img
-    - Image
-    - Pic
-    - Bg
   - controlName: Text
     ruleNames:
     - Txt
-    - Text
-    - Title
+    - Amount
+    - Count
+  - controlName: RectTransform
+    ruleNames:
+    - Rect
+  - controlName: Button
+    ruleNames:
+    - Btn
+    - Button
+  - controlName: Image
+    ruleNames:
+    - Img
+    - Bg
+    - Pic

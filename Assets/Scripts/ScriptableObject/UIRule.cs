@@ -1,25 +1,63 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "UIRule", menuName = "UIFramework/UIRule", order = 0)]
 public class UIRule : ScriptableObject {
     public UIControlRule[] rules = {};
 
     /// <summary>
-    /// 获得组件名称（不判断大小写）
+    /// <para>获得组件名称（不判断大小写）</para>
+    /// <para>获取优先级和顺序有关</para>
     /// </summary>
     /// <param name="name1">UI组件命名名称</param>
     /// <param name="name2">UI规定组件名称</param>
-    /// <returns>UI组件</returns>
-    public void TryGetControlName(string name1, out string name2) {
+    /// <returns>是否找到组件</returns>
+    public bool TryGetControlName(string name1, out string name2) {
         foreach (var rule in rules) {
             foreach (var n in rule.ruleNames) {
                 if (name1.Contains(n)) {
                     name2 = rule.controlName;
-                    return;
+                    return true;
                 }
             }
         }
         $"rules dont contain {name1}".Error();
         name2 = null;
+        return false;
     }
+
+    /// <summary>
+    /// <para>获得组件名称（不判断大小写）</para>
+    /// <para>参数重复问题，暂不使用</para>
+    /// </summary>
+    /// <param name="name">UI组件命名名称</param>
+    /// <param name="names">UI规定组件名称 列表</param>
+    /// <returns>是否找到组件</returns>
+    public bool TryGetControlName(string name, out List<string> names) {
+        names = new List<string>();
+        foreach (var rule in rules) {
+            foreach (var n in rule.ruleNames) {
+                if (name.Contains(n)) {
+                    names.Add(rule.controlName);
+                    break;
+                }
+            }
+        }
+        if (names.Count == 0)
+            return false;
+        else
+            return true;
+    }
+
+    /// <summary>
+    /// 检查是否可适配
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public bool CheckMatchableControl(string name) {
+        if (name.Contains("@"))
+            return true;
+        return false;
+    }
+
 }

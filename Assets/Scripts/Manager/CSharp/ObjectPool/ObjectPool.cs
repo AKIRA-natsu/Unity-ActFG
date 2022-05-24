@@ -12,6 +12,7 @@ namespace AKIRA.Manager {
         private Dictionary<string, PoolBase> ObjectPoolMap = new Dictionary<string, PoolBase>();
         // 纯GameObject
         private Dictionary<string, Pool> GameObjectMap = new Dictionary<string, Pool>();
+
         private GameObject root;
         /// <summary>
         /// 对象池根节点
@@ -43,6 +44,29 @@ namespace AKIRA.Manager {
             return ObjectPoolMap.Values.OfType<Pool<T>>();
         }
 
+        #region path 获得对象
+        /// <summary>
+        /// 对象池获得池对象
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="parent"></param>
+        /// <param name="space">默认世界坐标</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Instantiate<T>(string path, Vector3 position = default, Quaternion rotation = default, Transform parent = default, Space space = Space.World) where T : Component, IPool {
+            T com = Instantiate<T>(path, parent);
+            if (space == Space.World) {
+                com.transform.position = position;
+                com.transform.rotation = rotation;
+            } else {
+                com.transform.localPosition = position;
+                com.transform.localRotation = rotation;
+            }
+            return com;
+        }
+
         /// <summary>
         /// 对象池获得池对象
         /// </summary>
@@ -59,17 +83,15 @@ namespace AKIRA.Manager {
         }
 
         /// <summary>
-        /// 对象池获得池对象
+        /// 对象池获得对象
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
+        /// <param name="path"></param>
+        /// <param name="parent"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(T target, Vector3 position = default, Quaternion rotation = default) where T : Component, IPool {
-            T com = Instantiate<T>(target);
-            com.transform.position = position;
-            com.transform.rotation = rotation;
+        public T Instantiate<T>(string path, Transform parent = default) where T : Component, IPool {
+            T com = Instantiate<T>(path);
+            com.SetParent(parent);
             return com;
         }
 
@@ -92,6 +114,58 @@ namespace AKIRA.Manager {
                 return pool.Instantiate(path);
             }
         }
+        #endregion
+
+        #region T 获得对象
+        /// <summary>
+        /// 对象池获得池对象
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="parent"></param>
+        /// <param name="space">默认世界坐标</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Instantiate<T>(T target, Vector3 position = default, Quaternion rotation = default, Transform parent = default, Space space = Space.World) where T : Component, IPool {
+            T com = Instantiate(target, parent);
+            if (space == Space.World) {
+                com.transform.position = position;
+                com.transform.rotation = rotation;
+            } else {
+                com.transform.localPosition = position;
+                com.transform.localRotation = rotation;
+            }
+            return com;
+        }
+
+        /// <summary>
+        /// 对象池获得池对象
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Instantiate<T>(T target, Vector3 position = default, Quaternion rotation = default) where T : Component, IPool {
+            T com = Instantiate(target);
+            com.transform.position = position;
+            com.transform.rotation = rotation;
+            return com;
+        }
+
+        /// <summary>
+        /// 从对象池中获得对象
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="parent"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Instantiate<T>(T target, Transform parent = default) where T : Component, IPool {
+            T com = Instantiate(target);
+            com.SetParent(parent);
+            return com;
+        }
 
         /// <summary>
         /// 对象池获得池对象
@@ -111,6 +185,7 @@ namespace AKIRA.Manager {
                 return pool.Instantiate(com);
             }
         }
+        #endregion
 
         /// <summary>
         /// 对象池销毁池对象
@@ -151,6 +226,28 @@ namespace AKIRA.Manager {
     
     
         #region 纯GameObject
+        #region path 获得对象
+        /// <summary>
+        /// 对象池获得池对象
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="parent"></param>
+        /// <param name="space">默认世界坐标</param>
+        /// <returns></returns>
+        public GameObject Instantiate(string path, Vector3 position = default, Quaternion rotation = default, Transform parent = default, Space space = Space.World) {
+            GameObject go = Instantiate(path, parent);
+            if (space == Space.World) {
+                go.transform.position = position;
+                go.transform.rotation = rotation;
+            } else {
+                go.transform.localPosition = position;
+                go.transform.localRotation = rotation;
+            }
+            return go;
+        }
+
         /// <summary>
         /// 对象池获得池对象
         /// </summary>
@@ -162,6 +259,58 @@ namespace AKIRA.Manager {
             GameObject go = Instantiate(path);
             go.transform.position = position;
             go.transform.rotation = rotation;
+            return go;
+        }
+
+        /// <summary>
+        /// 对象池获得池对象
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public GameObject Instantiate(string path, Transform parent = default) {
+            GameObject go = Instantiate(path);
+            go.transform.SetParent(parent);
+            return go;
+        }
+
+        /// <summary>
+        /// 对象池获得池对象
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public GameObject Instantiate(string path) {
+            var names = path.Split('/');
+            var name = names[names.Length - 1];
+            if (GameObjectMap.ContainsKey(name)) {
+                return GameObjectMap[name].Instantiate(path);
+            } else {
+                var pool = new Pool().Init(Root.transform, name);
+                GameObjectMap.Add(name, pool);
+                return pool.Instantiate(path);
+            }
+        }
+        #endregion
+
+        #region GameObject 获得对象
+        /// <summary>
+        /// 对象池获得池对象
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="parent"></param>
+        /// <param name="space">默认世界坐标</param>
+        /// <returns></returns>
+        public GameObject Instantiate(GameObject target, Vector3 position = default, Quaternion rotation = default, Transform parent = default, Space space = Space.World) {
+            GameObject go = Instantiate(target, parent);
+            if (space == Space.World) {
+                go.transform.position = position;
+                go.transform.rotation = rotation;
+            } else {
+                go.transform.localPosition = position;
+                go.transform.localRotation = rotation;
+            }
             return go;
         }
 
@@ -182,18 +331,13 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 对象池获得池对象
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="target"></param>
+        /// <param name="parent"></param>
         /// <returns></returns>
-        public GameObject Instantiate(string path) {
-            var names = path.Split('/');
-            var name = names[names.Length - 1];
-            if (GameObjectMap.ContainsKey(name)) {
-                return GameObjectMap[name].Instantiate(path);
-            } else {
-                var pool = new Pool().Init(Root.transform, name);
-                GameObjectMap.Add(name, pool);
-                return pool.Instantiate(path);
-            }
+        public GameObject Instantiate(GameObject target, Transform parent = default) {
+            GameObject go = Instantiate(target);
+            go.transform.SetParent(parent);
+            return go;
         }
 
         /// <summary>
@@ -211,6 +355,7 @@ namespace AKIRA.Manager {
                 return pool.Instantiate(target);
             }
         }
+        #endregion
 
         /// <summary>
         /// 对象池销毁池对象

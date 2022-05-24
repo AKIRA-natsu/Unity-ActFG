@@ -73,9 +73,14 @@ namespace AKIRA.ToolEditor {
             for (int i = 0; i < nodes.Count - 1; i++) {
                 var node = nodes[i];
                 node.path = node.path.Remove(0, _transform.name.Length + 2);
-                rule.TryGetControlName(node.name, out string controlName);
-                if (!string.IsNullOrEmpty(controlName))
-                    content.Append($"        [UIControl(\"{node.path}\")]\n        private {controlName} {node.name};\n");
+                if (rule.TryGetControlName(node.name, out string controlName)) {
+                    if (rule.CheckMatchableControl(node.name)) {
+                        node.name = node.name.Replace("@", "");
+                        content.Append($"        [UIControl(\"{node.path}\", true)]\n        private {controlName} {node.name};\n");
+                    } else {
+                        content.Append($"        [UIControl(\"{node.path}\")]\n        private {controlName} {node.name};\n");
+                    }
+                }
             }
             EditorGUILayout.TextArea(content.ToString());
             EditorGUI.EndDisabledGroup();

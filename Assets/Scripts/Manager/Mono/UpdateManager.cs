@@ -1,36 +1,72 @@
+using System;
 using System.Collections.Generic;
-using AKIRA.Coroutine;
+using AKIRA.Manager;
 
-namespace AKIRA.Manager {
+/// <summary>
+/// 更新模式
+/// </summary>
+public enum UpdateMode {
     /// <summary>
-    /// 更新驱动管理
+    ///  
     /// </summary>
-    public class UpdateManager : MonoSingleton<UpdateManager> {
-        // 更新列表
-        private List<IUpdate> updates = new List<IUpdate>();
+    Update,
+    /// <summary>
+    /// 
+    /// </summary>
+    FixedUpdate,
+    /// <summary>
+    /// 
+    /// </summary>
+    LateUpdate,
+}
 
-        /// <summary>
-        /// 注册更新，不检查是否重复（过多）
-        /// </summary>
-        /// <param name="update"></param>
-        public void Regist(IUpdate update) {
-            updates.Add(update);
-        }
+/// <summary>
+/// 更新驱动管理
+/// </summary>
+public class UpdateManager : MonoSingleton<UpdateManager> {
+    // 更新列表
+    public Dictionary<UpdateMode, List<IUpdate>> updateMap = new Dictionary<UpdateMode, List<IUpdate>>();
 
-        /// <summary>
-        /// 移除更新
-        /// </summary>
-        /// <param name="update"></param>
-        public void Remove(IUpdate update) {
-            updates.Remove(update);
-        }
+    private void Start() {
+        // 表初始化
+        foreach (var mode in Enum.GetValues(typeof(UpdateMode)))
+            updateMap.Add((UpdateMode)mode, new List<IUpdate>());
+    }
 
-        private void Update() {
-            // 协程更新
-            CoroutineManager.Instance.UpdateCoroutine();
-            // 遍历更新
-            for (int i = 0; i < updates.Count; i++)
-                updates[i].GameUpdate();
-        }
+    /// <summary>
+    /// <para>注册更新</para>
+    /// <para>只注册无参类型，有参类型根据实际情况父物体遍历子节点更新</para>
+    /// <para>不检查是否重复（元素可能过多）</para>
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="mode">更新类型</param>
+    public void Regist(IUpdate update, UpdateMode mode = UpdateMode.Update) {
+        if (updateMap[mode].Contains(update))   
+            return;
+        updateMap[mode].Add(update);
+    }
+
+    /// <summary>
+    /// 移除更新
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="mode">更新类型</param>
+    public void Remove(IUpdate update, UpdateMode mode = UpdateMode.Update) {
+        updateMap[mode].Remove(update);
+    }
+
+    private void Update() {
+        // 遍历更新
+        updateMap[UpdateMode.Update].ForEach((i) => i.GameUpdate());
+    }
+
+    private void FixedUpdate() {
+        // 遍历更新
+        updateMap[UpdateMode.FixedUpdate].ForEach((i) => i.GameUpdate());
+    }
+
+    private void LateUpdate() {
+        // 遍历更新
+        updateMap[UpdateMode.LateUpdate].ForEach((i) => i.GameUpdate());
     }
 }

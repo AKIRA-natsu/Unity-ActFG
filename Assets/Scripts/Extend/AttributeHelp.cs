@@ -32,6 +32,7 @@ public static class AttributeHelp<T> where T : System.Attribute {
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
+    [Obsolete("使用ReflectionHelp里的CreateInstance方法")]
     public static object Type2Obj(Type type) {
         Assembly asm = Assembly.GetExecutingAssembly();
         return asm.CreateInstance(type.FullName);

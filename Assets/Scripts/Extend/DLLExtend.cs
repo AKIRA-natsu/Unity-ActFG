@@ -13,7 +13,7 @@ public static class DLLExtend {
     public static Type GetConfigTypeByAssembley(string className) {
         var types = Assembly.Load(DLLName).GetTypes();
         foreach (var type in types) {
-            if (type.Name.Contains(className)) {
+            if (type.Name.CompareTo(className) == 0) {
                 return type;
             }
         }

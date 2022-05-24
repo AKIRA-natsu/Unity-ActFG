@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using AKIRA.UIFramework;
@@ -9,13 +10,15 @@ namespace AKIRA.Manager {
     public class UIManager : Singleton<UIManager> {
         // 字典表
         private Dictionary<string, UIComponent> UIMap = new Dictionary<string, UIComponent>();
+        // UI注册结束事件
+        private Action onAfterUIInit;
 
         private UIManager() {
             // 默认 [UI] 为UI根节点
             var root = GameObject.Find("[UI]");
             if (root == null)
                 $"[UI] 不存在！".Error();
-            UICanvas.Initialize(root);
+            UI.Initialize(root);
         }
 
         /// <summary>
@@ -27,15 +30,19 @@ namespace AKIRA.Manager {
             var wins = AttributeHelp<WinAttribute>.Handle();
             foreach (var win in wins) {
                 // attribute运行了两次！
-                var com = (UIComponent)AttributeHelp<WinAttribute>.Type2Obj(win);
+                var com = win.CreateInstance<UIComponent>();
+                // var com = (UIComponent)AttributeHelp<WinAttribute>.Type2Obj(win);
                 var info = win.GetCustomAttributes(false)[0] as WinAttribute;
                 // 注册在 UIDataManager
-                UIDataManager.Instance.Register(com, info.Data);
+                if (info.Data.@enum != WinEnum.None)
+                    UIDataManager.Instance.Register(com, info.Data);
                 // Awake UI
                 com.Awake();
                 // 注册在 UIManager
                 AddUI(com);
             }
+
+            onAfterUIInit?.Invoke();
         }
 
         /// <summary>
@@ -66,6 +73,20 @@ namespace AKIRA.Manager {
         }
 
         /// <summary>
+        /// <para>可适配列表收集</para>
+        /// <para>正常只会在开始运行一次，所以list放里面new了一个</para>
+        /// </summary>
+        /// <returns></returns>
+        public List<RectTransform> MatchableColleation() {
+            List<RectTransform> list = new List<RectTransform>();
+            foreach (var ui in UIMap.Values) {
+                foreach (var rect in ui.MatchableList)
+                    list.Add(rect);
+            }
+            return list;
+        }
+
+        /// <summary>
         /// 销毁 UI
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -76,6 +97,14 @@ namespace AKIRA.Manager {
                 UIDataManager.Instance.Remove(UIMap[name]);
                 UIMap.Remove(name);
             }
+        }
+
+        /// <summary>
+        /// 注册UI初始化结束事件
+        /// </summary>
+        /// <param name="action"></param>
+        public void RegistAfterUIIInitAction(Action action) {
+            onAfterUIInit += action;
         }
     }
 }

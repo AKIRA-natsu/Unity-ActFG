@@ -57,11 +57,12 @@ namespace AKIRA.ToolEditor {
                     for (int i = 0; i < EnumNames.Length; i++) {
                         var name = EnumNames[i];
                         var field = type.GetField(name);
-                        var remark = field.GetCustomAttributes(typeof(RemarkAttribute), false)[0] as RemarkAttribute;
+                        var remarks = field.GetCustomAttributes(typeof(RemarkAttribute), false) as RemarkAttribute[];
                         // 水平绘制
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(name, GUILayout.Width(150));
-                        EditorGUILayout.LabelField(remark.Remark);
+                        foreach (var remark in remarks)
+                            EditorGUILayout.LabelField(remark.Remark, GUILayout.Width(70));
                         EditorGUILayout.EndHorizontal();
                     }
                     EditorGUILayout.Space();

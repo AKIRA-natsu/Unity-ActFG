@@ -71,10 +71,24 @@ public static class SaveExtend {
         return PlayerPrefs.HasKey(key);
     }
 
+    /// <summary>
+    /// 手动保存
+    /// </summary>
+    public static void Save() {
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>
+    /// 删除
+    /// </summary>
+    /// <param name="key"></param>
     public static void DeleteKey(this string key) {
         PlayerPrefs.DeleteKey(key);
     }
 
+    /// <summary>
+    /// 删除全部
+    /// </summary>
     public static void DeleteAll() {
         PlayerPrefs.DeleteAll();
     }

@@ -17,7 +17,7 @@ namespace AKIRA.Manager {
         /// <param name="name">名称</param>
         /// <param name="maxCount">池子最大数量</param>
         /// <returns></returns>
-        public Pool<T> Init(Transform root, string name, int maxCount = 200) {
+        public Pool<T> Init(Transform root, string name, int maxCount = 1000) {
             pool = new Queue<T>();
             poolParent = new GameObject(name).transform;
             poolParent.SetParent(root);
@@ -123,7 +123,7 @@ namespace AKIRA.Manager {
         /// <param name="parentName">池子名称</param>
         /// <param name="maxCount"></param>
         /// <returns></returns>
-        public Pool Init(Transform root, string parentName, int maxCount = 200) {
+        public Pool Init(Transform root, string parentName, int maxCount = 1000) {
             pool = new Queue<GameObject>();
             poolParent = new GameObject(parentName).transform;
             poolParent.SetParent(root);
@@ -254,6 +254,7 @@ namespace AKIRA.Manager {
                 var c = rpool.Dequeue();
                 if (!c.active) {
                     @class = c;
+                    @class?.Wake();
                     return true;
                 }
                 rpool.Enqueue(c);
