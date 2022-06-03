@@ -1,26 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using AKIRA.UIFramework;
 using UnityEngine;
 
 namespace AKIRA.Manager {
-    /// <summary>
-    /// 金钱管理
-    /// 此游戏金钱有小数
-    /// </summary>
     public class MoneyManager : Singleton<MoneyManager>
     {
-        private float money = 0;
+        private int money = 0;
         /// <summary>
-        /// <para>金钱</para>
+        /// <para>关卡</para>
+        /// <para>表现上关卡+1</para>
         /// </summary>
         /// <value></value>
-        public float Money {
+        public int Money {
             get => money;
-            private set {
-                money = value < 0 ? 0 : value;
+            set {
+                money = value;
                 onMoneyChange?.Invoke(money);
+                // FIXME: 钱调用过多
                 MoneyKey.Save(money);
             }
         }
@@ -28,17 +25,17 @@ namespace AKIRA.Manager {
         // 存储键
         public const string MoneyKey = "Money";
         // 金钱事件
-        public Action<float> onMoneyChange;
+        public Action<int> onMoneyChange;
 
         private MoneyManager() {
-            money = MoneyKey.GetFloat(0);
+            money = MoneyKey.GetInt(0);
         }
 
         /// <summary>
         /// 注册金钱改变事件
         /// </summary>
         /// <param name="onMoneyChange"></param>
-        public void RegistOnMoneyChangeAction(Action<float> onMoneyChange) {
+        public void RegistOnMoneyChangeAction(Action<int> onMoneyChange) {
             onMoneyChange?.Invoke(money);
             this.onMoneyChange += onMoneyChange;
         }
@@ -47,7 +44,7 @@ namespace AKIRA.Manager {
         /// 赚取金钱
         /// </summary>
         /// <param name="value"></param>
-        public void Gain(float value) {
+        public void Gain(int value) {
             Money += value;
         }
     }

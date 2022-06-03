@@ -1,18 +1,6 @@
-using System.Collections.Generic;
 using System;
-using AKIRA.UIFramework;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-
-/// <summary>
-/// 游戏状态
-/// </summary>
-public enum GameState {
-    /// <summary>
-    /// 无
-    /// </summary>
-    None,
-}
 
 namespace AKIRA.Manager {
     public class GameManager : MonoSingleton<GameManager> {
@@ -20,25 +8,31 @@ namespace AKIRA.Manager {
         /// 游戏状态
         /// </summary>
         public GameState state = GameState.None;
+        // 上一个状态
+        public GameState lastState { get; private set; }
         // 状态 - 事件
         private Dictionary<GameState, Action> StateActionMap = new Dictionary<GameState, Action>();
 
-        protected override void Awake() {
-            base.Awake();
-            // ProjectSetting => Qualitv => VSync Count: Dont VSync
-            Application.targetFrameRate = 60;
-        }
+//         protected override void Awake() {
+//             base.Awake();
+//             // ProjectSetting => Qualitv => VSync Count: Dont VSync
+//             // Application.targetFrameRate = 60;
+
+// #if UNITY_EDITOR
+
+// #else
+
+// #endif
+//         }
 
         private void Start() {
+            if (DeviceInfo.CurrentDevice == DeviceInfo.DeviceType.Ads) {
+                $"切换Ads平台，UI进行适配屏幕".Colorful(Color.green).Log();
+                var collection = UIManager.Instance.MatchableColleation();
+            }
+
             UIManager.Instance.Initialize();
             ResourceCollection.Instance.Load();
-        }
-
-        private void Update() {
-            // UI 冲突
-            if (EventSystem.current.currentSelectedGameObject)
-                return;
-
         }
 
         /// <summary>
@@ -46,9 +40,15 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="state"></param>
         public void Switch(GameState state) {
-            if (!StateActionMap.ContainsKey(state))
+            // 不变
+            if (this.state == state)
                 return;
-            StateActionMap[state]?.Invoke();
+
+            $"游戏状态：切换{state}".Colorful(Color.magenta).Log();
+            if (StateActionMap.ContainsKey(state))
+                StateActionMap[state]?.Invoke();
+            
+            lastState = this.state;
             this.state = state;
         }
 
@@ -62,6 +62,17 @@ namespace AKIRA.Manager {
                 StateActionMap[state] += action;
             } else {
                 StateActionMap.Add(state, action);
+            }
+        }
+
+        /// <summary>
+        /// 移除游戏状态事件
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="action"></param>
+        public void RemoveStateAction(GameState state, Action action) {
+            if (StateActionMap.ContainsKey(state)) {
+                StateActionMap[state] -= action;
             }
         }
     }

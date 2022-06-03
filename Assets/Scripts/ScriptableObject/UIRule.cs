@@ -6,8 +6,8 @@ public class UIRule : ScriptableObject {
     public UIControlRule[] rules = {};
 
     /// <summary>
-    /// <para>获得组件名称（不判断大小写）</para>
-    /// <para>获取优先级和顺序有关</para>
+    /// <para>获得组件名称（不判断大小写）</para>
+    /// <para>获取优先级，与排序有关</para>
     /// </summary>
     /// <param name="name1">UI组件命名名称</param>
     /// <param name="name2">UI规定组件名称</param>
@@ -21,21 +21,21 @@ public class UIRule : ScriptableObject {
                 }
             }
         }
-        $"rules dont contain {name1}".Error();
+        // $"rules dont contain {name1}".Error();
         name2 = null;
         return false;
     }
 
     /// <summary>
-    /// <para>获得组件名称（不判断大小写）</para>
-    /// <para>参数重复问题，暂不使用</para>
-    /// </summary>
-    /// <param name="name">UI组件命名名称</param>
-    /// <param name="names">UI规定组件名称 列表</param>
-    /// <returns>是否找到组件</returns>
+    /// <para>获得组件名称（不判断大小写）</para>
+    /// <para>参数重复问题，暂不使用</para>
+    /// </summary>
+    /// <param name="name">UI组件命名名称</param>
+    /// <param name="names">UI规定组件名称 列表</param>
+    /// <returns>是否找到组件</returns>
     public bool TryGetControlName(string name, out List<string> names) {
         names = new List<string>();
-        foreach (var rule in rules) {
+        foreach (var rule in rules)  {
             foreach (var n in rule.ruleNames) {
                 if (name.Contains(n)) {
                     names.Add(rule.controlName);

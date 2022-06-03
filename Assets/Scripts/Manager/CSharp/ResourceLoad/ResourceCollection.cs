@@ -55,7 +55,7 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="resource"></param>
         /// <param name="order">顺序编号</param>
-        public void Regist(ResourceBase resource, int order) {
+        public void Regist(ResourceBase resource, int order = 0) {
             if (!ResourceMap.ContainsKey(order))
                 ResourceMap.Add(order, new List<ResourceBase>());
             ResourceMap[order].Add(resource);

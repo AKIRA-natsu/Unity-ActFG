@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AKIRA.Coroutine;
 using AKIRA.Manager;
 
 /// <summary>
@@ -56,17 +57,22 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     }
 
     private void Update() {
+        // 协程更新
+        CoroutineManager.Instance.UpdateCoroutine();
         // 遍历更新
-        updateMap[UpdateMode.Update].ForEach((i) => i.GameUpdate());
+        for (int i = 0; i < updateMap[UpdateMode.Update].Count; i++)
+            updateMap[UpdateMode.Update][i].GameUpdate();
     }
 
     private void FixedUpdate() {
         // 遍历更新
-        updateMap[UpdateMode.FixedUpdate].ForEach((i) => i.GameUpdate());
+        for (int i = 0; i < updateMap[UpdateMode.FixedUpdate].Count; i++)
+            updateMap[UpdateMode.FixedUpdate][i].GameUpdate();
     }
 
     private void LateUpdate() {
         // 遍历更新
-        updateMap[UpdateMode.LateUpdate].ForEach((i) => i.GameUpdate());
+        for (int i = 0; i < updateMap[UpdateMode.LateUpdate].Count; i++)
+            updateMap[UpdateMode.LateUpdate][i].GameUpdate();
     }
 }

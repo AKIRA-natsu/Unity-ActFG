@@ -160,7 +160,9 @@ $@"    }}
             string panelContent = 
                 #region code
 
-$@"namespace AKIRA.UIFramework {{
+$@"using UnityEngine;
+
+namespace AKIRA.UIFramework {{
     [Win(WinEnum.{@enum}, ""{objPath}"", WinType.{@type})]
     public class {name}Panel : {name}PanelProp {{
         public override void Awake() {{

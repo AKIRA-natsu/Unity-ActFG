@@ -13,20 +13,28 @@ MonoBehaviour:
   m_Name: UIRule
   m_EditorClassIdentifier: 
   rules:
-  - controlName: Text
-    ruleNames:
-    - Txt
-    - Amount
-    - Count
-  - controlName: RectTransform
-    ruleNames:
-    - Rect
   - controlName: Button
     ruleNames:
     - Btn
-    - Button
   - controlName: Image
     ruleNames:
     - Img
     - Bg
     - Pic
+    - Image
+  - controlName: TextMeshProUGUI
+    ruleNames:
+    - Txt
+    - Text
+    - Title
+    - Count
+    - Amount
+  - controlName: ScrollView
+    ruleNames:
+    - View
+  - controlName: ParticleSystem
+    ruleNames:
+    - FX
+  - controlName: RectTransform
+    ruleNames:
+    - Rect

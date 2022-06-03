@@ -25,6 +25,7 @@ namespace AKIRA.Manager {
         public const string LevelKey = "Level";
         // 关卡改变事件
         public Action<int> onLevelChange;
+        // 关卡失败事件
 
         private LevelManager() {
             level = LevelKey.GetInt(0);

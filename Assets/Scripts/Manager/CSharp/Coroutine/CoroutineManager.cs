@@ -4,7 +4,7 @@ using AKIRA.Manager;
 using UnityEngine;
 
 namespace AKIRA.Coroutine {
-    public class CoroutineManager : Singleton<CoroutineManager>, IUpdate {
+    public class CoroutineManager : Singleton<CoroutineManager> {
         private LinkedList<Coroutine> coroutineList = new LinkedList<Coroutine>();
         private LinkedList<Coroutine> coroutinesToStop = new LinkedList<Coroutine>();
 
@@ -18,7 +18,6 @@ namespace AKIRA.Coroutine {
         public Coroutine Start(IEnumerator ie) {
             var c = new Coroutine(ie);
             coroutineList.AddLast(c);
-            UpdateManager.Instance.Regist(this);
             return c;
         }
 
@@ -60,11 +59,6 @@ namespace AKIRA.Coroutine {
 
                 node = node.Next;
             }
-            UpdateManager.Instance.Remove(this);
-        }
-
-        public void GameUpdate() {
-            UpdateCoroutine();
         }
 
     }   
