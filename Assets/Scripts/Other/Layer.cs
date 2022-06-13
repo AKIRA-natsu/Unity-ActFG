@@ -1,9 +1,9 @@
 /// <summary>
 /// 层级
 /// </summary>
-public enum Layer {
+public static class Layer {
     /// <summary>
     /// UI
     /// </summary>
-    UI = 5,
+   public static int UI = 5;
 }

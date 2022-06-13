@@ -26,10 +26,8 @@ namespace AKIRA.Manager {
 //         }
 
         private void Start() {
-            if (DeviceInfo.CurrentDevice == DeviceInfo.DeviceType.Ads) {
-                $"切换Ads平台，UI进行适配屏幕".Colorful(Color.green).Log();
-                var collection = UIManager.Instance.MatchableColleation();
-            }
+                // $"切换Ads平台，UI进行适配屏幕".Colorful(Color.green).Log();
+                // var collection = UIManager.Instance.MatchableColleation();
 
             UIManager.Instance.Initialize();
             ResourceCollection.Instance.Load();

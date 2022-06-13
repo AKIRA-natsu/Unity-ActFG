@@ -28,6 +28,12 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     // 更新列表
     public Dictionary<UpdateMode, List<IUpdate>> updateMap = new Dictionary<UpdateMode, List<IUpdate>>();
 
+    /// <summary>
+    /// 程序是否退出
+    /// 单例先被销毁bug
+    /// </summary>
+    public static bool isFouceOut = false;
+
     private void Start() {
         // 表初始化
         foreach (var mode in Enum.GetValues(typeof(UpdateMode)))
@@ -74,5 +80,9 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
         // 遍历更新
         for (int i = 0; i < updateMap[UpdateMode.LateUpdate].Count; i++)
             updateMap[UpdateMode.LateUpdate][i].GameUpdate();
+    }
+
+    private void OnDisable() {
+        isFouceOut = true;
     }
 }
