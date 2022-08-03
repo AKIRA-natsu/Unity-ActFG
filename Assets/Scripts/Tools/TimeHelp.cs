@@ -17,9 +17,6 @@ public static class TimeHelp {
     private static List<int> IDEndList = new List<int>();
     // 暂存列表
     private static List<int> Temp = new List<int>();
-
-    // 单词执行id列表
-    private static Dictionary<Action, bool> OnceIDMap = new Dictionary<Action, bool>();
     #endregion
 
     #region 延迟执行
@@ -172,24 +169,6 @@ public static class TimeHelp {
     
     #region 等待执行
     
-    #endregion
-
-    #region 单次执行
-    /// <summary>
-    /// <para>单词执行</para>
-    /// <para>x个物体同一脚本下lambda表达式只执行一次，事件会执行x次</para>
-    /// </summary>
-    /// <param name="com"></param>
-    /// <param name="action"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static T Once<T>(this T com, Action action) {
-        if (!OnceIDMap.ContainsKey(action)) {
-            OnceIDMap.Add(action, false);
-            action?.Invoke();
-        }
-        return com;
-    }
     #endregion
 
     #region id

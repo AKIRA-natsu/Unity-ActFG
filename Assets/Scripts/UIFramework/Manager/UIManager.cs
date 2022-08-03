@@ -13,6 +13,9 @@ namespace AKIRA.Manager {
         // UI注册结束事件
         private Action onAfterUIInit;
 
+        // 是否已经初始化
+        private bool isInited = false;
+
         private UIManager() {
             // 默认 [UI] 为UI根节点
             var root = GameObject.Find("[UI]");
@@ -42,7 +45,9 @@ namespace AKIRA.Manager {
                 AddUI(com);
             }
 
+            isInited = true;
             onAfterUIInit?.Invoke();
+
         }
 
         /// <summary>
@@ -104,7 +109,10 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="action"></param>
         public void RegistAfterUIIInitAction(Action action) {
-            onAfterUIInit += action;
+            if (isInited)
+                action?.Invoke();
+            else
+                onAfterUIInit += action;
         }
     }
 }

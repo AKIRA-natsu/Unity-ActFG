@@ -212,7 +212,8 @@ namespace AKIRA.Manager {
         /// <param name="com"></param>
         /// <typeparam name="T"></typeparam>
         public void Free<T>(T com) where T : Component, IPool {
-            var name = typeof(T).Name;
+            // var name = typeof(T).Name;
+            var name = com.name;
             if (!ObjectPoolMap.ContainsKey(name)) {
                 $"{name} 池子不存在！".Colorful(Color.red).Log();
                 return;
