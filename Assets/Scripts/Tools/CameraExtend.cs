@@ -5,15 +5,15 @@ using AKIRA.Coroutine;
 using UnityEngine;
 
 public static class CameraExtend {
-    private static CameraFollow mainCamera;
+    private static Camera mainCamera;
     /// <summary>
     /// 主摄像机
     /// </summary>
     /// <value></value>
-    public static CameraFollow MainCamera {
+    public static Camera MainCamera {
         get {
             if (mainCamera == null)
-                mainCamera = Camera.main.GetComponent<CameraFollow>();
+                mainCamera = Camera.main.GetComponent<Camera>();
             return mainCamera;
         }
     }
