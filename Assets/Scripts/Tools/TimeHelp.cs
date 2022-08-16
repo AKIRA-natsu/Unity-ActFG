@@ -158,10 +158,10 @@ public static class TimeHelp {
     /// <param name="EndAction"></param>
     /// <returns></returns>
     private static IEnumerator CEnd(int id, Action EndAction, float wait) {
-        var delay = new WaitForSeconds(wait);
         while (IDMap[id])
             // 不干任何事情
-            yield return delay;
+            yield return null;
+        yield return new WaitForSeconds(wait);
         EndAction?.Invoke();
         IDEndList.Remove(id);
     }
