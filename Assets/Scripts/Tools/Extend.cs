@@ -1,23 +1,10 @@
 using System;
+using System.Collections.Generic;
 using AKIRA.UIFramework;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public static class Extend {
-    #region 属性 字段
-    private static Transform player;
-    /// <summary>
-    /// 玩家 Transofrm
-    /// </summary>
-    /// <value></value>
-    public static Transform Player {
-        get {
-            if (player == null)
-                player = GameObject.FindWithTag("Player").transform;
-            return player;
-        }
-    }
-    #endregion
-
     #region GameObject
     /// <summary>
     /// GameObject Dont Destory
@@ -100,7 +87,7 @@ public static class Extend {
     /// <param name="time">销毁等待时间</param>
     /// <typeparam name="T"></typeparam>
     public static void Destory<T>(this T com, float time = 0) where T : Component {
-        GameObject.Destroy(com, time);
+        GameObject.Destroy(com.gameObject, time);
     }
 
     /// <summary>
@@ -268,7 +255,7 @@ public static class Extend {
     /// 世界坐标转 UGUI 坐标
     /// </summary>
     public static Vector2 WorldToUGUI(this Vector3 position) {
-        Vector2 ScreenPoint = GameObject.FindWithTag("MainCamera").GetComponent<Camera>().WorldToScreenPoint(position);
+        Vector2 ScreenPoint = CameraExtend.MainCamera.WorldToScreenPoint(position);
         Vector2 ScreenSize = new Vector2(Screen.width, Screen.height);
         ScreenPoint -= ScreenSize / 2;//将屏幕坐标变换为以屏幕中心为原点
         Vector2 anchorPos = ScreenPoint / ScreenSize * UI.Rect.sizeDelta;//缩放得到UGUI坐标
@@ -281,7 +268,7 @@ public static class Extend {
     /// </summary>
     /// <param name="texture"></param>
     /// <returns></returns>
-    private static Texture2D TextureToTexture2D(Texture texture) {
+    public static Texture2D TextureToTexture2D(this Texture texture) {
             Texture2D texture2D = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
             RenderTexture currentRT = RenderTexture.active;
             RenderTexture renderTexture = RenderTexture.GetTemporary(texture.width, texture.height, 32);
@@ -296,93 +283,39 @@ public static class Extend {
 
             return texture2D;
     }
+
+    /// <summary>
+    /// 移动端判断点击的位置是否有UI
+    /// </summary>
+    /// <param name="screenPosition"></param>
+    /// <returns></returns>
+    public static bool IsPointerOverUiObject(this Vector2 screenPosition) {
+        if (!EventSystem.current.Equals(null)) {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+            eventDataCurrentPosition.position = new Vector2(screenPosition.x, screenPosition.y);
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+            return results.Count > 0;
+        }
+
+        return true;
+    }
     #endregion
 
-    #region 数字转换
-    public static string ShortNumStr(this string num)//show in short string
-    {
-        int num1 = num.Length - 1;
-        string str1;
-        if (num1 / 3 > 0)
-        {
-            string str2 = num.Substring(num1 % 3 + 1, 3 - num1 % 3);
-            string str3;
-            if (str2 == "0" || str2 == "00" || str2 == "000")
-            {
-                str3 = string.Empty;
-            }
-            else
-            {
-                if (str2.Length == 2)
-                {
-                    if (str2[1] == '0')
-                        str2 = str2.Substring(0, 1);
-                }
-                else if (str2.Length == 3 && str2[2] == '0')
-                {
-                    str2 = str2.Substring(0, 2);
-                    if (str2[1] == '0')
-                        str2 = str2.Substring(0, 1);
-                }
-                str3 = "." + str2;
-            }
-            str1 = num.Substring(0, num1 % 3 + 1) + str3;
-        }
-        else
-            str1 = num;
-        switch (num1 / 3)
-        {
-            case 0:
-                return str1 + string.Empty;
-            case 1:
-                return str1 + "K";
-            case 2:
-                return str1 + "M";
-            case 3:
-                return str1 + "B";
-            case 4:
-                return str1 + "t";
-            case 5:
-                return str1 + "q";
-            case 6:
-                return str1 + "Q";
-            case 7:
-                return str1 + "S";
-            case 8:
-                return str1 + "O";
-            case 9:
-                return str1 + "n";
-            case 10:
-                return str1 + "d";
-            case 11:
-                return str1 + "U";
-            case 12:
-                return str1 + "D";
-            case 13:
-                return str1 + "T";
-            case 14:
-                return str1 + "Qt";
-            case 15:
-                return str1 + "Qd";
-            case 16:
-                return str1 + "Sd";
-            case 17:
-                return str1 + "St";
-            case 18:
-                return str1 + "N";
-            case 19:
-                return str1 + "v";
-            case 20:
-                return str1 + "c";
-            case 21:
-                return str1 + "AM";
-            case 22:
-                return str1 + "PM";
-            case 23:
-                return str1 + "Af";
-            default:
-                return str1 + "E";
-        }
+    #region Array
+    /// <summary>
+    /// 获得父节点下所有子节点的 <paramref name="T" />
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T[] GetChildrenArray<T>(this Transform parent) {
+        var count = parent.childCount;
+        T[] result = new T[count];
+        for (int i = 0; i < count; i++)
+            result[i] = parent.GetChild(i).GetComponent<T>();
+        return result;
     }
     #endregion
 
