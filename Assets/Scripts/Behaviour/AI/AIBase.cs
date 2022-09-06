@@ -14,6 +14,10 @@ public abstract class AIBase : MonoBehaviour, IPool, IUpdate {
     /// </summary>
     /// <value></value>
     public Transform Render { get; protected set; }
+    /// <summary>
+    /// 到达终点
+    /// </summary>
+    public bool Reach => agent.remainingDistance <= 0.01f;
 
     /// <summary>
     /// 状态机

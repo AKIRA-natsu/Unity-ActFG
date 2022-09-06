@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AKIRA.Coroutine;
@@ -6,15 +7,18 @@ using UnityEngine;
 namespace AKIRA.Manager {
     public class ResourceCollection : Singleton<ResourceCollection> {
         // 排序字典
-        private SortedDictionary<int, List<ResourceBase>> ResourceMap = new SortedDictionary<int, List<ResourceBase>>();
+        private SortedDictionary<int, List<IResource>> ResourceMap = new SortedDictionary<int, List<IResource>>();
         /// <summary>
-        /// 加载委托
+        /// 加载事件
         /// </summary>
         /// <param name="i">当前进度</param>
         /// <param name="j">总进度</param>
-        public delegate void OnLoad(int i, int j);
-        public OnLoad onLoad;
-        
+        private Action<int, int> onLoad;
+        /// <summary>
+        /// 加载全部完成事件
+        /// </summary>
+        private Action onComplete;
+
         // 一次加载总进度
         private int totalProgress = 0;
 
@@ -26,8 +30,10 @@ namespace AKIRA.Manager {
         public void Load() {
             if (totalProgress == 0) {
                 $"无加载项".Colorful(Color.red).Log();
+                onComplete?.Invoke();
                 return;
             }
+            $"加载完成".Colorful(Color.green).Log();
             CoroutineManager.Instance.Start(ResourceLoad());
         }
 
@@ -48,6 +54,7 @@ namespace AKIRA.Manager {
             // 全部结束 清空
             totalProgress = 0;
             ResourceMap.Clear();
+            onComplete?.Invoke();
         }
 
         /// <summary>
@@ -55,9 +62,9 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="resource"></param>
         /// <param name="order">顺序编号</param>
-        public void Regist(ResourceBase resource, int order = 0) {
+        public void Regist(IResource resource, int order) {
             if (!ResourceMap.ContainsKey(order))
-                ResourceMap.Add(order, new List<ResourceBase>());
+                ResourceMap.Add(order, new List<IResource>());
             ResourceMap[order].Add(resource);
 
             totalProgress++;
@@ -67,8 +74,16 @@ namespace AKIRA.Manager {
         /// 注册资源加载事件
         /// </summary>
         /// <param name="onLoad"></param>
-        public void Regist(OnLoad onLoad) {
+        public void RegistOnLoadAction(Action<int, int> onLoad) {
             this.onLoad += onLoad;
+        }
+
+        /// <summary>
+        /// 注册资源加载完事件
+        /// </summary>
+        /// <param name="onComplete"></param>
+        public void RegistOnCompleteAction(Action onComplete) {
+            this.onComplete += onComplete;
         }
     }
 }

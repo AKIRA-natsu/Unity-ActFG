@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AKIRA.UIFramework;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -315,7 +316,27 @@ public static class Extend {
         T[] result = new T[count];
         for (int i = 0; i < count; i++)
             result[i] = parent.GetChild(i).GetComponent<T>();
+        // 去掉空项
+        result = result.Where(r => r != null).ToArray();
         return result;
+    }
+    #endregion
+
+    #region Layer
+    /// <summary>
+    /// 获得Layer值
+    /// </summary>
+    /// <param name="mask"></param>
+    /// <returns></returns>
+    public static int[] GetLayerValue(this LayerMask mask) {
+        List<int> result = new List<int>();
+        int value = mask.value;
+        while (value >= 1) {
+            int num = (int)Mathf.Log(value, 2);
+            result.Add(num);
+            value -= (int)Mathf.Pow(2, num);
+        }
+        return result.ToArray();
     }
     #endregion
 

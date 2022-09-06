@@ -7,16 +7,6 @@ public class TestAI : AgentLocomotion
         throw new System.NotImplementedException();
     }
 
-    public override void Recycle()
-    {
-        base.Recycle();
-    }
-
-    public override void Wake()
-    {
-        base.Wake();
-    }
-
     private void OnEnable() {
         Wake();
     }

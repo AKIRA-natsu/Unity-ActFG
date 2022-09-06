@@ -98,6 +98,7 @@ public abstract class AgentLocomotion : AIBehaviour {
     /// </summary>
     /// <returns></returns>
     private IEnumerator Locomotion_Jump() {
+        fsm.SwitchState(AIState.Jump);
         Vector3 startPos = transform.position;
 
         agent.isStopped = true;
@@ -136,6 +137,7 @@ public abstract class AgentLocomotion : AIBehaviour {
     /// </summary>
     /// <returns></returns>
     private IEnumerator Locomotion_Climb() {
+        fsm.SwitchState(AIState.Climb);
         // 攀爬中心位置
         Vector3 linkCenter = (linkStart + linkEnd) * 0.5f;
         // float animSpeed;

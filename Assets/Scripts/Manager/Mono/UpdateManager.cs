@@ -32,7 +32,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// 程序是否退出
     /// 单例先被销毁bug
     /// </summary>
-    public static bool isFouceOut = false;
+    public static bool isApplicationOut = false;
 
     private void Start() {
         // 表初始化
@@ -83,6 +83,6 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     }
 
     private void OnDisable() {
-        isFouceOut = true;
+        isApplicationOut = true;
     }
 }
