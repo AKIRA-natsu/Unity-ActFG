@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using AKIRA.Manager;
+using AKIRA.UIFramework;
 
 /// <summary>
 /// 升级管理
@@ -17,6 +18,9 @@ public class UpgradeManager : Singleton<UpgradeManager> {
             var type = value.ToString().GetConfigTypeByAssembley();
             var upgradeBase = type.CreateInstance<UpgradeBase>();
             upgradeMap.Add(value, upgradeBase);
+            // UI初始化完成后注册升级按钮
+            // UIManager.Instance.RegistAfterUIIInitAction(() =>
+            //     UIManager.Instance.Get<UpgradePanel>().RegistUpgradeButton(upgradeBase));
         }
     }
 
@@ -35,5 +39,14 @@ public class UpgradeManager : Singleton<UpgradeManager> {
     /// <param name="callback"></param>
     public void RegistUpgradeCallback(UpgradeType type, Action<UpgradeBase> callback) {
         upgradeMap[type].RegistOnUpgradeCallback(callback);
+    }
+
+    /// <summary>
+    /// 注册升级回调
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="callback"></param>
+    public void RemoveUpgradeCallback(UpgradeType type, Action<UpgradeBase> callback) {
+        upgradeMap[type].RemoveOnUpgradeCallback(callback);
     }
 }
