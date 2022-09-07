@@ -13,6 +13,4 @@ public class ContainerSortFree : ContainerSortBase {
             sortObj.selfCollider.enabled = false;
         });
     }
-
-    public override void Free() {}
 }

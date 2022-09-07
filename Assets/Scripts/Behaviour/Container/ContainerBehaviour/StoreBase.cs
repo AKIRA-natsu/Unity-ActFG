@@ -25,10 +25,10 @@ public abstract class StoreBase : MonoBehaviour, IUpdate {
 
     private void Awake() {
         layerValues = mask.GetLayerValue();
+        selfContainer = this.GetComponentInChildren<ContainerObject>();
     }
 
     private void OnTriggerEnter(Collider other) {
-        other.gameObject.layer.Log();
         if (!CheckLayer(other.gameObject.layer))
             return;
         

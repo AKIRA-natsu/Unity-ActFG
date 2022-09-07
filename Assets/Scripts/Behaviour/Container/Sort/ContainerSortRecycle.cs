@@ -2,14 +2,14 @@ using DG.Tweening;
 using UnityEngine;
 
 /// <summary>
-/// 排序隐藏
+/// 排序回收
 /// </summary>
-public class ContainerSortHideSelf : ContainerSortBase {
+public class ContainerSortRecycle : ContainerSortBase {
     public override void Sort(CollectableObjectBase sortObj) {
+        // 用位置表示数量
+        positions.Push(Vector3.zero);
         sortObj.SetParent(this);
         sortObj.transform.DOJump(this.transform.position, sortObj.transform.position.y, 1, 0.3f).OnComplete(() =>
-            sortObj.render.gameObject.SetActive(false));
+            StackObjectManager.Instance.RecycleCollectableObject(sortObj));
     }
-
-    public override void Free() {}
 }

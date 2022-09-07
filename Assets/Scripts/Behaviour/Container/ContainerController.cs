@@ -10,6 +10,7 @@ using UnityEngine;
 public class ContainerController : MonoBehaviour {
     // 配置容器表
     public ContainerObject[] cinfos;
+
     // 容器对应表
     private Dictionary<StackObjectType, ContainerObject> containerMap = new Dictionary<StackObjectType, ContainerObject>();
 
@@ -38,4 +39,21 @@ public class ContainerController : MonoBehaviour {
             container.Clear();
         containerMap.Clear();
     }
+
+    #region  项目 石头和沙子合一起原因特殊处理部分
+    /// <summary>
+    /// 是否达到最大容量
+    /// 只要其中一个满了就true
+    /// </summary>
+    /// <param name="types"></param>
+    /// <returns></returns>
+    public bool ReachMaxRoom(params StackObjectType[] types) {
+        foreach (var type in types) {
+            // 只要类型有一个满了就返回满
+            if (GetContainer(type).ReachMaxRoom)
+                return true;
+        }
+        return false;
+    }
+    #endregion
 }

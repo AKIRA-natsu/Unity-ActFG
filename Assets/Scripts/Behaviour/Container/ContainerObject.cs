@@ -14,6 +14,7 @@ public class ContainerObject : MonoBehaviour, IResource {
     // 存储键值
     private string ID;
 
+    [CNName("堆叠类型")]
     // 堆叠类型
     public StackObjectType stackObjectType;
     // 堆叠物 容器
@@ -41,6 +42,7 @@ public class ContainerObject : MonoBehaviour, IResource {
 
     public int order => 0;
 
+    [CNName("异步初始化加载")]
     // 异步初始化加载
     public bool asynLoad = false;
 
@@ -48,10 +50,9 @@ public class ContainerObject : MonoBehaviour, IResource {
         ID = this.GetComponentID();
         containerSortBase = this.GetComponent<ContainerSortBase>();
         if (containerSortBase == null)
-            containerSortBase = this.gameObject.AddComponent<ContainerSortHideSelf>();
-
+            containerSortBase = this.gameObject.AddComponent<ContainerSortRecycle>();
+        
         roomLimit = this.GetComponent<ContainerRoomLimit>();
-
         if (asynLoad)
             ResourceCollection.Instance.Regist(this, order);
     }
@@ -100,7 +101,6 @@ public class ContainerObject : MonoBehaviour, IResource {
     /// 添加容量
     /// 生成物体添加
     /// </summary>
-    /// <param name="stackObjectType"></param>
     /// <param name="position"></param>
     /// <returns></returns>
     public bool AddRoom(Vector3 position) {
@@ -115,17 +115,19 @@ public class ContainerObject : MonoBehaviour, IResource {
         if (Empty)
             return null;
 
-        var collectableObjectBase = collections.Pop();
+        CollectableObjectBase result = default;
+        if (containerSortBase is ContainerSortRecycle) {
+            result = StackObjectManager.Instance.GetCollectableObject(stackObjectType, this.transform.position, Quaternion.identity);
+            // 容器内还是存在被回收的物品
+            collections.Pop();
+        } else
+            result = collections.Pop();
         containerSortBase.Free();
         // 只有成功取出触发事件
         onRoomChange?.Invoke(Room);
 
-        // 隐藏自己时重新显示
-        if (containerSortBase is ContainerSortHideSelf)
-            collectableObjectBase.render.gameObject.SetActive(true);
-
         ID.Save(collections.Count);
-        return collectableObjectBase;
+        return result;
     }
 
     /// <summary>
@@ -138,6 +140,13 @@ public class ContainerObject : MonoBehaviour, IResource {
         else
             onRoomChange.Invoke(Room);
         this.onRoomChange += onRoomChange;
+    }
+
+    /// <summary>
+    /// 刷新(运行)容器改变事件
+    /// </summary>
+    public void FreshOnRoomChangeAction() {
+        onRoomChange?.Invoke(Room);
     }
 
     /// <summary>

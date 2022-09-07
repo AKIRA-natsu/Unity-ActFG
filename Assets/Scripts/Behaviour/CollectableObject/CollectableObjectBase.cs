@@ -69,6 +69,7 @@ public abstract class CollectableObjectBase : MonoBehaviour, IPool {
     /// </summary>
     public void PlayPunchScaleTween() {
         scaleTween?.Kill(true);
+        render.localScale = Vector3.one;
         render.DOPunchScale(Vector3.one * 0.1f, 0.3f);
     }
 
