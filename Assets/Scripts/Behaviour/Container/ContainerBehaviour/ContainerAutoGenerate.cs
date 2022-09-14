@@ -32,10 +32,6 @@ public class ContainerAutoGenerate : MonoBehaviour, IUpdate {
         }
     }
 
-    // 提供面板手动决定更新
-    [SerializeField]
-    private bool updateInspector = true;
-
     private void OnEnable() {
         UpdateManager.Instance.Regist(this);
     }
@@ -43,13 +39,6 @@ public class ContainerAutoGenerate : MonoBehaviour, IUpdate {
     private void OnDisable() {
         if (!UpdateManager.isApplicationOut)
             UpdateManager.Instance.Remove(this);
-    }
-
-    private void OnValidate() {
-        if (!Application.isPlaying)
-            return;
-
-        @Update = updateInspector;
     }
 
     public void GameUpdate() {
