@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -153,7 +152,9 @@ public class ContainerObject : MonoBehaviour, IResource {
     /// 清空容器
     /// </summary>
     public void Clear() {
-        Parallel.For(0, collections.Count, i => StackObjectManager.Instance.RecycleCollectableObject(collections.Pop()));
+        while (collections.Count != 0)
+            StackObjectManager.Instance.RecycleCollectableObject(collections.Pop());
         containerSortBase.Clear();
+        ID.Save(0);
     }
 }
