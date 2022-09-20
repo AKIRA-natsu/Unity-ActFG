@@ -15,6 +15,10 @@ public enum GameState {
     /// </summary>
     Playing,
     /// <summary>
+    /// 恢复
+    /// </summary>
+    Resume,
+    /// <summary>
     /// 暂停
     /// </summary>
     Pause,
