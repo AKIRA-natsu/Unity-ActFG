@@ -93,10 +93,20 @@ public class XML {
     }
 
     /// <summary>
+    /// 删除xml文件
+    /// </summary>
+    public void DeleteXML() {
+        if (!Exist())
+            return;
+        
+        File.Delete(path);
+    }
+
+    /// <summary>
     /// 检查是否存在文件
     /// </summary>
     /// <returns></returns>
-    public bool Exist() {
+    private bool Exist() {
         if (!File.Exists(path))
             return false;
 
