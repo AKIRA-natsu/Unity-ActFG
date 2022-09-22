@@ -13,23 +13,20 @@ namespace AKIRA.Manager {
         // 状态 - 事件
         private Dictionary<GameState, Action> StateActionMap = new Dictionary<GameState, Action>();
 
-//         protected override void Awake() {
-//             base.Awake();
-//             // ProjectSetting => Qualitv => VSync Count: Dont VSync
-//             // Application.targetFrameRate = 60;
+        // 状态改变事件
+        private Action<GameState> onStateChange;
 
-// #if UNITY_EDITOR
-
-// #else
-
-// #endif
-//         }
+        protected override void Awake() {
+            base.Awake();
+            // ProjectSetting => Qualitv => VSync Count: Dont VSync
+            // Application.targetFrameRate = 60;
+            UIManager.Instance.Initialize();
+        }
 
         private void Start() {
-                // $"切换Ads平台，UI进行适配屏幕".Colorful(Color.green).Log();
-                // var collection = UIManager.Instance.MatchableColleation();
+            // $"切换Ads平台，UI进行适配屏幕".Colorful(Color.green).Log();
+            // var collection = UIManager.Instance.MatchableColleation();
 
-            UIManager.Instance.Initialize();
             ResourceCollection.Instance.Load();
         }
 
@@ -46,6 +43,7 @@ namespace AKIRA.Manager {
             if (StateActionMap.ContainsKey(state))
                 StateActionMap[state]?.Invoke();
             
+            onStateChange?.Invoke(state);
             lastState = this.state;
             this.state = state;
         }
@@ -72,6 +70,15 @@ namespace AKIRA.Manager {
             if (StateActionMap.ContainsKey(state)) {
                 StateActionMap[state] -= action;
             }
+        }
+
+        /// <summary>
+        /// 注册状态改变事件
+        /// </summary>
+        /// <param name="onStateChange"></param>
+        public void RegistOnStateChangeAction(Action<GameState> onStateChange) {
+            onStateChange?.Invoke(state);
+            this.onStateChange += onStateChange;
         }
     }
 }
