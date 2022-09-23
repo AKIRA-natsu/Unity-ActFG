@@ -100,6 +100,7 @@ public class XML {
             return;
         
         File.Delete(path);
+        xml = new XmlDocument();
     }
 
     /// <summary>
