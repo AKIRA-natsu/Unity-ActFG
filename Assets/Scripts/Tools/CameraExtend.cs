@@ -12,10 +12,16 @@ public static class CameraExtend {
     public static Camera MainCamera {
         get {
             if (mainCamera == null)
-                mainCamera = Camera.main.GetComponent<Camera>();
+                mainCamera = Camera.main;
             return mainCamera;
         }
     }
+
+    /// <summary>
+    /// MainCamera Transform
+    /// </summary>
+    public static Transform transform => MainCamera.transform;
+
     /// <summary>
     /// 摄像机是否注视look at target
     /// </summary>
