@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
-using AKIRA.Coroutine;
+using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 摄像机扩展
+/// </summary>
 public static class CameraExtend {
     private static Camera mainCamera;
     /// <summary>
@@ -18,13 +21,25 @@ public static class CameraExtend {
     }
 
     /// <summary>
-    /// MainCamera Transform
+    /// 主摄像机下的脚本
     /// </summary>
-    public static Transform transform => MainCamera.transform;
+    /// <typeparam name="CameraBehaviour"></typeparam>
+    /// <returns></returns>
+    private static Dictionary<Type, CameraBehaviour> CameraBehaviourMap = new Dictionary<Type, CameraBehaviour>();
 
     /// <summary>
-    /// 摄像机是否注视look at target
+    /// 获得主摄像机下的脚本
     /// </summary>
-    /// <value></value>
-    public static bool LookAt { get; private set; } = false;
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetBehaviour<T>() where T : CameraBehaviour {
+        var type = typeof(T);
+        if (CameraBehaviourMap.ContainsKey(type))
+            return CameraBehaviourMap[type] as T;
+        else {
+            var behaviour = MainCamera.GetComponent<T>();
+            CameraBehaviourMap.Add(type, behaviour);
+            return behaviour;
+        }
+    }
 }

@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour, IUpdate {
-    // 更新模式
-    public UpdateMode mode = UpdateMode.Update;
+/// <summary>
+/// 摄像机移动脚本
+/// </summary>
+public class CameraFollowBehaviour : CameraBehaviour {
     // 跟随目标
     public Transform target;
     // 跟随速度
@@ -19,7 +20,7 @@ public class CameraFollow : MonoBehaviour, IUpdate {
         offset = this.transform.position - target.position;
     }
 
-    public void GameUpdate() {
+    public override void GameUpdate() {
         if (!follow)
             return;
         
