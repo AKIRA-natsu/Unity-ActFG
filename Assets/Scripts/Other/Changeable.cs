@@ -9,27 +9,28 @@ public class Changeable<T> {
     public T Value {
         get => value;
         set  {
-            if (this.value.Equals(value)) {
+            if (this.value.Equals(value))
                 return;
-            }
-            onValueChange?.Invoke(this.value, value);
+            onValueChange?.Invoke(value);
             this.value = value;
         }
     }
 
     /// <summary>
     /// <para>值改变监听事件</para>
-    /// <para>参数1：原来值</para>
-    /// <para>参数2：目标值</para>
+    /// <para>参数：目标值</para>
     /// </summary>
-    private Action<T, T> onValueChange;
+    private Action<T> onValueChange;
+
+    public Changeable() {}
+    public Changeable(T value) => this.value = value;
 
     /// <summary>
     /// 注册改变函数
     /// </summary>
     /// <param name="onValueChange"></param>
-    public void Regist(Action<T, T> onValueChange) {
-        onValueChange?.Invoke(value, value);
+    public void Regist(Action<T> onValueChange) {
+        onValueChange?.Invoke(value);
         this.onValueChange += onValueChange;
     }
 
@@ -37,7 +38,7 @@ public class Changeable<T> {
     /// 移除改变函数
     /// </summary>
     /// <param name="onValueChange"></param>
-    public void Remove(Action<T, T> onValueChange) => this.onValueChange -= onValueChange;
+    public void Remove(Action<T> onValueChange) => this.onValueChange -= onValueChange;
 
     /// <summary>
     /// 清空注册函数
