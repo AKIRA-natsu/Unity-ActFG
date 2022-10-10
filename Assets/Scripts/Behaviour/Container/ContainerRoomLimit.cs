@@ -8,7 +8,8 @@ public class ContainerRoomLimit : MonoBehaviour {
     // 容量与升级挂钩
     public UpgradeType upgradeType = UpgradeType.None;
     // 容器最大值
-    public int maxValue = 0;
+    [SerializeField]
+    private int maxValue = 0;
     // 最大容量
     public int Value => upgradeType == UpgradeType.None ? maxValue : (int)UpgradeManager.Instance.GetUpgradeValue(upgradeType);
 
