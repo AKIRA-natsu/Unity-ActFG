@@ -17,7 +17,7 @@ public abstract class AIBase : MonoBehaviour, IPool, IUpdate {
     /// <summary>
     /// 到达终点
     /// </summary>
-    public bool Reach => agent.remainingDistance <= 0.01f;
+    public bool Reach => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
 
     /// <summary>
     /// 状态机
