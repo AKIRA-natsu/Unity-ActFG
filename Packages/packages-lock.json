@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "com.unity.ai.navigation.components": {
-      "version": "https://github.com/Unity-Technologies/NavMeshComponents.git#package",
+    "com.unity.ai.navigation": {
+      "version": "1.1.0-pre.1",
       "depth": 0,
-      "source": "git",
+      "source": "registry",
       "dependencies": {
         "com.unity.modules.ai": "1.0.0"
       },
-      "hash": "0fc6f532e4f47d66d173314efcb906bc7cf0d00f"
+      "url": "https://packages.unity.com"
     },
     "com.unity.animation.rigging": {
       "version": "1.2.0",
