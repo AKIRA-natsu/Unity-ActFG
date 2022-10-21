@@ -7,7 +7,7 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 游戏状态
         /// </summary>
-        public GameState state = GameState.None;
+        public static GameState State { get; private set; }
         // 上一个状态
         public GameState lastState { get; private set; }
         // 状态 - 事件
@@ -21,6 +21,7 @@ namespace AKIRA.Manager {
             // ProjectSetting => Qualitv => VSync Count: Dont VSync
             // Application.targetFrameRate = 60;
             UIManager.Instance.Initialize();
+            State = GameState.None;
         }
 
         private void Start() {
@@ -36,7 +37,7 @@ namespace AKIRA.Manager {
         /// <param name="state"></param>
         public void Switch(GameState state) {
             // 不变
-            if (this.state == state)
+            if (State == state)
                 return;
 
             $"游戏状态：切换{state}".Colorful(Color.magenta).Log();
@@ -44,8 +45,8 @@ namespace AKIRA.Manager {
                 StateActionMap[state]?.Invoke();
             
             onStateChange?.Invoke(state);
-            lastState = this.state;
-            this.state = state;
+            lastState = State;
+            State = state;
         }
 
         /// <summary>
@@ -77,8 +78,30 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="onStateChange"></param>
         public void RegistOnStateChangeAction(Action<GameState> onStateChange) {
-            onStateChange?.Invoke(state);
+            onStateChange?.Invoke(State);
             this.onStateChange += onStateChange;
+        }
+
+        /// <summary>
+        /// 移除状态改变事件
+        /// </summary>
+        /// <param name="onStateChange"></param>
+        public void RemoveOnStateChangeAction(Action<GameState> onStateChange) {
+            if (IsApplicationOut)
+                return;
+            this.onStateChange -= onStateChange;
+        }
+
+        /// <summary>
+        /// 判断状态是否等于
+        /// </summary>
+        /// <param name="states"></param>
+        /// <returns></returns>
+        public static bool IsStateEqual(params GameState[] states) {
+            foreach (var state in states)
+                if (state == State)
+                    return true;
+            return false;
         }
     }
 }

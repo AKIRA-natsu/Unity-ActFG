@@ -340,4 +340,28 @@ public static class Extend {
     }
     #endregion
 
+    #region TryParse
+    /// <summary>
+    /// int32.TryParse封装
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static int TryParseInt(this string value) {
+        int result = 0;
+        Int32.TryParse(value, out result);
+        return result;
+    }
+
+    /// <summary>
+    /// float.TryParse封装
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static float TryParseFloat(this string value) {
+        float result = 0f;
+        float.TryParse(value, out result);
+        return result;
+    }
+    #endregion
+
 }

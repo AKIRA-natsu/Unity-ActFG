@@ -22,10 +22,9 @@ namespace AKIRA.Manager {
         }
 
         // 存储键
-        public const string LevelKey = "Level";
+        private const string LevelKey = "Level";
         // 关卡改变事件
-        public Action<int> onLevelChange;
-        // 关卡失败事件
+        private Action<int> onLevelChange;
 
         private LevelManager() {
             level = LevelKey.GetInt(0);

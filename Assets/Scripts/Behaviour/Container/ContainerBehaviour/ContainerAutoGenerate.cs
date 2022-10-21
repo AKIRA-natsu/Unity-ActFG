@@ -37,7 +37,7 @@ public class ContainerAutoGenerate : MonoBehaviour, IUpdate {
     }
 
     private void OnDisable() {
-        if (!UpdateManager.isApplicationOut)
+        if (!UpdateManager.IsApplicationOut)
             UpdateManager.Instance.Remove(this);
     }
 

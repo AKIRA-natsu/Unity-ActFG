@@ -49,12 +49,6 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     // 间隔更新列表
     private Dictionary<UpdateMode, List<SpaceUpdateInfo>> spaceUpdateMap = new Dictionary<UpdateMode, List<SpaceUpdateInfo>>();
 
-    /// <summary>
-    /// 程序是否退出
-    /// 单例先被销毁bug
-    /// </summary>
-    public static bool isApplicationOut { get; private set; } = false;
-
     protected override void Awake() {
         base.Awake();
         // 表初始化
@@ -150,8 +144,31 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
             info.lastUpdateTime = Time.time;
         }
     }
+}
 
-    private void OnDisable() {
-        isApplicationOut = true;
+/// <summary>
+/// 更新扩展
+/// </summary>
+public static class UpdateExtend {
+    /// <summary>
+    /// <para>注册更新</para>
+    /// <para>等同于 UpdateManager.Instance.Regist</para>
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="mode"></param>
+    public static void Regist(this IUpdate update, UpdateMode mode = UpdateMode.Update) {
+        UpdateManager.Instance.Regist(update, mode);
+    }
+
+    /// <summary>
+    /// <para>移除更新</para>
+    /// <para>等同于 UpdateManager.Instance.Remove</para>
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="mode"></param>
+    public static void Remove(this IUpdate update, UpdateMode mode = UpdateMode.Update) {
+        if (UpdateManager.IsApplicationOut)
+            return;
+        UpdateManager.Instance.Remove(update, mode);
     }
 }

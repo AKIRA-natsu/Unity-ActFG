@@ -10,6 +10,12 @@ namespace AKIRA.Manager {
     {
         private static T instance;
 
+        /// <summary>
+        /// 检测程序是否退出
+        /// </summary>
+
+        public static bool IsApplicationOut { get; private set; } = false;
+
         public static T Instance {
             get {
                 if (instance == null) {
@@ -28,6 +34,11 @@ namespace AKIRA.Manager {
             }
             else
                 Destroy(gameObject);
+        }
+
+        protected virtual void OnDisable() {
+            if (!IsApplicationOut)
+                IsApplicationOut = true;
         }
 
         protected virtual void OnDestroy() {

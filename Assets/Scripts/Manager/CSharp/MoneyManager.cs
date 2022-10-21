@@ -23,9 +23,9 @@ namespace AKIRA.Manager {
         }
 
         // 存储键
-        public const string MoneyKey = "Money";
+        private const string MoneyKey = "Money";
         // 金钱事件
-        public Action<int> onMoneyChange;
+        private Action<int> onMoneyChange;
 
         private MoneyManager() {
             money = MoneyKey.GetInt(0);
