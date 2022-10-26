@@ -43,11 +43,15 @@ public class SpaceUpdateInfo {
 /// <summary>
 /// 更新驱动管理
 /// </summary>
+[UnityEngine.DefaultExecutionOrder(-2)]
 public class UpdateManager : MonoSingleton<UpdateManager> {
     // 更新列表
     private Dictionary<UpdateMode, List<IUpdate>> updateMap = new Dictionary<UpdateMode, List<IUpdate>>();
     // 间隔更新列表
     private Dictionary<UpdateMode, List<SpaceUpdateInfo>> spaceUpdateMap = new Dictionary<UpdateMode, List<SpaceUpdateInfo>>();
+
+    // 更新列表 面板
+    public Dictionary<UpdateMode, List<IUpdate>> inspectorMap => updateMap;
 
     protected override void Awake() {
         base.Awake();
