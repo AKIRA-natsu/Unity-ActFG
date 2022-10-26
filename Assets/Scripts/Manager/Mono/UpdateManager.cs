@@ -51,7 +51,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     private Dictionary<UpdateMode, List<SpaceUpdateInfo>> spaceUpdateMap = new Dictionary<UpdateMode, List<SpaceUpdateInfo>>();
 
     // 更新列表 面板
-    public Dictionary<UpdateMode, List<IUpdate>> inspectorMap => updateMap;
+    public IReadOnlyDictionary<UpdateMode, List<IUpdate>> inspectorMap => updateMap;
 
     protected override void Awake() {
         base.Awake();
