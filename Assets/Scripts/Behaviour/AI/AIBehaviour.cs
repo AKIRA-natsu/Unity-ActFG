@@ -3,18 +3,23 @@ using UnityEngine;
 /// <summary>
 /// 动画
 /// </summary>
-public abstract class AIBehaviour : AIBase {
+public class AiBehaviour {
+    // 动画控制器
+    private Animator animator;
+
     // Hash
     private readonly int SpeedHash = Animator.StringToHash("Speed");
     private readonly int JumpHash = Animator.StringToHash("Jump");
     private readonly int ClimbHash = Animator.StringToHash("Climb");
     private readonly int ClimbToTopHash = Animator.StringToHash("ClimbToTop");
 
+    public AiBehaviour(Animator animator) => this.animator = animator;
+
     /// <summary>
     /// 移动
     /// </summary>
     /// <param name="value"></param>
-    protected virtual void Walk(float value) {
+    public virtual void Walk(float value) {
         animator.SetFloat(SpeedHash,
             Mathf.Lerp(animator.GetFloat(SpeedHash), value, Time.deltaTime * 10f));
     }
@@ -22,7 +27,7 @@ public abstract class AIBehaviour : AIBase {
     /// <summary>
     /// 跳跃
     /// </summary>
-    protected virtual void Jump() {
+    public virtual void Jump() {
         animator.SetTrigger(JumpHash);
     }
 
@@ -30,7 +35,7 @@ public abstract class AIBehaviour : AIBase {
     /// 攀爬
     /// </summary>
     /// <param name="climb"></param>
-    protected virtual void Climb(bool climb) {
+    public virtual void Climb(bool climb) {
         animator.SetBool(ClimbHash, climb);
     }
 
@@ -38,7 +43,7 @@ public abstract class AIBehaviour : AIBase {
     /// 往上爬的特殊处理
     /// </summary>
     /// <param name="climbToTop"></param>
-    protected virtual void ClimbToTop(bool climbToTop) {
+    public virtual void ClimbToTop(bool climbToTop) {
         animator.SetBool(ClimbToTopHash, climbToTop);
     }
 }

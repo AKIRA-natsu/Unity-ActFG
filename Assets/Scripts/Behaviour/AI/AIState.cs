@@ -1,31 +1,19 @@
 /// <summary>
-/// AI 状态
+/// AI状态
 /// </summary>
-public enum AIState {
+public enum AiState {
     /// <summary>
     /// 待机
     /// </summary>
     Idle,
     /// <summary>
-    /// 移动
+    /// 巡逻
     /// </summary>
-    Walk,
+    Patrol,
     /// <summary>
-    /// 跑步
+    /// 追随
     /// </summary>
-    Run,
-    /// <summary>
-    /// 跳跃
-    /// </summary>
-    Jump,
-    /// <summary>
-    /// 攀爬
-    /// </summary>
-    Climb,
-    /// <summary>
-    /// 坐下
-    /// </summary>
-    Sit,
+    Chase,
     /// <summary>
     /// 攻击
     /// </summary>

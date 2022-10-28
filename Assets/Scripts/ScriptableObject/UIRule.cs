@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "UIRule", menuName = "UIFramework/UIRule", order = 0)]
+[CreateAssetMenu(fileName = "UIRule", menuName = "Framework/UIFramework/UIRule", order = 0)]
 public class UIRule : ScriptableObject {
     public UIControlRule[] rules = {};
 

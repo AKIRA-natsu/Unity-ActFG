@@ -311,7 +311,7 @@ public static class Extend {
     /// <param name="parent"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T[] GetChildrenArray<T>(this Transform parent) {
+    public static T[] GetChildrenComponents<T>(this Transform parent) {
         var count = parent.childCount;
         T[] result = new T[count];
         for (int i = 0; i < count; i++)

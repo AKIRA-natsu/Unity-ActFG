@@ -11,7 +11,7 @@ public class ContainerSortMulti : ContainerSortBase {
     private Transform[] puts;
 
     private void Awake() {
-        puts = this.transform.GetChildrenArray<Transform>();
+        puts = this.transform.GetChildrenComponents<Transform>();
     }
 
     public override void Sort(CollectableObjectBase sortObj) {

@@ -9,10 +9,10 @@ namespace AKIRA.Manager {
         /// </summary>
         public static GameState State { get; private set; }
         // 上一个状态
-        public GameState lastState { get; private set; }
+        public GameState LastState { get; private set; }
+
         // 状态 - 事件
         private Dictionary<GameState, Action> StateActionMap = new Dictionary<GameState, Action>();
-
         // 状态改变事件
         private Action<GameState> onStateChange;
 
@@ -45,7 +45,7 @@ namespace AKIRA.Manager {
                 StateActionMap[state]?.Invoke();
             
             onStateChange?.Invoke(state);
-            lastState = State;
+            LastState = State;
             State = state;
         }
 
