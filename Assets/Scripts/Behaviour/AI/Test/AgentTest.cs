@@ -7,6 +7,7 @@ public class AgentTest : AiAgent {
     private void Start() {
         machine.RegistState(new AiPatrolState(patrolRootTransform));
         machine.RegistState(new AiChaseState());
+        machine.RegistState(new AiIdleState());
         machine.ChangeState(initializeState);
     }
 

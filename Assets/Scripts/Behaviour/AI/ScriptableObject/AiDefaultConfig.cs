@@ -35,6 +35,11 @@ public class AiDefaultConfig : ScriptableObject {
     public float chaseDistance = 5f;
 
     /// <summary>
+    /// 警惕时间
+    /// </summary>
+    public float alertTime = 5f;
+
+    /// <summary>
     /// 攻击距离
     /// </summary>
     public float attckDistance = 2f;

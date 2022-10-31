@@ -34,7 +34,7 @@ public class AiChaseState : IAiState {
         }
 
         if (distance <= agent.config.attckDistance)  {
-            agent.machine.ChangeState(AiState.Attack);
+            // agent.machine.ChangeState(AiState.Attack);
             return;
         }
 
