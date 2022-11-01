@@ -264,6 +264,16 @@ public static class Extend {
     }
 
     /// <summary>
+    /// 世界坐标转Canvas坐标
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public static Vector2 WorldToCanvas(this Vector3 position) {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(UI.Rect, UI.UICamera.WorldToScreenPoint(position), UI.UICamera, out Vector2 canvasPosition);
+        return canvasPosition;
+    }
+
+    /// <summary>
     /// <para>运行模式下Texture转换成Texture2D</para>
     /// <para>来源：https://blog.csdn.net/s15100007883/article/details/80411638</para>
     /// </summary>

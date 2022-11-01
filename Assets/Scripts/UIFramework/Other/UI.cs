@@ -18,7 +18,7 @@ namespace AKIRA.UIFramework {
         public static Camera UICamera {
             get {
                 if (uiCamera == null)
-                    uiCamera = GameObject.Find($"[UI]/UICamera").GetComponent<Camera>();
+                    uiCamera = Root.GetComponentInChildren<Camera>();
                 return uiCamera;
             }
         }
