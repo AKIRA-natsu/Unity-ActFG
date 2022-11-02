@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace AKIRA.Manager {
+    [DefaultExecutionOrder(-1)]
     public class GameManager : MonoSingleton<GameManager> {
         /// <summary>
         /// 游戏状态

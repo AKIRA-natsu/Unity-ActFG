@@ -28,6 +28,14 @@ public class MoveSelf : SelfAnim {
     protected override void OnEnable() {
         base.OnEnable();
         DecideDirection();
+        // 隐藏期间改动位置
+        localPosition = this.transform.localPosition;
+    }
+
+    protected override void OnDisable() {
+        base.OnDisable();
+        // 回到最初位置
+        this.transform.localPosition = localPosition;
     }
 
     private void DecideDirection() {

@@ -5,7 +5,7 @@ namespace AKIRA.Manager {
     /// Mono 单例
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DefaultExecutionOrder(-1)]
+    [DefaultExecutionOrder(-2)]
     public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
         private static T instance;

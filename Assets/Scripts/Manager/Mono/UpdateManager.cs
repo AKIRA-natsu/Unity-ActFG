@@ -43,7 +43,6 @@ public class SpaceUpdateInfo {
 /// <summary>
 /// 更新驱动管理
 /// </summary>
-[UnityEngine.DefaultExecutionOrder(-2)]
 public class UpdateManager : MonoSingleton<UpdateManager> {
     // 更新列表
     private Dictionary<UpdateMode, List<IUpdate>> updateMap = new Dictionary<UpdateMode, List<IUpdate>>();

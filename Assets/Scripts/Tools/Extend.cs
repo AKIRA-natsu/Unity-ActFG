@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AKIRA.UIFramework;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -176,6 +177,45 @@ public static class Extend {
         size.y = length.y * obj.lossyScale.y;
         size.z = length.z * obj.lossyScale.z;
         return size;
+    }
+
+    /// <summary>
+    /// 获得场景路径
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string GetPath(this GameObject obj) {
+        return GetPath(obj.transform);
+    }
+
+    /// <summary>
+    /// 获得场景路径
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <returns></returns>
+    public static string GetPath(this Transform transform) {
+        Stack<string> names = new Stack<string>();
+        names.Push(transform.name);
+        GetPath(transform, ref names);
+        StringBuilder builder = new StringBuilder();
+        while (names.Count != 0)
+            builder.Append($"/{names.Pop()}");
+        // 移除第一个 "/"
+        builder.Remove(0, 1);
+        return builder.ToString();
+    }
+
+    /// <summary>
+    /// 获得名称节点
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <param name="names"></param>
+    private static void GetPath(this Transform transform, ref Stack<string> names) {
+        if (transform.parent == null)
+            return;
+        transform = transform.parent;
+        names.Push(transform.name);
+        GetPath(transform, ref names);
     }
     #endregion
 

@@ -13,7 +13,7 @@ namespace AKIRA.ToolEditor {
     /// UI测试
     /// </summary>
     public class RuleTestGUI : EditorWindow {
-        [MenuItem("Tools/Test/UIRuleTest(GUI)")]
+        [MenuItem("Tools/UI/UIRuleTest(GUI)")]
         public static void Open() {
             var gui = GetWindow<RuleTestGUI>();
             gui.titleContent = new GUIContent("UI规则测试");
