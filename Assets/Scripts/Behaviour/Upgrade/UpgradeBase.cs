@@ -61,7 +61,7 @@ public abstract class UpgradeBase {
         value = CalculateValue();
         cost = CalculateCost();
         // 消费
-        MoneyManager.Instance.Gain(-curCost);
+        MoneyManager.Instance.Earn(-curCost);
 
         // 回调
         onUpgradeCallback?.Invoke(this);
