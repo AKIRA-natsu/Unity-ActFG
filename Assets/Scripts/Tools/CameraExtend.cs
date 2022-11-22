@@ -21,6 +21,11 @@ public static class CameraExtend {
     }
 
     /// <summary>
+    /// Transform
+    /// </summary>
+    public static Transform Transform => MainCamera.transform;
+
+    /// <summary>
     /// 主摄像机下的脚本
     /// </summary>
     /// <typeparam name="CameraBehaviour"></typeparam>

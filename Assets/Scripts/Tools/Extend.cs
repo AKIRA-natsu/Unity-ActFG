@@ -1,7 +1,7 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AKIRA.UIFramework;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -293,6 +293,22 @@ public static class Extend {
     }
 
     /// <summary>
+    /// 屏幕坐标转 UGUI 坐标
+    /// UI静态类没有初始化的时候添加Canvas.RectTransform使用
+    /// </summary>
+    /// <param name="screenpos"></param>
+    /// <param name="canvasRect">Canvas.RectTransform</param>
+    /// <returns></returns>
+    public static Vector2 ScreenToUGUI(this Vector3 screenpos, RectTransform canvasRect) {
+        Vector2 screenpos2 = new Vector2(screenpos.x - (Screen.width / 2), screenpos.y - (Screen.height / 2));
+        var UISize = canvasRect.sizeDelta;
+        Vector2 uipos;
+        uipos.x = (screenpos2.x / Screen.width) * UISize.x;
+        uipos.y = (screenpos2.y / Screen.height) * UISize.y;
+        return uipos;
+    }
+
+    /// <summary>
     /// 世界坐标转 UGUI 坐标
     /// </summary>
     public static Vector2 WorldToUGUI(this Vector3 position) {
@@ -320,19 +336,21 @@ public static class Extend {
     /// <param name="texture"></param>
     /// <returns></returns>
     public static Texture2D TextureToTexture2D(this Texture texture) {
-            Texture2D texture2D = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
-            RenderTexture currentRT = RenderTexture.active;
-            RenderTexture renderTexture = RenderTexture.GetTemporary(texture.width, texture.height, 32);
-            Graphics.Blit(texture, renderTexture);
+        if (texture == null)
+            return default;
+        Texture2D texture2D = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+        RenderTexture currentRT = RenderTexture.active;
+        RenderTexture renderTexture = RenderTexture.GetTemporary(texture.width, texture.height, 32);
+        Graphics.Blit(texture, renderTexture);
 
-            RenderTexture.active = renderTexture;
-            texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
-            texture2D.Apply();
+        RenderTexture.active = renderTexture;
+        texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+        texture2D.Apply();
 
-            RenderTexture.active = currentRT;
-            RenderTexture.ReleaseTemporary(renderTexture);
+        RenderTexture.active = currentRT;
+        RenderTexture.ReleaseTemporary(renderTexture);
 
-            return texture2D;
+        return texture2D;
     }
 
     /// <summary>
