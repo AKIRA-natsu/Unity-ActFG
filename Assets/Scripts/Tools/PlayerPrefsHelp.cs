@@ -91,8 +91,4 @@ public static class PlayerPrefsHelp {
     public static void DeleteAll() {
         PlayerPrefs.DeleteAll();
     }
-
-    public static string GetComponentID(this Component com) {
-        return null;
-    }
 }

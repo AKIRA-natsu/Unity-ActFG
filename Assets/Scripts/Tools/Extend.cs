@@ -217,6 +217,27 @@ public static class Extend {
         names.Push(transform.name);
         GetPath(transform, ref names);
     }
+
+    /// <summary>
+    /// <para>获得 <paramref name="component" /> ID</para>
+    /// <para>遍历父节点</para>
+    /// </summary>
+    /// <param name="component"></param>
+    /// <returns></returns>
+    public static string GetComponentID(this Component component) {
+        StringBuilder name = new StringBuilder(component.name);
+        string lastName = "";
+        Transform nextTrans = component.transform;
+        while (nextTrans.parent != null) {
+            name.Append(nextTrans.name + "_");
+            lastName = nextTrans.name;
+            nextTrans = nextTrans.parent;
+        }
+
+        name.Remove(name.Length - 1, 1);
+        // name.ToString().Log();
+        return name.ToString();
+    }
     #endregion
 
     #region object

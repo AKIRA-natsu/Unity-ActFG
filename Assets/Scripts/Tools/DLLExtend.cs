@@ -3,7 +3,7 @@ using System.Reflection;
 
 public static class DLLExtend {
     // DLL 名称
-    public static string DLLName = "Assembly-CSharp";
+    public const string DLLName = "Assembly-CSharp";
 
     /// <summary>
     /// 不同程序集查找类型
