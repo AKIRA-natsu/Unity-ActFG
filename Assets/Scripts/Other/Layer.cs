@@ -1,43 +1,54 @@
 /// <summary>
-/// 层级
+/// <para>层级</para>
+/// <para>Create&Update By GlobalConfig</para>
 /// </summary>
 public static class Layer {
+            
+    /// <summary>
+    /// Default
+    /// </summary>
+    public static readonly int Default = 0;
+                
+    /// <summary>
+    /// TransparentFX
+    /// </summary>
+    public static readonly int TransparentFX = 1;
+                
+    /// <summary>
+    /// IgnoreRaycast
+    /// </summary>
+    public static readonly int IgnoreRaycast = 2;
+                
     /// <summary>
     /// Water
     /// </summary>
-    public const int Water = 4;
+    public static readonly int Water = 4;
+                
     /// <summary>
     /// UI
     /// </summary>
-    public const int UI = 5;
+    public static readonly int UI = 5;
+                
     /// <summary>
-    /// UI
+    /// PostProcessingVolumes
     /// </summary>
-    public const int PostProcessingVolumes = 6;
+    public static readonly int PostProcessingVolumes = 6;
+                
     /// <summary>
-    /// UI
+    /// Character
     /// </summary>
-    public const int Character = 7;
+    public static readonly int Character = 7;
+                
     /// <summary>
-    /// UI
+    /// Hair
     /// </summary>
-    public const int Hair = 8;
+    public static readonly int Hair = 8;
+                
     /// <summary>
-    /// UI
+    /// Eyebrows
     /// </summary>
-    public const int Eyebrows = 9;
+    public static readonly int Eyebrows = 9;
+                
 }
 
-/// <summary>
-/// Tag标签
-/// </summary>
-public static class Tag {
-    /// <summary>
-    /// 摄像机
-    /// </summary>
-    public const string MainCamera = "MainCamera";
-    /// <summary>
-    /// 玩家
-    /// </summary>
-    public const string Player = "Player";
-}
+            

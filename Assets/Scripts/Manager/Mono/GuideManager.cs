@@ -202,11 +202,16 @@ namespace AKIRA.Manager {
         // 箭头高度差值
         private float heightOffset = 0.5f;
 
+        /// <summary>
+        /// 玩家标签
+        /// </summary>
+        private const string PlayerTag = "Player";
+
         protected Guide3DSystem() {
             // 寻找玩家Tag
-            player = GameObject.FindWithTag(Tag.Player)?.transform;
+            player = GameObject.FindWithTag(PlayerTag)?.transform;
             if (player is null)
-                $"不存在GameObject Tag: {Tag.Player}".Error();
+                $"不存在GameObject Tag: {PlayerTag}".Error();
             
             // 为场景添加Arrow箭头
             arrow3D = Arrow3DPath.Load<GameObject>().Instantiate();

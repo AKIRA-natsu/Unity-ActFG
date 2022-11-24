@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 using AKIRA.UIFramework;
 
-namespace AKIRA.ToolEditor {
+namespace AKIRA.Editor {
     /// <summary>
     /// 自动生成 UI 脚本 (EditorGUI)
     /// </summary>

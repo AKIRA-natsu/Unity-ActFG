@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 using AKIRA.UIFramework;
 
-namespace AKIRA.ToolEditor {
+namespace AKIRA.Editor {
     /// <summary>
     /// UI测试
     /// </summary>
