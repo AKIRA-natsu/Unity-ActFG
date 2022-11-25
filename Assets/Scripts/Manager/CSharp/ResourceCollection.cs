@@ -29,12 +29,12 @@ namespace AKIRA.Manager {
         /// </summary>
         public void Load() {
             if (totalProgress == 0) {
-                $"无加载项".Colorful(Color.red).Log();
+                $"无加载项".Colorful(Color.green).Log();
                 onComplete?.Invoke();
-                return;
+            } else {
+                $"加载开始".Colorful(Color.green).Log();
+                CoroutineManager.Instance.Start(ResourceLoad());
             }
-            $"加载完成".Colorful(Color.green).Log();
-            CoroutineManager.Instance.Start(ResourceLoad());
         }
 
         /// <summary>
@@ -55,6 +55,7 @@ namespace AKIRA.Manager {
             totalProgress = 0;
             ResourceMap.Clear();
             onComplete?.Invoke();
+            $"加载完成".Colorful(Color.green).Log();
         }
 
         /// <summary>

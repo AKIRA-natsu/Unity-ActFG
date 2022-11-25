@@ -49,6 +49,11 @@ public static class Layer {
     /// </summary>
     public static readonly int Eyebrows = 9;
                 
+    /// <summary>
+    /// Enemy
+    /// </summary>
+    public static readonly int Enemy = 10;
+                
 }
 
             

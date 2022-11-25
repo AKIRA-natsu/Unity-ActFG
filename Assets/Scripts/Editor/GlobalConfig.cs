@@ -6,32 +6,33 @@ using UnityEngine;
 namespace AKIRA.Editor {
     /// <summary>
     /// 层级配置
+    /// 改手动更新
     /// </summary>
-    [InitializeOnLoad]
+    // [InitializeOnLoad]
     public class LayerConfig {
         /// <summary>
         /// 存储键值
         /// </summary>
         internal const string LayerConfigKey = "LayerConfigPath";
 
-        static LayerConfig() {
-            var path = LayerConfigKey.GetString();
-            if (String.IsNullOrEmpty(LayerConfigKey.GetString()))
-                return;
-
-            if (!File.Exists(path)) {
-                DeletePathData();
-                "文件不存在".Colorful(Color.red).Log();
-            } else {
-                UpdateLayer(path);
-            }
-        }
+        static LayerConfig() { }
 
         /// <summary>
         /// 更新Layer
         /// </summary>
         /// <param name="path"></param>
-        private static void UpdateLayer(string path) {
+        [MenuItem("Tools/Framework/LayerConfig/Update Layer")]
+        private static void UpdateLayer() {
+            var path = LayerConfigKey.GetString();
+            if (String.IsNullOrEmpty(LayerConfigKey.GetString()))
+                return;
+            // 检查文件是否还存在
+            if (!File.Exists(path)) {
+                DeletePathData();
+                "文件不存在".Colorful(Color.red).Log();
+                return;
+            }
+
             var content = @"/// <summary>
 /// <para>层级</para>
 /// <para>Create&Update By GlobalConfig</para>
@@ -42,6 +43,7 @@ public static class Layer {
                 var name = LayerMask.LayerToName(i).Replace(" ", "");
                 if (String.IsNullOrEmpty(name))
                     continue;
+                name.Log();
                 content += @$"
     /// <summary>
     /// {name}
@@ -70,7 +72,7 @@ public static class Layer {
             if (path.EndsWith(".cs")) {
                 $"保存LayerConfig路径位置 => {path}".Colorful(Color.cyan).Log();
                 LayerConfigKey.Save(path);
-                UpdateLayer(path);
+                UpdateLayer();
             }
         }
 

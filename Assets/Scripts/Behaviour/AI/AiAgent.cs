@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [SelectionBase]
-public class AiAgent : MonoBehaviour, IUpdate {
+public class AiAgent : AIBase {
     // AI
     public NavMeshAgent navMeshAgent { get; private set; }
     /// <summary>
@@ -54,7 +54,7 @@ public class AiAgent : MonoBehaviour, IUpdate {
         this.Remove();
     }
 
-    public virtual void GameUpdate() {
+    public override void GameUpdate() {
         machine.GameUpdate();
     }
 }
