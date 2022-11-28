@@ -31,6 +31,7 @@ namespace AKIRA.Manager {
             if (totalProgress == 0) {
                 $"无加载项".Colorful(Color.green).Log();
                 onComplete?.Invoke();
+                onComplete = null;
             } else {
                 $"加载开始".Colorful(Color.green).Log();
                 CoroutineManager.Instance.Start(ResourceLoad());
@@ -55,6 +56,8 @@ namespace AKIRA.Manager {
             totalProgress = 0;
             ResourceMap.Clear();
             onComplete?.Invoke();
+            onComplete = null;
+            onLoad = null;
             $"加载完成".Colorful(Color.green).Log();
         }
 

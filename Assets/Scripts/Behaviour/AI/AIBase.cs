@@ -1,28 +1,32 @@
+using System.Collections;
+using AKIRA.Manager;
 using UnityEngine;
 
-public abstract class AIBase : MonoBehaviour, IPool, IUpdate {
-    // 队伍标识
-    public int ID { get; protected set; }
-    // 队伍类型标签
-    public GroupTag groupTag { get; protected set; }
-    // 所在队伍
-    public AITeam team { get; protected set; }
-
+namespace AKIRA.AI {
     /// <summary>
-    /// 初始化ID，标签
+    /// AI 基类
     /// </summary>
-    /// <param name="ID"></param>
-    /// <param name="tag"></param>
-    public AIBase Init(int ID, GroupTag tag, AITeam team) {
-        this.ID = ID;
-        this.groupTag = tag;
-        this.team = team;
-        this.SetParent(team);
-        this.transform.localPosition = team.affectPosition + Random.insideUnitSphere * team.radius;
-        return this;
-    }
+    [SelectionBase]
+    public abstract class AIBase : MonoBehaviour, IPool, IUpdate, IResource {
+        public abstract int order { get; }
+        // 初始化数据
+        protected Object Data { get; private set; }
+        // 实体
+        protected Transform Render;
 
-    public void Wake() {}
-    public void Recycle() {}
-    public abstract void GameUpdate();
+        public abstract void GameUpdate();
+        public abstract IEnumerator Load();
+
+        public abstract void Wake();
+        public abstract void Recycle();
+
+        /// <summary>
+        /// 注册加载
+        /// </summary>
+        /// <param name="data"></param>
+        public void RegistLoad(Object data = null) {
+            this.Data = data;
+            ResourceCollection.Instance.Regist(this, order);
+        }
+    }
 }

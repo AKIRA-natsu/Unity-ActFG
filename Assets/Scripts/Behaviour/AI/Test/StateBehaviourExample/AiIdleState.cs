@@ -1,4 +1,6 @@
 using UnityEngine;
+using AKIRA.AI;
+using AKIRA.AI.StateMachine;
 
 /// <summary>
 /// AI等待状态
@@ -6,19 +8,19 @@ using UnityEngine;
 public class AiIdleState : IAiState {
     public float time;
 
-    public void Enter(AiAgent agent) {
+    public void Enter(HumanAgentBase agent) {
         time = 0f;
     }
 
-    public void Exit(AiAgent agent) { }
+    public void Exit(HumanAgentBase agent) { }
 
-    public void GameUpdate(AiAgent agent) {
+    public void GameUpdate(HumanAgentBase agent) {
         if (Physics.CheckSphere(agent.transform.position, agent.config.chaseDistance, 1 << Layer.Character)) {
             agent.machine.ChangeState(AiState.Chase);
             return;
         }
 
-        agent.animator.Walk(agent.Reach ? 0f : 1f);
+        agent.aiAnimation.Walk(agent.Reach ? 0f : 1f);
         time += Time.deltaTime;
         if (time <= agent.config.alertTime)
             return;

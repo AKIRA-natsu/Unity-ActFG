@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AITeam : MonoBehaviour, IResource, IUpdate {
     public int order => 0;
+    // 类型
+    public GroupTag groupTag;
     // 生成数量
     public int count;
     // 影响位置
@@ -41,7 +43,7 @@ public class AITeam : MonoBehaviour, IResource, IUpdate {
     }
 
     public IEnumerator Load() {
-        AIGroupManager.GetGroup(GroupTag.Fish).CreateMember(count, this);
+        AIGroupManager.GetGroup(groupTag).CreateMember(count, this);
         yield return null;
         @Update = inspectorUpdate;
     }

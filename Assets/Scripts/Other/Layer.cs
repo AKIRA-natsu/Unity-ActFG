@@ -54,6 +54,11 @@ public static class Layer {
     /// </summary>
     public static readonly int Enemy = 10;
                 
+    /// <summary>
+    /// Obstacle
+    /// </summary>
+    public static readonly int Obstacle = 11;
+                
 }
 
             

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AKIRA.Manager;
 using UnityEngine;
+using AKIRA.AI;
 
 /// <summary>
 /// 
@@ -37,7 +38,9 @@ public class AIGroup : MonoBehaviour {
         int ID = AITeamMap.Count;
         AITeamMap.Add(ID, new List<AIBase>());
         this.Repeat(_ => {
-            AITeamMap[ID].Add(ObjectPool.Instance.Instantiate(member).Init(ID, groupTag, team));
+            var ai = ObjectPool.Instance.Instantiate(member);
+            // ai.RegistLoad((ID, groupTag, team));
+            AITeamMap[ID].Add(ai);
         }, count);
     }
 }

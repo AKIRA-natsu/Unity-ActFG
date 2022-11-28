@@ -43,7 +43,6 @@ public static class Layer {
                 var name = LayerMask.LayerToName(i).Replace(" ", "");
                 if (String.IsNullOrEmpty(name))
                     continue;
-                name.Log();
                 content += @$"
     /// <summary>
     /// {name}

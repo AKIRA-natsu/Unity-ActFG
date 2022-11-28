@@ -1,4 +1,6 @@
 using UnityEngine;
+using AKIRA.AI.StateMachine;
+using AKIRA.AI;
 
 /// <summary>
 /// 追随
@@ -10,7 +12,7 @@ public class AiChaseState : IAiState {
     // 跟随时间
     private float chaseTime = 0f;
 
-    public void Enter(AiAgent agent) {
+    public void Enter(HumanAgentBase agent) {
         agent.navMeshAgent.speed = agent.config.runSpeed;
         var colliders = Physics.OverlapSphere(agent.transform.position, agent.config.chaseDistance, 1 << Layer.Character);
         if (colliders.Length == 0) {
@@ -22,10 +24,10 @@ public class AiChaseState : IAiState {
         }
     }
 
-    public void Exit(AiAgent agent) { }
+    public void Exit(HumanAgentBase agent) { }
 
-    public void GameUpdate(AiAgent agent) {
-        agent.animator.Walk(agent.Reach ? 0 : 1);
+    public void GameUpdate(HumanAgentBase agent) {
+        agent.aiAnimation.Walk(agent.Reach ? 0 : 1);
 
         var distance = Vector3.Distance(agent.transform.position, chaseTarget.position);
         if (distance > agent.config.chaseDistance) {

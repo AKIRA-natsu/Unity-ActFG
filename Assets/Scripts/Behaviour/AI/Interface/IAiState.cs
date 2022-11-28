@@ -1,21 +1,23 @@
-/// <summary>
-/// AI接口
-/// </summary>
-public interface IAiState : IUpdate<AiAgent> {
+namespace AKIRA.AI.StateMachine {
     /// <summary>
-    /// 对应的Enum
+    /// AI接口
     /// </summary>
-    /// <returns></returns>
-    AiState GetStateID();
+    public interface IAiState : IUpdate<HumanAgentBase> {
+        /// <summary>
+        /// 对应的Enum
+        /// </summary>
+        /// <returns></returns>
+        AiState GetStateID();
 
-    /// <summary>
-    /// 进入
-    /// </summary>
-    /// <param name="agent"></param>
-    void Enter(AiAgent agent);
-    /// <summary>
-    /// 退出
-    /// </summary>
-    /// <param name="agent"></param>
-    void Exit(AiAgent agent);
+        /// <summary>
+        /// 进入
+        /// </summary>
+        /// <param name="agent"></param>
+        void Enter(HumanAgentBase agent);
+        /// <summary>
+        /// 退出
+        /// </summary>
+        /// <param name="agent"></param>
+        void Exit(HumanAgentBase agent);
+    }
 }

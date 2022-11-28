@@ -1,4 +1,6 @@
 using UnityEngine;
+using AKIRA.AI.StateMachine;
+using AKIRA.AI;
 
 /// <summary>
 /// 巡逻状态
@@ -19,18 +21,18 @@ public class AiPatrolState : IAiState {
             positions[i] = trans[i].position;
     }
 
-    public void Enter(AiAgent agent) {
+    public void Enter(HumanAgentBase agent) {
         agent.navMeshAgent.speed = agent.config.walkSpeed;
         agent.navMeshAgent.SetDestination(GetNextPatrolPosition(agent.config.patrolInOrder));
         waitTime = 0f;
     }
 
-    public void Exit(AiAgent agent) {
+    public void Exit(HumanAgentBase agent) {
         curIndex--;
     }
 
-    public void GameUpdate(AiAgent agent) {
-        agent.animator.Walk(agent.Reach ? 0 : 0.5f);
+    public void GameUpdate(HumanAgentBase agent) {
+        agent.aiAnimation.Walk(agent.Reach ? 0 : 0.5f);
 
         if (Physics.CheckSphere(agent.transform.position, agent.config.chaseDistance, 1 << Layer.Character)) {
             agent.machine.ChangeState(AiState.Chase);
