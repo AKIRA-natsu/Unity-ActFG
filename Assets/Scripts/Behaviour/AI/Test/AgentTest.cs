@@ -11,10 +11,12 @@ public class AgentTest : HumanAgentBase {
     public override int order => throw new System.NotImplementedException();
 
     private void Start() {
-        // machine.RegistState(new AiPatrolState(patrolRootTransform));
-        // machine.RegistState(new AiChaseState());
-        // machine.RegistState(new AiIdleState());
-        // machine.ChangeState(initializeState);
+        machine.RegistState(new AiPatrolState(patrolRootTransform));
+        machine.RegistState(new AiChaseState());
+        machine.RegistState(new AiIdleState());
+        machine.ChangeState(initializeState);
+
+        this.Regist();
     }
 
     private void OnDrawGizmos() {
