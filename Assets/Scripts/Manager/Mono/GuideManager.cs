@@ -47,7 +47,7 @@ namespace AKIRA.Manager {
         
         protected override void Awake() {
             base.Awake();
-            currentIndex = GuideIndexKey.GetInt(0);
+            currentIndex = GuideIndexKey.GetInt();
             if (File.Exists(GuideDataPath)) {
                 XML xml = new XML(GuideDataPath);
                 xml.Read((x) => {
@@ -177,7 +177,7 @@ namespace AKIRA.Manager {
         [ContextMenu("DeleteGuideKey")]
 #endif
         private void DeleteGuideKey() {
-            GuideIndexKey.DeleteKey();
+            GuideIndexKey.Delete();
         }
     }
 

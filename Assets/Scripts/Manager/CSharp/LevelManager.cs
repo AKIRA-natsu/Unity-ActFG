@@ -27,7 +27,7 @@ namespace AKIRA.Manager {
         private Action<int> onLevelChange;
 
         private LevelManager() {
-            level = LevelKey.GetInt(0);
+            level = LevelKey.GetInt();
         }
 
         /// <summary>

@@ -58,7 +58,7 @@ public class ContainerObject : MonoBehaviour, IResource {
 
     private void Start() {
         if (!asynLoad) {
-            var room = ID.GetInt(0);
+            var room = ID.Get();
             for (int i = 0; i < room; i++)
                 this.AddRoom(this.transform.position);
         }
@@ -69,7 +69,7 @@ public class ContainerObject : MonoBehaviour, IResource {
     /// </summary>
     /// <returns></returns>
     public IEnumerator Load() {
-        var room = ID.GetInt(0);
+        var room = ID.Get();
         for (int i = 0; i < room; i++) {
             this.AddRoom(this.transform.position);
             yield return null;

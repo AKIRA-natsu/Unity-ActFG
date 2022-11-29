@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Vector3 = UnityEngine.Vector3;
 
-namespace ActFG.Behaviour {
+namespace AKIRA.Behaviour {
     public enum EmenyType {
         None,
         /// <summary>

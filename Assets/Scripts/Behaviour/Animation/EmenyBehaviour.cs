@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace ActFG.Behaviour {
+namespace AKIRA.Behaviour {
     public class EmenyBehaviour : EmenyBehaviourBase {
         // 移动目标点
         private Vector3 TargetPosition;

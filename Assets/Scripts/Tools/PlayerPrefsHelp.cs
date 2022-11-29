@@ -37,7 +37,7 @@ public static class PlayerPrefsHelp {
     /// <param name="key"></param>
     /// <param name="default">默认返回</param>
     /// <returns></returns>
-    public static int GetInt(this string key, int @default = 1) {
+    public static int GetInt(this string key, int @default = 0) {
         return PlayerPrefs.GetInt(key, @default);
     }
 
@@ -57,7 +57,7 @@ public static class PlayerPrefsHelp {
     /// <param name="key"></param>
     /// <param name="default">默认返回</param>
     /// <returns></returns>
-    public static float GetFloat(this string key, float @default = 0) {
+    public static float Get(this string key, float @default = 0) {
         return PlayerPrefs.GetFloat(key, @default);
     }
 
@@ -81,14 +81,14 @@ public static class PlayerPrefsHelp {
     /// 删除
     /// </summary>
     /// <param name="key"></param>
-    public static void DeleteKey(this string key) {
+    public static void Delete(this string key) {
         PlayerPrefs.DeleteKey(key);
     }
 
     /// <summary>
     /// 删除全部
     /// </summary>
-    public static void DeleteAll() {
+    public static void Delete() {
         PlayerPrefs.DeleteAll();
     }
 }

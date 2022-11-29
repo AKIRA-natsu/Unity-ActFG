@@ -7,6 +7,6 @@ public class MoneyManager : CurrencyManager<MoneyManager> {
     protected override string Key => "Money";
 
     protected MoneyManager() {
-        currency = Key.GetInt(0);
+        currency = Key.GetInt();
     }
 }
