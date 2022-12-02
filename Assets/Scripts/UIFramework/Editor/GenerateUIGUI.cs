@@ -10,7 +10,7 @@ using AKIRA.UIFramework;
 /// 自动生成 UI 脚本 (EditorGUI)
 /// </summary>
 public class GenerateUIGUI : EditorWindow {
-    [MenuItem("Tools/UI/CreateUI(Select Gameobjects)")]
+    [MenuItem("Tools/Framework/UI/CreateUI(Select Gameobjects)")]
     internal static void CreateUI() {
         var objs = Selection.gameObjects;
         if (objs == null || objs.Length == 0)
@@ -21,7 +21,7 @@ public class GenerateUIGUI : EditorWindow {
         }
     }
 
-    [MenuItem("Tools/UI/CreateUI(GUI)")]
+    [MenuItem("Tools/Framework/UI/CreateUI(GUI)")]
     public static void Open() {
         var gui = GetWindow<GenerateUIGUI>();
         gui.titleContent = new GUIContent("自动生成UI");
