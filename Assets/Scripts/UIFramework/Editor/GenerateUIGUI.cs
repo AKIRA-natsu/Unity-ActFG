@@ -31,7 +31,6 @@ public class GenerateUIGUI : EditorWindow {
     private string winName = "";
     private WinType chooseWinType = WinType.None;
 
-    internal static string rulePath = "Rule/UIRule";
     internal static UIRule rule = null;
     private static List<UINode> nodes = new List<UINode>();
     private static List<string> btns = new List<string>();
@@ -45,22 +44,21 @@ public class GenerateUIGUI : EditorWindow {
         EditorGUILayout.LabelField("自动生成 UI (GUI)");
         EditorGUILayout.Space();
 
-        rule = rulePath.Load<UIRule>();
+        rule = UIRule.DefaultPath.Load<UIRule>();
 
         if (rule == null) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.LabelField("未读取规则文件。。。请先读取规则文件");
+            EditorGUILayout.LabelField($"路径下没有规则文件 => {UIRule.DefaultPath}");
             EditorGUI.EndDisabledGroup();
 
-            if (GUILayout.Button("规则文件位置")) {
-                if (string.IsNullOrEmpty(rulePath))
-                    rulePath = Application.dataPath;
-                    rulePath = EditorUtility.OpenFilePanelWithFilters("选择文件位置", rulePath, new string[] {"Asset", "asset"});
+            // if (GUILayout.Button("规则文件位置")) {
+            //     var rulePath = Application.dataPath;
+            //     rulePath = EditorUtility.OpenFilePanelWithFilters("选择文件位置", rulePath, new string[] {"Asset", "asset"});
 
-                // 加上 Assets
-                rulePath = rulePath.Replace(Application.dataPath + "/Resources/", "").Split('.')[0];
-                rule = rulePath.Load<UIRule>();
-            }
+            //     // 加上 Assets
+            //     rulePath = rulePath.Replace(Application.dataPath + "/Resources/", "").Split('.')[0];
+            //     rule = rulePath.Load<UIRule>();
+            // }
             return;
         } else {
             EditorGUI.BeginDisabledGroup(true);
@@ -184,7 +182,7 @@ $@"        }}
     private static StringBuilder LinkControlContent(Transform _transform) {
         if (nodes.Count != 0) nodes.Clear();
         if (btns.Count != 0) btns.Clear();
-        if (rule == null) rule = rulePath.Load<UIRule>();
+        if (rule == null) rule = UIRule.DefaultPath.Load<UIRule>();
         TraverseUI(_transform.transform, "");
         StringBuilder content = new StringBuilder();
         // 最后一个是transform根节点

@@ -3,6 +3,11 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "UIRule", menuName = "Framework/UIFramework/UIRule", order = 0)]
 public class UIRule : ScriptableObject {
+    /// <summary>
+    /// 默认路径
+    /// </summary>
+    public const string DefaultPath = "Config/UIRule";
+    
     public UIControlRule[] rules = {};
 
     /// <summary>

@@ -16,7 +16,6 @@ public class RuleTestGUI : EditorWindow {
         gui.titleContent = new GUIContent("UI规则测试");
     }
 
-    internal string rulePath = "Rule/UIRule";
     private static UIRule rule = null;
     private List<UINode> nodes = new List<UINode>();
 
@@ -26,22 +25,22 @@ public class RuleTestGUI : EditorWindow {
         EditorGUILayout.LabelField("自动生成 UI (GUI)");
         EditorGUILayout.Space();
 
-        rule = rulePath.Load<UIRule>();
+        rule = UIRule.DefaultPath.Load<UIRule>();
 
         if (rule == null) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.LabelField("未读取规则文件");
+            EditorGUILayout.LabelField($"路径下没有规则文件 => {UIRule.DefaultPath}");
             EditorGUI.EndDisabledGroup();
 
-            if (GUILayout.Button("规则文件位置")) {
-                if (string.IsNullOrEmpty(rulePath))
-                    rulePath = Application.dataPath;
-                rulePath = EditorUtility.OpenFilePanelWithFilters("选择文件位置", rulePath, new string[] {"Asset", "asset"});
+            // if (GUILayout.Button("规则文件位置")) {
+            //     if (string.IsNullOrEmpty(rulePath))
+            //         rulePath = Application.dataPath;
+            //     rulePath = EditorUtility.OpenFilePanelWithFilters("选择文件位置", rulePath, new string[] {"Asset", "asset"});
 
-                // 加上 Assets
-                rulePath = rulePath.Replace(Application.dataPath + "/Resources/", "").Split('.')[0];
-                rule = rulePath.Load<UIRule>();
-            }
+            //     // 加上 Assets
+            //     rulePath = rulePath.Replace(Application.dataPath + "/Resources/", "").Split('.')[0];
+            //     rule = rulePath.Load<UIRule>();
+            // }
             return;
         } else {
             EditorGUI.BeginDisabledGroup(true);
