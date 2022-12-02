@@ -178,6 +178,7 @@ public class GuideWindow : EditorWindow {
         xml.DeleteXML();
         infos.Clear();
         xml = null;
+        xml = new XML(GuideManager.GuideDataPath);
     }
 
     /// <summary>

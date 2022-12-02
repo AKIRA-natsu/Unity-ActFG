@@ -44,9 +44,11 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <value></value>
         public IGuide CurrentIGuide { get; private set; }
-        
-        protected override void Awake() {
-            base.Awake();
+
+        private void Start() {
+            if (skip)
+                return;
+
             currentIndex = GuideIndexKey.GetInt();
             if (File.Exists(GuideDataPath)) {
                 XML xml = new XML(GuideDataPath);
@@ -66,12 +68,6 @@ namespace AKIRA.Manager {
                     }
                 });
             }
-        }
-
-        private void Start() {
-            if (skip)
-                return;
-
             if (currentIndex == infos.Count)
                 return;
             // UI初始化完成后开始指引

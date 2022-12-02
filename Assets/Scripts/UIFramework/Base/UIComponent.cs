@@ -13,7 +13,7 @@ namespace AKIRA.UIFramework {
         public override void Awake() {
             base.Awake();
             // 初始化创建
-            this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>().Instantiate().SetParent(UI.Root, true);
+            this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>().Instantiate().SetParent(UI.View, true);
             this.transform = gameObject.transform;
             BindFields();
         }

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using AKIRA.UIFramework;
+using AKIRA.Manager;
 
-namespace AKIRA.Manager {
+namespace AKIRA.UIFramework {
     /// <summary>
     /// UI 管理
     /// </summary>
@@ -18,10 +18,10 @@ namespace AKIRA.Manager {
 
         private UIManager() {
             // 默认 [UI] 为UI根节点
-            var root = GameObject.Find("[UI]");
+            var root = UI.UIManagerPath.Load<GameObject>();
             if (root == null)
-                $"[UI] 不存在！".Error();
-            UI.Initialize(root);
+                throw new ArgumentNullException($"{UI.UIManagerPath} 不存在");
+            UI.Initialize(root.Instantiate());
         }
 
         /// <summary>

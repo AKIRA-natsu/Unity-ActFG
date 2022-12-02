@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AKIRA.UIFramework;
 using UnityEngine;
 
 namespace AKIRA.Manager {
@@ -8,7 +9,7 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 游戏状态
         /// </summary>
-        public static GameState State { get; private set; }
+        public static GameState State { get; private set; } = GameState.None;
         // 上一个状态
         public GameState LastState { get; private set; }
 
@@ -17,12 +18,16 @@ namespace AKIRA.Manager {
         // 状态改变事件
         private Action<GameState> onStateChange;
 
+        // 是否初始化UI
+        public bool callUIInitialize = true;
+
         protected override void Awake() {
             base.Awake();
             // ProjectSetting => Qualitv => VSync Count: Dont VSync
             // Application.targetFrameRate = 60;
-            UIManager.Instance.Initialize();
-            State = GameState.None;
+
+            if (callUIInitialize)
+                UIManager.Instance.Initialize();
         }
 
         private void Start() {

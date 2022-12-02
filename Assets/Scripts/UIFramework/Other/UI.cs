@@ -3,12 +3,19 @@ using UnityEngine.UI;
 
 namespace AKIRA.UIFramework {
     public static class UI {
+        // UIManager路径
+        internal const string UIManagerPath = "UI/[UIManager]";
         // 根节点
-        public static GameObject Root { get; private set; }
+        public static GameObject ManagerGo { get; private set; }
         // Canvas
         public static Canvas Canvas { get; private set; }
         // UI Transform
         public static RectTransform Rect { get; private set; }
+
+        // 
+        public static GameObject View { get; private set; }
+        // 
+        public static GameObject Background { get; private set; }
 
         private static Camera uiCamera;
         /// <summary>
@@ -18,7 +25,7 @@ namespace AKIRA.UIFramework {
         public static Camera UICamera {
             get {
                 if (uiCamera == null)
-                    uiCamera = Root.GetComponentInChildren<Camera>();
+                    uiCamera = ManagerGo.GetComponentInChildren<Camera>();
                 return uiCamera;
             }
         }
@@ -28,9 +35,11 @@ namespace AKIRA.UIFramework {
         /// </summary>
         /// <param name="root">根节点</param>
         public static void Initialize(GameObject root) {
-            Root = root;
-            Canvas = Root.GetComponent<Canvas>();
-            Rect = Root.GetComponent<RectTransform>();
+            ManagerGo = root;
+            Canvas = ManagerGo.GetComponentInChildren<Canvas>();
+            Rect = Canvas.GetComponent<RectTransform>();
+            View = Rect.Find("Root/Views").gameObject;
+            Background = Rect.Find("Root/Background").gameObject;
         }
     }
 }

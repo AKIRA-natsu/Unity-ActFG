@@ -1,6 +1,7 @@
 using UnityEngine;
 using AKIRA.Manager;
 using System;
+using UnityEngine.InputSystem;
 
 namespace AKIRA.UIFramework {
     [Win(WinEnum.Guide, "UI/Guide", WinType.Normal)]
@@ -91,7 +92,7 @@ namespace AKIRA.UIFramework {
 
         public void GameUpdate() {
             if (GuideManager.Instance.CurrentIGuide == null) {
-                if (Input.GetMouseButtonDown(0)) {
+                if (Mouse.current.leftButton.isPressed) {
                     // 判断是否按在目标上
                     var hit = Physics2D.Raycast(UI.UICamera.transform.position, Input.mousePosition.ScreenToUGUI());
                     if (hit.collider != null && hit.collider.Equals(Rigid))

@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 185483243}
-  - component: {fileID: 185483244}
   - component: {fileID: 185483245}
+  - component: {fileID: 185483246}
   m_Layer: 0
   m_Name: '[GameManager]'
   m_TagString: Untagged
@@ -156,18 +156,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &185483244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185483242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 813d0efe5a206b3428db6ad501b15788, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &185483245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +168,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c51d286d241b042a7eea87d4b202e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &185483246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185483242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4929a0dfa6e2c2b4da5ebf1da406a915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  callUIInitialize: 1
 --- !u!1 &203844586
 GameObject:
   m_ObjectHideFlags: 0
