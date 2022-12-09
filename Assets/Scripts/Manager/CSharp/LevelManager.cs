@@ -14,7 +14,7 @@ namespace AKIRA.Manager {
         /// <value></value>
         public int Level {
             get => level;
-            set {
+            private set {
                 level = value;
                 onLevelChange?.Invoke(level);
                 LevelKey.Save(level);

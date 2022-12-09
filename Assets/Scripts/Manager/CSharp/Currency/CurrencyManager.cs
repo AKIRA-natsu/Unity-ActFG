@@ -12,7 +12,7 @@ namespace AKIRA.Manager {
         /// <value></value>
         public int Currency {
             get => currency;
-            set {
+            private set {
                 currency = value;
                 onCurrencyChange?.Invoke(currency);
                 Key.Save(currency);
