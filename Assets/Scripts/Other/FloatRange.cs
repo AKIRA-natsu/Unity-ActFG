@@ -12,7 +12,8 @@ public struct FloatRange
     /// <para>滑动值</para>
     /// <para>PropertyDrawer</para>
     /// </summary>
-    public float value;
+    [SerializeField]
+    private float value;
     /// <summary>
     /// 滑动值
     /// </summary>

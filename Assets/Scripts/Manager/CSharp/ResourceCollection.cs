@@ -34,7 +34,8 @@ namespace AKIRA.Manager {
                 onComplete = null;
             } else {
                 $"加载开始".Colorful(Color.green).Log();
-                CoroutineManager.Instance.Start(ResourceLoad());
+                // CoroutineManager.Instance.Start(ResourceLoad());
+                CoroutineMonoManager.StartCoroutine(ResourceLoad());
             }
         }
 
@@ -46,7 +47,7 @@ namespace AKIRA.Manager {
             var currentProgress = 0;
             foreach (var list in ResourceMap.Values) {
                 foreach (var res in list) {
-                    yield return CoroutineManager.Instance.Start(res.Load());
+                    yield return res.Load();
                     currentProgress++;
                     onLoad?.Invoke(currentProgress, totalProgress);
                 }

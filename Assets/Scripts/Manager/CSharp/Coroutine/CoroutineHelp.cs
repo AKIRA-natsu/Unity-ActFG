@@ -12,20 +12,15 @@ namespace AKIRA.Coroutine {
 
     public class WaitForSeconds : IWait {
         public float waitTime = 0;
-        private float saveTime = 0;
 
         public WaitForSeconds(float time) {
             waitTime = time;
-            saveTime = time;
         }
 
         bool IWait.Tick() {
             waitTime -= Time.deltaTime;
             // Debug.Log("[WaitForSeconds] now left: " + waitTime);
-            // return waitTime <= 0;
-            if (waitTime > 0) return false;
-            waitTime = saveTime;
-            return true;
+            return waitTime <= 0;
         }
     }
 

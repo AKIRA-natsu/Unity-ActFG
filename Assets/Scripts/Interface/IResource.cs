@@ -11,7 +11,8 @@ public interface IResource {
     public int order { get; }
 
     /// <summary>
-    /// 加载
+    /// <para>加载</para>
+    /// <para>ResourceCollection里用的是Mono的Coroutine</para>
     /// </summary>
     /// <returns></returns>
     IEnumerator Load();

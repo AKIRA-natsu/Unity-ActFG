@@ -20,7 +20,7 @@ namespace AKIRA.Manager {
             get {
                 if (instance == null) {
                     // 直接 return 初始化前被调用导致会报错
-                    GameObject manager = new GameObject($"[{typeof(T).Name}]");
+                    GameObject manager = new GameObject($"[{typeof(T).Name}]").DontDestory();
                     instance = manager.AddComponent(typeof(T)) as T;
                 }
                 return instance;
@@ -28,10 +28,8 @@ namespace AKIRA.Manager {
         }
 
         protected virtual void Awake() {
-            if (instance == null) {
+            if (instance == null)
                 instance = (T)this;
-                instance.gameObject.DontDestory();
-            }
             else
                 Destroy(gameObject);
         }
