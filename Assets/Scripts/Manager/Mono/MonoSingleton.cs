@@ -6,6 +6,7 @@ namespace AKIRA.Manager {
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [DefaultExecutionOrder(-2)]
+    [DisallowMultipleComponent]
     public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
         private static T instance;
