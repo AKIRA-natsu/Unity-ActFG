@@ -8,7 +8,14 @@ namespace AKIRA.AI {
     {
         public bool reachDestination;
 
-        public override void GameUpdate() { }
+        public override void GameUpdate() {
+            // FIXME: 测试视野
+            if (this.TryGetComponent<FieldView>(out FieldView view)) {
+                if (view.ViewRayHit(out RaycastHit hit)) {
+                    hit.transform.Log();
+                }
+            }
+        }
 
         public override void Recycle() { }
 
