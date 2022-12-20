@@ -3,7 +3,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
-/// 给Button使用的未点击时缩放动效
+/// <para>给Button使用的未点击时缩放动效</para>
+/// <para>punchTime需要统一！！</para>
 /// </summary>
 [RequireComponent(typeof(Button))]
 public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandler {
@@ -19,7 +20,16 @@ public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandle
     protected override void Awake() {
         base.Awake();
         selfButton = this.GetComponent<Button>();
+    }
+
+    protected override void OnEnable() {
+        base.OnEnable();
         useInstanceCount++;
+    }
+
+    protected override void OnDisable() {
+        base.OnDisable();
+        useInstanceCount--;
     }
 
     public override void GameUpdate() {
