@@ -28,6 +28,10 @@ public class DragObject : MonoBehaviour, IDrag {
         position.y = this.transform.position.y;
         this.transform.position = Vector3.Lerp(this.transform.position, position, Time.deltaTime * 10);
         var result = this.transform.position.TryGetIntersectPoint();
+        
+        if (image == null)
+            return;
+
         if (result.isCross) 
             // FIXME: 测试没有UIFrameword.UI 使用不需要参数
             image.anchoredPosition = result.crossPoint.ScreenToUGUI(image.parent.GetComponent<RectTransform>());

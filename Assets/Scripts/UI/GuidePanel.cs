@@ -94,7 +94,7 @@ namespace AKIRA.UIFramework {
             if (GuideManager.Instance.CurrentIGuide == null) {
                 if (Mouse.current.leftButton.isPressed) {
                     // 判断是否按在目标上
-                    var hit = Physics2D.Raycast(UI.UICamera.transform.position, Input.mousePosition.ScreenToUGUI());
+                    var hit = Physics2D.Raycast(UI.UICamera.transform.position, Mouse.current.position.ReadValue().ScreenToUGUI());
                     if (hit.collider != null && hit.collider.Equals(Rigid))
                         EndGuide();
                 }

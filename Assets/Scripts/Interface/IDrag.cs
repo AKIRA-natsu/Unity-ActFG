@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 拖拽接口
@@ -31,7 +32,8 @@ public static class DragExtend {
     /// <returns></returns>
     public static Vector3 GetDragPosition(this IDrag drag, Vector3 worldPosition, float height = 1) {
         var dis = (CameraExtend.Transform.position - worldPosition).magnitude;
-        var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dis);
+        var mouseCurrentPosition = Mouse.current.position.ReadValue();
+        var mousePosition = new Vector3(mouseCurrentPosition.x, mouseCurrentPosition.y, dis);
         var pos = CameraExtend.MainCamera.ScreenToWorldPoint(mousePosition);
         Vector3 fwd = CameraExtend.Transform.forward;
         float k = (height - pos.y) / fwd.y;

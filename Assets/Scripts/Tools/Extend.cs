@@ -314,6 +314,20 @@ public static class Extend {
     }
 
     /// <summary>
+    /// 屏幕坐标转UGUI坐标
+    /// </summary>
+    /// <param name="screenpos"></param>
+    /// <returns></returns>
+    public static Vector2 ScreenToUGUI(this Vector2 screenpos) {
+        Vector2 screenpos2 = new Vector2(screenpos.x - (Screen.width / 2), screenpos.y - (Screen.height / 2));
+        var UISize = UI.Rect.sizeDelta;
+        Vector2 uipos;
+        uipos.x = (screenpos2.x / Screen.width) * UISize.x;
+        uipos.y = (screenpos2.y / Screen.height) * UISize.y;
+        return uipos;
+    }
+
+    /// <summary>
     /// 屏幕坐标转 UGUI 坐标
     /// UI静态类没有初始化的时候添加Canvas.RectTransform使用
     /// </summary>

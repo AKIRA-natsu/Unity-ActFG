@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 摄像机范围点击表现
@@ -9,9 +10,23 @@ public class CameraClickBehaviour : CameraBehaviour {
     /// </summary>
     [SerializeField]
     private float radius;
+    /// <summary>
+    /// 是否只点击一次
+    /// </summary>
+    [SerializeField]
+    private bool callOnce = true;
+
+    /// <summary>
+    /// 是否已经按下
+    /// </summary>
+    private bool called = false;
 
     public override void GameUpdate() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Mouse.current.leftButton.isPressed) {
+            if (callOnce && called)
+                return;
+            if (callOnce && !called)
+                called = true;
             Ray ray = CameraExtend.MainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, System.Single.MaxValue)) {
                 if (hit.transform.TryGetComponent<IClick>(out IClick clickObject)) {
@@ -24,5 +39,8 @@ public class CameraClickBehaviour : CameraBehaviour {
                 }
             }
         }
+
+        if (callOnce && !Mouse.current.leftButton.isPressed)
+            called = false;
     }
 }
