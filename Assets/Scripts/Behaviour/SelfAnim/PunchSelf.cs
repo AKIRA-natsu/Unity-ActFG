@@ -23,7 +23,7 @@ public class PunchSelf : SelfAnim {
     // 缩放目标和当前的差值
     protected Vector3 punchOffset;
 
-    private void Awake() {
+    protected virtual void Awake() {
         originScale = this.transform.localScale;
     }
 

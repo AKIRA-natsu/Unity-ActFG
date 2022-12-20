@@ -18,10 +18,16 @@ public class UpgradeManager : Singleton<UpgradeManager> {
             var type = value.ToString().GetConfigTypeByAssembley();
             var upgradeBase = type.CreateInstance<UpgradeBase>();
             upgradeMap.Add(value, upgradeBase);
-            // UI初始化完成后注册升级按钮
-            // UIManager.Instance.RegistAfterUIIInitAction(() =>
-            //     UIManager.Instance.Get<UpgradePanel>().RegistUpgradeButton(upgradeBase));
         }
+
+        // UI初始化完成后注册升级按钮
+        // UIManager.Instance.RegistAfterUIIInitAction(() => {
+        //     var upgradePanel = UIManager.Instance.Get<UpgradePanel>();
+        //     foreach (var value in upgradeMap.Values)
+        //         upgradePanel.RegistUpgradeButton(value);
+        //     // 不会立刻适配，需要延迟一点时间
+        //     this.Delay(upgradePanel.EndButtonFitter, 0.3f);
+        // });
     }
 
     /// <summary>
