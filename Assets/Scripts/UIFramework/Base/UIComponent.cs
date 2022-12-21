@@ -6,6 +6,8 @@ namespace AKIRA.UIFramework {
     public class UIComponent : UIBase {
         public GameObject gameObject { get; private set; }
         public Transform transform { get; private set; }
+        // 优化UI页面的显示与隐藏
+        protected CanvasGroup group;
 
         // 可适配组件列表
         public List<RectTransform> MatchableList { get; private set; } = new List<RectTransform>();
@@ -16,6 +18,8 @@ namespace AKIRA.UIFramework {
             this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>().Instantiate().SetParent(UI.View, true);
             this.transform = gameObject.transform;
             BindFields();
+
+            group = this.gameObject.AddComponent<CanvasGroup>();
         }
 
         /// <summary>
@@ -37,7 +41,10 @@ namespace AKIRA.UIFramework {
         /// 显示
         /// </summary>
         public virtual void Show() {
-            this.gameObject.SetActive(true);
+            // this.gameObject.SetActive(true);
+            group.alpha = 1f;
+            group.blocksRaycasts = true;
+            group.interactable = true;
             this.OnEnter();
         }
 
@@ -45,7 +52,10 @@ namespace AKIRA.UIFramework {
         /// 隐藏
         /// </summary>
         public virtual void Hide() {
-            this.gameObject.SetActive(false);
+            // this.gameObject.SetActive(false);
+            group.alpha = 0f;
+            group.blocksRaycasts = false;
+            group.interactable = false;
             this.OnExit();
         }
 

@@ -12,9 +12,9 @@ namespace AKIRA.UIFramework {
             DialogGroup.alpha = 0f;
             Mask.Active(false);
             // 注册指引事件
-            GuideManager.Instance.RegistOnGuideFinishAction(() => this.gameObject.SetActive(false));
-            GuideManager.Instance.RegistOnGuideUIResumeAction(() => this.gameObject.SetActive(true));
-            GuideManager.Instance.RegistOnGuideUIPauseAction(() => this.gameObject.SetActive(false));
+            GuideManager.Instance.RegistOnGuideFinishAction(Hide);
+            GuideManager.Instance.RegistOnGuideUIResumeAction(Show);
+            GuideManager.Instance.RegistOnGuideUIPauseAction(Hide);
         }
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace AKIRA.Manager {
                     }
                 });
             }
-            if (currentIndex == infos.Count)
+            if (currentIndex == infos.Count || infos.Count == 0)
                 return;
             // UI初始化完成后开始指引
             UIManager.Instance.RegistAfterUIIInitAction(() => StartCoroutine(StartGuide(currentIndex)));
