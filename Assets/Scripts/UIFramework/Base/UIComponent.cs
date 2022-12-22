@@ -3,7 +3,7 @@ using UnityEngine;
 using AKIRA.Manager;
 
 namespace AKIRA.UIFramework {
-    public class UIComponent : UIBase {
+    public abstract class UIComponent : UIBase {
         public GameObject gameObject { get; private set; }
         public Transform transform { get; private set; }
         // 优化UI页面的显示与隐藏
@@ -12,14 +12,33 @@ namespace AKIRA.UIFramework {
         // 可适配组件列表
         public List<RectTransform> MatchableList { get; private set; } = new List<RectTransform>();
 
-        public override void Awake() {
-            base.Awake();
+        public override void Awake(WinType type) {
             // 初始化创建
-            this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>().Instantiate().SetParent(UI.View, true);
+            this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>()
+                                                .Instantiate()
+                                                .SetParent(GetParent(type), true);
             this.transform = gameObject.transform;
             BindFields();
 
             group = this.gameObject.AddComponent<CanvasGroup>();
+        }
+
+        /// <summary>
+        /// 获得UI Game Object父节点
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private GameObject GetParent(WinType type) {
+            switch (type) {
+                case WinType.Normal:
+                    return UI.View;
+                // case WinType.Interlude:
+                //     return 
+                case WinType.Notify:
+                    return UI.Background;
+                default:
+                    return UI.View;
+            }
         }
 
         /// <summary>

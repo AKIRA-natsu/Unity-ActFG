@@ -40,7 +40,7 @@ namespace AKIRA.UIFramework {
                 if (info.Data.@enum != WinEnum.None)
                     UIDataManager.Instance.Register(com, info.Data);
                 // Awake UI
-                com.Awake();
+                com.Awake(info.Data.@type);
                 // 注册在 UIManager
                 AddUI(com);
             }

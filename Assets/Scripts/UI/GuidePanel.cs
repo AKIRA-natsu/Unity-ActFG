@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 namespace AKIRA.UIFramework {
     [Win(WinEnum.Guide, "UI/Guide", WinType.Normal)]
     public class GuidePanel : GuidePanelProp, IUpdate {
-        public override void Awake() {
-            base.Awake();
+        public override void Awake(WinType type) {
+            base.Awake(type);
             // 初始化隐藏
             DialogGroup.alpha = 0f;
             Mask.Active(false);

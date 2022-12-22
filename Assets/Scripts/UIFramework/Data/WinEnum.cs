@@ -13,6 +13,8 @@ namespace AKIRA.UIFramework {
         Setting,
         [Remark("指引界面")]
         Guide,
+        [Remark("贝塞尔界面")]
+        Bezier,
         [Remark("测试")]
         Test,
     }
