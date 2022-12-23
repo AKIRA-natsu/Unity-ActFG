@@ -15,8 +15,6 @@ public class CameraFollowBehaviour : CameraBehaviour {
     public bool follow = false;
 
     private void Start() {
-        UpdateManager.Instance.Regist(this, mode);
-
         offset = this.transform.position - target.position;
     }
 

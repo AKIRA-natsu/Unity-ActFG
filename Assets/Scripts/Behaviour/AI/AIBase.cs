@@ -14,6 +14,8 @@ namespace AKIRA.AI {
             get {
                 if (ianima == null)
                     ianima = this.GetComponentInChildren<IAnima>();
+                if (ianima == null)
+                    throw new System.NullReferenceException($"{this.name}: AI下没有动画脚本");
                 return ianima;
             }
         }
