@@ -57,7 +57,7 @@ public static class PlayerPrefsHelp {
     /// <param name="key"></param>
     /// <param name="default">默认返回</param>
     /// <returns></returns>
-    public static float Get(this string key, float @default = 0) {
+    public static float GetFloat(this string key, float @default = 0) {
         return PlayerPrefs.GetFloat(key, @default);
     }
 

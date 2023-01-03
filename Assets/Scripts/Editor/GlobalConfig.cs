@@ -22,8 +22,8 @@ public class LayerConfig {
     /// <param name="path"></param>
     [MenuItem("Tools/Framework/LayerConfig/Update Layer")]
     private static void UpdateLayer() {
-        var path = LayerConfigKey.GetString();
-        if (String.IsNullOrEmpty(LayerConfigKey.GetString()))
+        var path = EditorPrefsHelp.GetString(LayerConfigKey);
+        if (String.IsNullOrEmpty(path))
             return;
         // 检查文件是否还存在
         if (!File.Exists(path)) {
@@ -60,7 +60,8 @@ public static class Layer {
 
     [MenuItem("Tools/Framework/LayerConfig/Show Layer Save Path")]
     private static void ShowLayerSavePath() {
-        LayerConfigKey.GetString().Colorful(Color.green).Log();
+        var path = EditorPrefsHelp.GetString(LayerConfigKey);
+        path.GetString().Colorful(Color.green).Log();
     }
 
     [MenuItem("Tools/Framework/LayerConfig/Select & Save Path Data")]
@@ -69,7 +70,7 @@ public static class Layer {
         // 确保后缀
         if (path.EndsWith(".cs")) {
             $"保存LayerConfig路径位置 => {path}".Colorful(Color.cyan).Log();
-            LayerConfigKey.Save(path);
+            EditorPrefsHelp.Set(LayerConfigKey, path);
             UpdateLayer();
         }
     }
@@ -77,8 +78,7 @@ public static class Layer {
     [MenuItem("Tools/Framework/LayerConfig/Delete Path Data")]
     private static void DeletePathData() {
         $"删除LayerConfig保存路径".Colorful(Color.cyan).Log();
-        LayerConfigKey.Delete();
+        EditorPrefsHelp.Delete(LayerConfigKey);
     }
-
 
 }
