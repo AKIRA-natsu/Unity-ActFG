@@ -1,1 +1,4 @@
 https://danielilett.com/2020-03-21-tut5-urp-cel-shading/
+
+Unity Tutorials - Scripting, Shaders, Everything
+https://www.youtube.com/playlist?list=PLsaDw3p1XpJiPp3v5gUyxuWkmUn3eB731
