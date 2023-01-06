@@ -160,8 +160,8 @@ $@"using UnityEngine;
 namespace AKIRA.UIFramework {{
     [Win(WinEnum.{@enum}, ""{objPath}"", WinType.{@type})]
     public class {name}Panel : {name}PanelProp {{
-        public override void Awake() {{
-            base.Awake();";
+        public override void Awake(WinType type) {{
+            base.Awake(type);";
         panelContent += $"\n{LinkBtnListen()}";
         panelContent +=
 $@"        }}
