@@ -26,7 +26,7 @@ public class GuideWindow : EditorWindow {
 
         // 清掉上一次打开的列表
         infos.Clear();
-        if (File.Exists(GuideManager.GuideDataPath)) {
+        if (xml.Exist()) {
             xml.Read((x) => {
                 var nodes= x.SelectSingleNode("Data").ChildNodes;
                 foreach (XmlElement node in nodes) {
@@ -140,7 +140,7 @@ public class GuideWindow : EditorWindow {
             });
         }
 
-        xml.UpdateXML((x) => {
+        xml.Update((x) => {
             XmlNode data = x.SelectSingleNode("Data");
             var nodes = data.ChildNodes;
             for (int i = 0; i < nodes.Count; i++) {
@@ -175,7 +175,7 @@ public class GuideWindow : EditorWindow {
     private void DeleteFile() {
         if (!File.Exists(GuideManager.GuideDataPath))
             return;
-        xml.DeleteXML();
+        xml.Delete();
         infos.Clear();
         xml = null;
         xml = new XML(GuideManager.GuideDataPath);

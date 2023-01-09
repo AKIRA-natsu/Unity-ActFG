@@ -22,11 +22,6 @@ public class XML {
     /// </summary>
     /// <param name="create"></param>
     public void Create(Action<XmlDocument> create) {
-        if (Exist()) {
-            $"XML: 文件已存在 => {path}".Colorful(Color.cyan).Log();
-            return;
-        }
-        
         // 设置编码
         XmlDeclaration xmlDeclaration = xml.CreateXmlDeclaration("1.0", "UTF-8", "");
         
@@ -42,9 +37,6 @@ public class XML {
     /// </summary>
     /// <param name="add"></param>
     public void Add(Action<XmlDocument> add) {
-        if (!Exist())
-            return;
-        
         // 具体内容
         add.Invoke(xml);
 
@@ -57,9 +49,6 @@ public class XML {
     /// </summary>
     /// <param name="read"></param>
     public void Read(Action<XmlDocument> read) {
-        if (!Exist())
-            return;
-        
         read.Invoke(xml);
         $"XML: 读取{path}成功".Colorful(Color.cyan).Log();
     }
@@ -68,10 +57,7 @@ public class XML {
     /// 更新
     /// </summary>
     /// <param name="update"></param>
-    public void UpdateXML(Action<XmlDocument> update) {
-        if (!Exist())
-            return;
-        
+    public void Update(Action<XmlDocument> update) {
         update.Invoke(xml);
 
         xml.Save(path);
@@ -82,10 +68,7 @@ public class XML {
     /// 删除
     /// </summary>
     /// <param name="delete"></param>
-    public void DeleteXML(Action<XmlDocument> delete) {
-        if (!Exist())
-            return;
-        
+    public void Delete(Action<XmlDocument> delete) {
         delete.Invoke(xml);
 
         xml.Save(path);
@@ -95,7 +78,7 @@ public class XML {
     /// <summary>
     /// 删除xml文件
     /// </summary>
-    public void DeleteXML() {
+    public void Delete() {
         if (!Exist())
             return;
         
@@ -107,7 +90,7 @@ public class XML {
     /// 检查是否存在文件
     /// </summary>
     /// <returns></returns>
-    private bool Exist() {
+    public bool Exist() {
         if (!File.Exists(path))
             return false;
 
