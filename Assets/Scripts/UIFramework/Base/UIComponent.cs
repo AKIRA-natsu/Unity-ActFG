@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using AKIRA.Manager;
@@ -32,8 +33,8 @@ namespace AKIRA.UIFramework {
             switch (type) {
                 case WinType.Normal:
                     return UI.View;
-                // case WinType.Interlude:
-                //     return 
+                case WinType.Interlude:
+                    return UI.Top;
                 case WinType.Notify:
                     return UI.Background;
                 default:
@@ -54,6 +55,23 @@ namespace AKIRA.UIFramework {
                 if (uIControl.Matchable)
                     MatchableList.Add(this.transform.Find(uIControl.Path).GetComponent<RectTransform>());
             }
+        }
+
+        /// <summary>
+        /// 内部获得UI
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected T Get<T>() where T : UIComponent {
+            return UIManager.Instance.Get<T>();
+        }
+
+        /// <summary>
+        /// 内部注册UI事件
+        /// </summary>
+        /// <param name="action"></param>
+        protected void RegistAfterUIInited(Action action) {
+            UIManager.Instance.RegistAfterUIIInitAction(action);
         }
 
         /// <summary>

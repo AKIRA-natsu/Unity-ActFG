@@ -12,10 +12,12 @@ namespace AKIRA.UIFramework {
         // UI Transform
         public static RectTransform Rect { get; private set; }
 
-        // 
+        // 视图
         public static GameObject View { get; private set; }
-        // 
+        // 背景 最下层
         public static GameObject Background { get; private set; }
+        // 顶部 最上层
+        public static GameObject Top { get; private set; }
 
         private static Camera uiCamera;
         /// <summary>
@@ -40,6 +42,7 @@ namespace AKIRA.UIFramework {
             Rect = Canvas.GetComponent<RectTransform>();
             View = Rect.Find("Root/Views").gameObject;
             Background = Rect.Find("Root/Background").gameObject;
+            Top = Rect.Find("Root/Top").gameObject;
         }
     }
 }

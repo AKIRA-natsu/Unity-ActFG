@@ -9,7 +9,7 @@ using UnityEngine;
 /// <para>一个容器对应一个收集类型，对应一个排序方式</para>
 /// </summary>
 [SelectionBase]
-public class ContainerObject : MonoBehaviour, IResource {
+public class ContainerObject : MonoBehaviour {
     // 存储键值
     private string ID;
 
@@ -39,12 +39,6 @@ public class ContainerObject : MonoBehaviour, IResource {
     /// </summary>
     public bool Empty => Room <= 0;
 
-    public int order => 0;
-
-    [CNName("异步初始化加载")]
-    // 异步初始化加载
-    public bool asynLoad = false;
-
     private void Awake() {
         ID = this.GetComponentID();
         containerSortBase = this.GetComponent<ContainerSortBase>();
@@ -52,28 +46,12 @@ public class ContainerObject : MonoBehaviour, IResource {
             containerSortBase = this.gameObject.AddComponent<ContainerSortRecycle>();
         
         roomLimit = this.GetComponent<ContainerRoomLimit>();
-        if (asynLoad)
-            ResourceCollection.Instance.Regist(this, order);
     }
 
     private void Start() {
-        if (!asynLoad) {
-            var room = ID.GetFloat();
-            for (int i = 0; i < room; i++)
-                this.AddRoom(this.transform.position);
-        }
-    }
-
-    /// <summary>
-    /// 异步加载
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator Load() {
-        var room = ID.GetFloat();
-        for (int i = 0; i < room; i++) {
+        var room = ID.GetInt();
+        for (int i = 0; i < room; i++)
             this.AddRoom(this.transform.position);
-            yield return null;
-        }
     }
 
     /// <summary>
@@ -134,10 +112,7 @@ public class ContainerObject : MonoBehaviour, IResource {
     /// </summary>
     /// <param name="onRoomChange"></param>
     public void RegistOnRoomChangeAction(Action<int> onRoomChange) {
-        if (asynLoad)
-            ResourceCollection.Instance.RegistOnCompleteAction(() => onRoomChange.Invoke(Room));
-        else
-            onRoomChange.Invoke(Room);
+        onRoomChange.Invoke(Room);
         this.onRoomChange += onRoomChange;
     }
 

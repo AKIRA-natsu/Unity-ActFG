@@ -1,3 +1,4 @@
+using System.Collections;
 using System;
 using System.Collections.Generic;
 using AKIRA.UIFramework;
@@ -30,12 +31,10 @@ namespace AKIRA.Manager {
                 UIManager.Instance.Initialize();
         }
 
-        private void Start() {
-            // $"切换Ads平台，UI进行适配屏幕".Colorful(Color.green).Log();
-            // var collection = UIManager.Instance.MatchableColleation();
-
-            ResourceCollection.Instance.Load();
-        }
+        // private void Start() {
+        //     // $"切换Ads平台，UI进行适配屏幕".Colorful(Color.green).Log();
+        //     // var collection = UIManager.Instance.MatchableColleation();
+        // }
 
         /// <summary>
         /// 切换游戏状态
@@ -108,6 +107,14 @@ namespace AKIRA.Manager {
                 if (state == State)
                     return true;
             return false;
+        }
+
+        /// <summary>
+        /// 协程辅助
+        /// </summary>
+        /// <param name="coroutine"></param>
+        public void CoroutineHelp(IEnumerator coroutine) {
+            StartCoroutine(coroutine);
         }
     }
 }

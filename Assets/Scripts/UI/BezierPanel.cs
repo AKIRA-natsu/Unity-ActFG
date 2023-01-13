@@ -8,7 +8,7 @@ namespace AKIRA.UIFramework {
     /// <summary>
     /// 应对要多个Bezier表现的时候用
     /// </summary>
-    [Win(WinEnum.Bezier, "UI/Bezier", WinType.Normal)]
+    [Win(WinEnum.Bezier, "UI/Bezier", WinType.Notify)]
     public class BezierPanel : BezierPanelProp {
         // Tween go 前缀路劲
         private const string Path = "Prefabs/";

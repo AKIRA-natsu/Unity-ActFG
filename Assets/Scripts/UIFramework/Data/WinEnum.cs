@@ -15,6 +15,8 @@ namespace AKIRA.UIFramework {
         Guide,
         [Remark("贝塞尔界面")]
         Bezier,
+        [Remark("过渡界面")]
+        Transition,
         [Remark("测试")]
         Test,
     }
