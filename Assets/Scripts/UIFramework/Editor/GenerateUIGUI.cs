@@ -10,6 +10,7 @@ using AKIRA.UIFramework;
 /// 自动生成 UI 脚本 (EditorGUI)
 /// </summary>
 public class GenerateUIGUI : EditorWindow {
+#region MenuItem Tools
     [MenuItem("Tools/Framework/UI/CreateUI(Select Gameobjects)")]
     internal static void CreateUI() {
         var objs = Selection.gameObjects;
@@ -21,12 +22,23 @@ public class GenerateUIGUI : EditorWindow {
         }
     }
 
+    [MenuItem("Tools/Framework/UI/UpdateUIProp(Select GameObject)")]
+    internal static void UpdateUI() {
+        var obj = Selection.activeGameObject;
+        if (obj == null)
+            $"未选择物体".Colorful(Color.yellow).Log();
+        UpdateUI(obj);
+    }
+
+
     [MenuItem("Tools/Framework/UI/CreateUI(GUI)")]
     public static void Open() {
         var gui = GetWindow<GenerateUIGUI>();
         gui.titleContent = new GUIContent("自动生成UI");
     }
+#endregion
 
+#region params
     private WinEnum chooseWinEnum = WinEnum.None;
     private string winName = "";
     private WinType chooseWinType = WinType.None;
@@ -34,6 +46,7 @@ public class GenerateUIGUI : EditorWindow {
     internal static UIRule rule = null;
     private static List<UINode> nodes = new List<UINode>();
     private static List<string> btns = new List<string>();
+#endregion
 
     private void OnGUI() {
         GameObject obj = null;
@@ -175,6 +188,40 @@ $@"        }}
     }
 
     /// <summary>
+    /// 更新UI Prop脚本
+    /// </summary>
+    /// <param name="obj"></param>
+    internal static void UpdateUI(GameObject obj) {
+        var name = obj.name;
+        var propPath = $"Assets/Scripts/UI/{name}PanelProp.cs";
+        if (!File.Exists(propPath)) {
+            $"{propPath}下不存在{name}PanelProp.cs".Colorful(Color.red).Log();
+            return;
+        }
+
+        File.Delete(propPath);
+        string propContent =
+        #region code
+
+$@"using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+namespace AKIRA.UIFramework {{
+    public class {name}PanelProp : UIComponent {{";
+        propContent += $"\n{LinkControlContent(obj.transform)}";
+        propContent +=
+$@"    }}
+}}";
+        #endregion
+
+        File.WriteAllText(propPath, propContent);
+        $"更新prop.cs完毕\n路劲为{propPath}".Colorful(Color.cyan).Log();
+        AssetDatabase.Refresh();
+    }
+
+#region 辅助事件
+    /// <summary>
     /// 获得UI个节点组件
     /// </summary>
     /// <param name="_transform"></param>
@@ -230,4 +277,5 @@ $@"        }}
 
         nodes.Add(new UINode(parent.name, path));
     }
+#endregion
 }

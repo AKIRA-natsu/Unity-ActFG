@@ -17,16 +17,19 @@ namespace AKIRA.Manager {
 
         public static bool IsApplicationOut { get; private set; } = false;
 
-        public static T Instance {
-            get {
-                if (instance == null) {
-                    // 直接 return 初始化前被调用导致会报错
-                    GameObject manager = new GameObject($"[{typeof(T).Name}]").DontDestory();
-                    instance = manager.AddComponent(typeof(T)) as T;
-                }
-                return instance;
-            }
-        }
+        // 舍弃自动生成Manager防止报错的方式
+        // public static T Instance {
+        //     get {
+        //         if (instance == null) {
+        //             // 直接 return 初始化前被调用导致会报错
+        //             GameObject manager = new GameObject($"[{typeof(T).Name}]").DontDestory();
+        //             instance = manager.AddComponent(typeof(T)) as T;
+        //         }
+        //         return instance;
+        //     }
+        // }
+
+        public static T Instance => instance;
 
         protected virtual void Awake() {
             if (instance == null)

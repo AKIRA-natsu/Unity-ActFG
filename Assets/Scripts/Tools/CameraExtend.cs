@@ -26,6 +26,11 @@ public static class CameraExtend {
     public static Transform Transform => MainCamera.transform;
 
     /// <summary>
+    /// 是否存在主摄像机
+    /// </summary>
+    public static bool ExistMainCamera => mainCamera != null;
+
+    /// <summary>
     /// 主摄像机下的脚本
     /// </summary>
     /// <typeparam name="CameraBehaviour"></typeparam>

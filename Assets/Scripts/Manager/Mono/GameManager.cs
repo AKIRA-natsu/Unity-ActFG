@@ -20,7 +20,8 @@ namespace AKIRA.Manager {
         private Action<GameState> onStateChange;
 
         // 是否初始化UI
-        public bool callUIInitialize = true;
+        [SerializeField]
+        private bool callUIInitialize = true;
 
         protected override void Awake() {
             base.Awake();

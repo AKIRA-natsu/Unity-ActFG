@@ -3,7 +3,6 @@ using UnityEngine;
 /// <summary>
 /// 摄像机表现基类
 /// </summary>
-[DefaultExecutionOrder(1)]
 public abstract class CameraBehaviour : MonoBehaviour, IUpdate {
     // 更新模式
     public UpdateMode mode = UpdateMode.Update;

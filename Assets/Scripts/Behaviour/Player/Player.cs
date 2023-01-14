@@ -1,8 +1,9 @@
-using System;
 using AKIRA.AI;
 using AKIRA.Manager;
+using AKIRA.Behaviour.Prepare;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class Player : AIBase {
     // 更新方式
@@ -32,6 +33,14 @@ public class Player : AIBase {
         InputActions.Player.Jump.performed += OnJumpPreformed;
         
         this.Regist(mode);
+
+        // 主摄像机参数设置
+        var camera = Environment.GetCamera<CinemachineFreeLook>();
+        camera.gameObject.SetActive(true);
+        camera.LookAt = this.transform;
+        camera.Follow = this.transform;
+        // Middle Rig
+        camera.GetRig(1).LookAt = this.transform;
     }
 
     /// <summary>

@@ -21,7 +21,7 @@ namespace AKIRA.UIFramework {
             var root = UI.UIManagerPath.Load<GameObject>();
             if (root == null)
                 throw new ArgumentNullException($"{UI.UIManagerPath} 不存在");
-            UI.Initialize(root.Instantiate());
+            UI.Initialize(root.Instantiate().DontDestory());
         }
 
         /// <summary>
