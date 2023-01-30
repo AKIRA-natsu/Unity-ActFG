@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class XML {
     /// <summary>
@@ -14,8 +15,26 @@ public class XML {
     /// </summary>
     /// <returns></returns>
     private XmlDocument xml = new XmlDocument();
+    /// <summary>
+    /// <para>只读</para>
+    /// <para>true下安卓平台修改路径</para>
+    /// </summary>
+    private bool @readonly;
 
-    public XML(string path) => this.path = path;
+    /// <summary>
+    /// 默认存储StreamingAssets
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="readonly">true下 Android | IOS 平台修改路径</param>
+    public XML(string path, bool @readonly = true) {
+        this.@readonly = @readonly;
+
+        if (!@readonly && Application.platform == (RuntimePlatform.Android | RuntimePlatform.IPhonePlayer)) {
+            this.path = Path.Combine(Application.persistentDataPath, path);
+        } else {
+            this.path = Path.Combine(Application.streamingAssetsPath, path);
+        }
+    }
 
     /// <summary>
     /// 创建
@@ -33,18 +52,6 @@ public class XML {
     }
 
     /// <summary>
-    /// 添加
-    /// </summary>
-    /// <param name="add"></param>
-    public void Add(Action<XmlDocument> add) {
-        // 具体内容
-        add.Invoke(xml);
-
-        xml.Save(path);
-        $"XML: 添加{path}成功".Colorful(Color.cyan).Log();
-    }
-
-    /// <summary>
     /// 读取
     /// </summary>
     /// <param name="read"></param>
@@ -54,7 +61,7 @@ public class XML {
     }
 
     /// <summary>
-    /// 更新
+    /// 添加/更新/删除
     /// </summary>
     /// <param name="update"></param>
     public void Update(Action<XmlDocument> update) {
@@ -62,17 +69,6 @@ public class XML {
 
         xml.Save(path);
         $"XML: 更新{path}成功".Colorful(Color.cyan).Log();
-    }
-
-    /// <summary>
-    /// 删除
-    /// </summary>
-    /// <param name="delete"></param>
-    public void Delete(Action<XmlDocument> delete) {
-        delete.Invoke(xml);
-
-        xml.Save(path);
-        $"XML: 删除{path}成功".Colorful(Color.cyan).Log();
     }
 
     /// <summary>
@@ -87,14 +83,30 @@ public class XML {
     }
 
     /// <summary>
-    /// 检查是否存在文件
+    /// <para>检查是否存在文件</para>
+    /// <para>Android | IOS 使用UnityWebRequest</para>
+    /// <para>来源：https://answers.unity.com/questions/1247609/android-streamingasset-problems-with-xml-files.html</para>
     /// </summary>
     /// <returns></returns>
     public bool Exist() {
+#if UNITY_ANDROID || UNITY_IOS
+        if (@readonly) {
+            UnityWebRequest request = UnityWebRequest.Get(path);
+            var operation = request.SendWebRequest();
+            while (!operation.isDone) {}
+            if (request.result == (UnityWebRequest.Result.ConnectionError | UnityWebRequest.Result.ProtocolError))
+                return false;
+            
+            xml.LoadXml(request.downloadHandler.text);
+        } else {
+#endif
         if (!File.Exists(path))
             return false;
 
         xml.Load(path);
+#if UNITY_ANDROID || UNITY_IOS
+        }
+#endif
         return true;
     }
 }

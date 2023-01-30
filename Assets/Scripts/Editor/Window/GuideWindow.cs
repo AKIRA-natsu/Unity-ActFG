@@ -11,7 +11,7 @@ using AKIRA.Manager;
 /// </summary>
 public class GuideWindow : EditorWindow {
     // XML文件
-    private static XML xml = new XML(GuideManager.GuideDataPath);
+    private static XML xml = new XML(GuideManager.GuideDataPath, false);
 
     // 指引列表转换
     private static List<GuideInfo> infos = new List<GuideInfo>();
@@ -133,7 +133,7 @@ public class GuideWindow : EditorWindow {
 
         // 删除后的重新新建xml文件
         if (xml == null) {
-            xml = new XML(GuideManager.GuideDataPath);
+            xml = new XML(GuideManager.GuideDataPath, false);
             xml.Create((x) => {
                 var root = x.CreateElement("Data");
                 x.AppendChild(root);
@@ -178,7 +178,7 @@ public class GuideWindow : EditorWindow {
         xml.Delete();
         infos.Clear();
         xml = null;
-        xml = new XML(GuideManager.GuideDataPath);
+        xml = new XML(GuideManager.GuideDataPath, false);
     }
 
     /// <summary>

@@ -12,7 +12,7 @@ namespace AKIRA.Manager {
     /// </summary>
     public class GuideManager : MonoSingleton<GuideManager> {
         // 路径
-        public static string GuideDataPath { get; } = Path.Combine(Application.streamingAssetsPath, "GuideXML.xml");
+        public const string GuideDataPath = "GuideXML.xml";
 
         // 指引列表转换
         private List<GuideInfo> infos = new List<GuideInfo>();
