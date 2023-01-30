@@ -11,10 +11,10 @@ using AKIRA.Manager;
 /// </summary>
 public class GuideWindow : EditorWindow {
     // XML文件
-    private static XML xml = new XML(GuideManager.GuideDataPath, false);
+    private XML xml;
 
     // 指引列表转换
-    private static List<GuideInfo> infos = new List<GuideInfo>();
+    private List<GuideInfo> infos = new List<GuideInfo>();
     // ScrollView滑动
     private Vector2 scrollView;
 
@@ -23,35 +23,39 @@ public class GuideWindow : EditorWindow {
         var window = GetWindow<GuideWindow>();
         window.titleContent = new GUIContent("GuideWindow");
         window.Show();
-
-        // 清掉上一次打开的列表
-        infos.Clear();
-        if (xml.Exist()) {
-            xml.Read((x) => {
-                var nodes= x.SelectSingleNode("Data").ChildNodes;
-                foreach (XmlElement node in nodes) {
-                    infos.Add(new GuideInfo() {
-                        ID = node.GetAttribute(GuideInfoName.ID).TryParseInt(),
-                        completeType = (GuideCompleteType)node.GetAttribute(GuideInfoName.GuideCompleteType).TryParseInt(),
-                        isShowBg = node.GetAttribute(GuideInfoName.IsShowBg).TryParseInt() == 1,
-                        dialog = node.GetAttribute(GuideInfoName.Dialog),
-                        dialogDirection = (GuideDialogDirection)node.GetAttribute(GuideInfoName.DialogDirection).TryParseInt(),
-                        arrowTarget = GameObject.Find(node.GetAttribute(GuideInfoName.ArrowTargetPath)),
-                        reachDistance = node.GetAttribute(GuideInfoName.ReachDistance).TryParseFloat(),
-                        controlByIGuide = node.GetAttribute(GuideInfoName.ControlByIGuide).TryParseInt() == 1,
-                    });
-                }
-            });
-        } else {
-            xml.Create((x) => {
-                var root = x.CreateElement("Data");
-                x.AppendChild(root);
-            });
-            AssetDatabase.Refresh();
-        }
     }
 
     private void OnGUI() {
+        // 第一次打开窗口读取指引数据
+        if (xml == null) {
+            xml = new XML(GuideManager.GuideDataPath, false);
+            // 清掉上一次打开的列表
+            infos.Clear();
+            if (xml.Exist()) {
+                xml.Read((x) => {
+                    var nodes= x.SelectSingleNode("Data").ChildNodes;
+                    foreach (XmlElement node in nodes) {
+                        infos.Add(new GuideInfo() {
+                            ID = node.GetAttribute(GuideInfoName.ID).TryParseInt(),
+                            completeType = (GuideCompleteType)node.GetAttribute(GuideInfoName.GuideCompleteType).TryParseInt(),
+                            isShowBg = node.GetAttribute(GuideInfoName.IsShowBg).TryParseInt() == 1,
+                            dialog = node.GetAttribute(GuideInfoName.Dialog),
+                            dialogDirection = (GuideDialogDirection)node.GetAttribute(GuideInfoName.DialogDirection).TryParseInt(),
+                            arrowTarget = GameObject.Find(node.GetAttribute(GuideInfoName.ArrowTargetPath)),
+                            reachDistance = node.GetAttribute(GuideInfoName.ReachDistance).TryParseFloat(),
+                            controlByIGuide = node.GetAttribute(GuideInfoName.ControlByIGuide).TryParseInt() == 1,
+                        });
+                    }
+                });
+            } else {
+                xml.Create((x) => {
+                    var root = x.CreateElement("Data");
+                    x.AppendChild(root);
+                });
+                AssetDatabase.Refresh();
+            }
+        }
+
         GUILayout.BeginHorizontal();
         GUILayout.Label($"Path: {GuideManager.GuideDataPath}");
         GUILayout.EndHorizontal();

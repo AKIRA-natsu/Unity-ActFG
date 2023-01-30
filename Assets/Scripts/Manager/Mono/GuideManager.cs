@@ -50,8 +50,8 @@ namespace AKIRA.Manager {
                 return;
 
             currentIndex = GuideIndexKey.GetInt();
-            if (File.Exists(GuideDataPath)) {
-                XML xml = new XML(GuideDataPath);
+            XML xml = new XML(GuideDataPath);
+            if (xml.Exist()) {
                 xml.Read((x) => {
                     var nodes= x.SelectSingleNode("Data").ChildNodes;
                     foreach (XmlElement node in nodes) {

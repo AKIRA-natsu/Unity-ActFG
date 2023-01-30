@@ -28,7 +28,7 @@ public static class CameraExtend {
     /// <summary>
     /// 是否存在主摄像机
     /// </summary>
-    public static bool ExistMainCamera => mainCamera != null;
+    public static bool ExistMainCamera => MainCamera != null;
 
     /// <summary>
     /// 主摄像机下的脚本
