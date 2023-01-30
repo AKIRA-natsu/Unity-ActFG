@@ -47,6 +47,7 @@ public class GuideWindow : EditorWindow {
                 var root = x.CreateElement("Data");
                 x.AppendChild(root);
             });
+            AssetDatabase.Refresh();
         }
     }
 
@@ -173,7 +174,7 @@ public class GuideWindow : EditorWindow {
     /// 删除文件
     /// </summary>
     private void DeleteFile() {
-        if (!File.Exists(GuideManager.GuideDataPath))
+        if (!xml.Exist())
             return;
         xml.Delete();
         infos.Clear();
