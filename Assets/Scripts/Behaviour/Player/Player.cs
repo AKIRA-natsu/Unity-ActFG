@@ -74,7 +74,8 @@ public class Player : AIBase {
     /// </summary>
     /// <param name="inputPosition"></param>
     private void Move(Vector2 inputPosition) {
-        Vector3 dir = new Vector3(inputPosition.x, 0f, inputPosition.y);
+        // 相对摄像机的前后左右
+        Vector3 dir = Quaternion.Euler(0, CameraExtend.Transform.localEulerAngles.y, 0) * new Vector3(inputPosition.x, 0, inputPosition.y);
         if (dir.sqrMagnitude == 0f)
             moveDir = Vector3.zero;
         else
