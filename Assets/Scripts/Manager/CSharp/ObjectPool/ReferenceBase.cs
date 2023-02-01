@@ -44,7 +44,7 @@ namespace AKIRA.Manager {
         }
 
         /// <summary>
-        /// 为Component移除对象引用
+        /// 为Component移除对象引用（多个中的第一个）
         /// </summary>
         /// <param name="component"></param>
         /// <param name="refer"></param>
@@ -62,6 +62,29 @@ namespace AKIRA.Manager {
                 }
                 $"{component}不包含{typeof(T)}引用".Colorful(Color.red).Log();
                 return false;
+            } else {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 为Component移除对象引用（指定）
+        /// </summary>
+        /// <param name="component"></param>
+        /// <param name="refer"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static bool Detach<T>(this Component component, T refer) where T : ReferenceBase, new() {
+            if (ComponentReferenceMap.ContainsKey(component)) {
+                var componentList = ComponentReferenceMap[component];
+                if (componentList.Contains(refer)) {
+                    componentList.Remove(refer);
+                    ReferencePool.Instance.Destory(refer);
+                    return true;
+                } else {
+                    $"{component}不包含{typeof(T)}引用".Colorful(Color.red).Log();
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -86,7 +109,7 @@ namespace AKIRA.Manager {
         }
 
         /// <summary>
-        /// 获得Component的 T 引用
+        /// 获得Component的 T 引用（多个中的第一个）
         /// </summary>
         /// <param name="component"></param>
         /// <typeparam name="T"></typeparam>

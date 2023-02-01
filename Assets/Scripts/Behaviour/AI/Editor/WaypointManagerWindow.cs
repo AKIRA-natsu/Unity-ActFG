@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using AKIRA.AI;
+using AKIRA.Behaviour.AI;
 
 public class WaypointManagerWindow : EditorWindow {
     public Transform waypointRoot;

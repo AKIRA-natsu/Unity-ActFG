@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AKIRA.AI {
+namespace AKIRA.Behaviour.AI {
     public class Waypoint : MonoBehaviour {
         /// <summary>
         /// 當人物從當前 Waypoint 的下個 Waypoint 方向走來，上個 Waypoint 即為人物接續的目標點。

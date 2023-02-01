@@ -17,15 +17,17 @@ public abstract class SelfAnim : MonoBehaviour, IUpdate {
     [CNName("自动更新")]
     [SerializeField]
     protected bool auto = false;
+    // 自身动画组
+    private const string AnimationGroup = "SelfAnimation";
 
     protected virtual void OnEnable() {
         if (auto)
-            this.Regist();
+            this.Regist(AnimationGroup);
     }
 
     protected virtual void OnDisable() {
         if (auto)
-            this.Remove();
+            this.Remove(AnimationGroup);
     }
 
     public abstract void GameUpdate();

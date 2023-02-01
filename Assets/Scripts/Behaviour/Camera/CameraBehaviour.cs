@@ -6,13 +6,15 @@ using UnityEngine;
 public abstract class CameraBehaviour : MonoBehaviour, IUpdate {
     // 更新模式
     public UpdateMode mode = UpdateMode.Update;
+    // 摄像机更新组
+    protected const string CameraGroup = "Camera";
 
     private void OnEnable() {
-        this.Regist(mode);
+        this.Regist(CameraGroup, mode);
     }
 
     private void OnDisable() {
-        this.Remove(mode);
+        this.Remove(CameraGroup, mode);
     }
 
     public abstract void GameUpdate();

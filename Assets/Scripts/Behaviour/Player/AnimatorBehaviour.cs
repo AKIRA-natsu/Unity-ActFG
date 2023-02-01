@@ -1,5 +1,5 @@
 using System;
-using AKIRA.AI;
+using AKIRA.Behaviour.AI;
 using UnityEngine;
 
 public class AnimatorBehaviour : MonoBehaviour, IAnima

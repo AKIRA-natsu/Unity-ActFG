@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AKIRA.AI {
+namespace AKIRA.Behaviour.AI {
     [RequireComponent(typeof(CharacterNavigationController))]
     public class WaypointNavigator : MonoBehaviour, IUpdate {
         private CharacterNavigationController controller;

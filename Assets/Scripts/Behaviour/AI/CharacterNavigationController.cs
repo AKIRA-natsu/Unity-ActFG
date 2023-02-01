@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AKIRA.AI {
+namespace AKIRA.Behaviour.AI {
     public class CharacterNavigationController : AIBase
     {
         // 是否到目标

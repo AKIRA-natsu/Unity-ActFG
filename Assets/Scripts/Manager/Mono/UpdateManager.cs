@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AKIRA.Coroutine;
 using AKIRA.Manager;
+using UnityEngine;
 using Time = UnityEngine.Time;
 
 /// <summary>
@@ -41,24 +42,42 @@ public class SpaceUpdateInfo {
 }
 
 /// <summary>
-/// 更新驱动管理
+/// 更新组
 /// </summary>
-public class UpdateManager : MonoSingleton<UpdateManager> {
+public class UpdateGroup : ReferenceBase {
     // 更新列表
     private Dictionary<UpdateMode, List<IUpdate>> updateMap = new Dictionary<UpdateMode, List<IUpdate>>();
     // 间隔更新列表
     private Dictionary<UpdateMode, List<SpaceUpdateInfo>> spaceUpdateMap = new Dictionary<UpdateMode, List<SpaceUpdateInfo>>();
 
     // 更新列表 面板
-    public IReadOnlyDictionary<UpdateMode, List<IUpdate>> inspectorMap => updateMap;
+    public IReadOnlyDictionary<UpdateMode, List<IUpdate>> UpdateMap => updateMap;
+    // 间隔更新列表 面板
+    public IReadOnlyDictionary<UpdateMode, List<SpaceUpdateInfo>> SpaceUpdateMap => spaceUpdateMap;
 
-    protected override void Awake() {
-        base.Awake();
+    // 更新中
+    public bool Updating { get; set; } = true;
+
+    public UpdateGroup() {
         // 表初始化
-        foreach (var mode in Enum.GetValues(typeof(UpdateMode))) {
-            updateMap.Add((UpdateMode)mode, new List<IUpdate>());
-            spaceUpdateMap.Add((UpdateMode)mode, new List<SpaceUpdateInfo>());
+        foreach (UpdateMode mode in Enum.GetValues(typeof(UpdateMode))) {
+            updateMap.Add(mode, new List<IUpdate>());
+            spaceUpdateMap.Add(mode, new List<SpaceUpdateInfo>());
         }
+    }
+
+    public override void Wake() {
+        base.Wake();
+        Updating = true;
+    }
+
+    public override void Recycle() {
+        base.Recycle();
+        Updating = false;
+        foreach (var value in updateMap.Values)
+            value.Clear();
+        foreach (var value in spaceUpdateMap.Values)
+            value.Clear();
     }
 
     /// <summary>
@@ -114,6 +133,107 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
             }
         }
     }
+}
+
+/// <summary>
+/// 更新驱动管理
+/// </summary>
+public class UpdateManager : MonoSingleton<UpdateManager> {
+    // 更新组列表
+    private Dictionary<string, UpdateGroup> groupMap = new Dictionary<string, UpdateGroup>();
+    // 默认组
+    public const string Default = "Default";
+
+    // 更新组 面板
+    public IReadOnlyDictionary<string, UpdateGroup> GroupMap => groupMap;
+
+    /// <summary>
+    /// <para>注册更新 <paramref name="update" /></para>
+    /// <para>只注册无参类型，有参类型根据实际情况父物体遍历子节点更新</para>
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="key">组键值</param>
+    /// <param name="mode">更新类型</param>
+    public void Regist(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
+        if (groupMap.ContainsKey(key)) {
+            groupMap[key].Regist(update, mode);
+        } else {
+            var group = this.Attach<UpdateGroup>();
+            group.Regist(update, mode);
+            groupMap.Add(key, group);
+        }
+    }
+
+    /// <summary>
+    /// 注册间隔更新 <paramref name="update" />
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="interval"></param>
+    /// <param name="key">组键值</param>
+    /// <param name="mode"></param>
+    public void Regist(IUpdate update, float interval, string key = Default, UpdateMode mode = UpdateMode.Update) {
+        if (groupMap.ContainsKey(key)) {
+            groupMap[key].Regist(update, interval, mode);
+        } else {
+            var group = this.Attach<UpdateGroup>();
+            group.Regist(update, interval, mode);
+            groupMap.Add(key, group);
+        }
+    }
+
+    /// <summary>
+    /// 移除更新
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="key">组键值</param>
+    /// <param name="mode">更新类型</param>
+    public void Remove(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
+        if (groupMap.ContainsKey(key)) {
+            groupMap[key].Remove(update, mode);
+        } else {
+            $"Update Log Message: Remove {key} Not Find!".Colorful(Color.yellow).Log();
+        }
+    }
+
+    /// <summary>
+    /// 移除间隔更新
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="key">组键值</param>
+    /// <param name="mode"></param>
+    public void RemoveSpaceUpdate(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
+        if (groupMap.ContainsKey(key)) {
+            groupMap[key].RemoveSpaceUpdate(update, mode);
+        } else {
+            $"Update Log Message: Remove {key} Not Find!".Colorful(Color.yellow).Log();
+        }
+    }
+
+    /// <summary>
+    /// 移除组
+    /// </summary>
+    /// <param name="key"></param>
+    public void DetachGroup(string key) {
+        if (groupMap.ContainsKey(key)) {
+            this.Detach(groupMap[key]);
+            groupMap.Remove(key);
+        } else {
+            $"Update Log Message: Detach Group {key} Not Find!".Colorful(Color.yellow).Log();
+        }
+    }
+
+    /// <summary>
+    /// 开启/关闭组的更新
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="enable"></param>
+    public void EnableGroupUpdate(string key, bool enable) {
+        if (groupMap.ContainsKey(key)) {
+            groupMap[key].Updating = enable;
+        } else {
+            $"Update Log Message: Enable/Disable Group Update {key} Not Find!".Colorful(Color.yellow).Log();
+        }
+    }
 
     private void Update() {
         // 协程更新
@@ -132,19 +252,26 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// </summary>
     /// <param name="mode"></param>
     private void Update(UpdateMode mode) {
-        // 遍历更新
-        var updateList = updateMap[mode];
-        for (int i = 0; i < updateList.Count; i++)
-            updateList[i].GameUpdate();
-        // 遍历更新间隔
-        var spaceUpdateList = spaceUpdateMap[mode];
-        for (int i = 0; i < spaceUpdateList.Count; i++) {
-            var info = spaceUpdateList[i];
-            if (Time.time - info.lastUpdateTime <= info.interval)
+        var groups = new List<UpdateGroup>(groupMap.Values);
+        for (int i = 0; i < groups.Count; i++) {
+            var group = groups[i];
+            // 停止组更新
+            if (!group.Updating)
                 continue;
-            // 更新并更新时间
-            info.iupdate.GameUpdate();
-            info.lastUpdateTime = Time.time;
+            // 遍历更新
+            var updateList = group.UpdateMap[mode];
+            for (int j = 0; j < updateList.Count; j++)
+                updateList[j].GameUpdate();
+            // 遍历更新间隔
+            var spaceUpdateList = group.SpaceUpdateMap[mode];
+            for (int j = 0; j < spaceUpdateList.Count; j++) {
+                var info = spaceUpdateList[j];
+                if (Time.time - info.lastUpdateTime <= info.interval)
+                    continue;
+                // 更新并更新时间
+                info.iupdate.GameUpdate();
+                info.lastUpdateTime = Time.time;
+            }
         }
     }
 }
@@ -158,9 +285,22 @@ public static class UpdateExtend {
     /// <para>等同于 UpdateManager.Instance.Regist</para>
     /// </summary>
     /// <param name="update"></param>
+    /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public static void Regist(this IUpdate update, UpdateMode mode = UpdateMode.Update) {
-        UpdateManager.Instance.Regist(update, mode);
+    public static void Regist(this IUpdate update, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
+        UpdateManager.Instance.Regist(update, key, mode);
+    }
+
+    /// <summary>
+    /// <para>注册间隔更新</para>
+    /// <para>等同于 UpdateManager.Instance.Regist</para>
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="interval"></param>
+    /// <param name="key">组键值</param>
+    /// <param name="mode"></param>
+    public static void Regist(this IUpdate update, float interval, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
+        UpdateManager.Instance.Regist(update, interval, key, mode);
     }
 
     /// <summary>
@@ -168,10 +308,32 @@ public static class UpdateExtend {
     /// <para>等同于 UpdateManager.Instance.Remove</para>
     /// </summary>
     /// <param name="update"></param>
+    /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public static void Remove(this IUpdate update, UpdateMode mode = UpdateMode.Update) {
+    public static void Remove(this IUpdate update, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
         if (UpdateManager.IsApplicationOut)
             return;
-        UpdateManager.Instance.Remove(update, mode);
+        UpdateManager.Instance.Remove(update, key, mode);
+    }
+
+    /// <summary>
+    /// <para>移除更新</para>
+    /// <para>等同于 UpdateManager.Instance.RemoveSpaceUpdate</para>
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="key">组键值</param>
+    /// <param name="mode"></param>
+    public static void RemoveSpaceUpdate(this IUpdate update, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
+        if (UpdateManager.IsApplicationOut)
+            return;
+        UpdateManager.Instance.RemoveSpaceUpdate(update, key, mode);
+    }
+
+    /// <summary>
+    /// 启用组更新
+    /// </summary>
+    /// <param name="key"></param>
+    public static void EnableGroupUpdate(this string key, bool updating) {
+        UpdateManager.Instance.EnableGroupUpdate(key, updating);
     }
 }

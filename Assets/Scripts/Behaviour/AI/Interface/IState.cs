@@ -1,4 +1,4 @@
-namespace AKIRA.AI {
+namespace AKIRA.Behaviour.AI {
     public interface IState {
         
     }

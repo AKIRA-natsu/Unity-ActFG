@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AKIRA.AI {
+namespace AKIRA.Behaviour.AI {
     /// <summary>
     /// 基类
     /// </summary>

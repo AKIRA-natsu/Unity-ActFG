@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AKIRA.Manager;
 using UnityEngine;
 
-namespace AKIRA.AI {
+namespace AKIRA.Behaviour.AI {
     public class PedestrianSpawner : MonoBehaviour {
         public GameObject pedestrianPrefab;
         public int pedestriansToSpawn;

@@ -7,16 +7,8 @@ namespace AKIRA.Manager {
     /// <typeparam name="T"></typeparam>
     [DefaultExecutionOrder(-2)]
     [DisallowMultipleComponent]
-    public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
-    {
+    public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T> {
         private static T instance;
-
-        /// <summary>
-        /// 检测程序是否退出
-        /// </summary>
-
-        public static bool IsApplicationOut { get; private set; } = false;
-
         // 舍弃自动生成Manager防止报错的方式
         // public static T Instance {
         //     get {
@@ -30,6 +22,23 @@ namespace AKIRA.Manager {
         // }
 
         public static T Instance => instance;
+
+        /// <summary>
+        /// 检测程序是否退出
+        /// </summary>
+        public static bool IsApplicationOut { get; private set; } = false;
+
+        /// <summary>
+        /// 获得或创建默认Instance
+        /// </summary>
+        /// <returns></returns>
+        public static T GetOrCreateDefaultInstance() {
+            if (instance == null) {
+                GameObject manager = new GameObject($"[{typeof(T).Name}]").DontDestory();
+                instance = manager.AddComponent(typeof(T)) as T;
+            }
+            return instance;
+        }
 
         protected virtual void Awake() {
             if (instance == null)

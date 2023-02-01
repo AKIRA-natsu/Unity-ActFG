@@ -1,4 +1,4 @@
-using AKIRA.AI;
+using AKIRA.Behaviour.AI;
 using AKIRA.Manager;
 using AKIRA.Behaviour.Prepare;
 using UnityEngine;
@@ -27,12 +27,12 @@ public class Player : AIBase {
 
     private void Start() {
         var inputSystem = PlayerInputSystem.Instance;
-        inputSystem.RegistOnInputSwitchPlayer(() => this.Regist(mode));
-        inputSystem.RegistOnInputSwitchUI(() => this.Remove(mode));
+        inputSystem.RegistOnInputSwitchPlayer(() => this.Regist(mode : mode));
+        inputSystem.RegistOnInputSwitchUI(() => this.Remove(mode : mode));
         InputActions.Player.Run.performed += OnRunPreformed;
         InputActions.Player.Jump.performed += OnJumpPreformed;
         
-        this.Regist(mode);
+        this.Regist(mode : mode);
 
         // 主摄像机参数设置
         var camera = Environment.GetCamera<CinemachineFreeLook>();
