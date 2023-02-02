@@ -3,7 +3,7 @@ using Cinemachine;
 using UnityEngine;
 
 /// <summary>
-/// 晚上身体摄像机跟随点
+/// 玩家身体摄像机跟随点
 /// </summary>
 public class PlayerCameraBodyPoint : MonoBehaviour {
     private void Start() {
