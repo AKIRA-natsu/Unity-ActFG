@@ -85,6 +85,11 @@ namespace AKIRA.Manager {
                 //         InputActions.Enable();
                 //     })
                 //     .Start();
+
+            // FIXME: 电脑下鼠标隐藏/显示
+#if UNITY_EDITOR || UNITY_STANDALONE
+            Cursor.visible = Keyboard.current.leftAltKey.isPressed;
+#endif
         }
 
         /// <summary>

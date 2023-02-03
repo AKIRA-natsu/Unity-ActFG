@@ -9,7 +9,7 @@ namespace AKIRA.Behaviour.AI {
         public int pedestriansToSpawn;
 
         private void Start() {
-            this.Repeat(Spawn, pedestriansToSpawn, 1f);
+            this.UniRepeat(Spawn, pedestriansToSpawn, 1f);
         }
 
         private void Spawn(int index) {

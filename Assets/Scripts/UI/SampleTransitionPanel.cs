@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace AKIRA.UIFramework {
     [Win(WinEnum.Transition, "UI/SampleTransition", WinType.Interlude)]
@@ -17,8 +17,8 @@ namespace AKIRA.UIFramework {
 
         // 过渡事件
         private Action onTransition;
-        // 切换场景事件 协程 一次
-        private List<IEnumerator> coroutines = new List<IEnumerator>();
+        // 切换场景事件 异步
+        private List<UniTask> tasks = new List<UniTask>();
         // 过渡结束事件
         private Action onTransitionEnd;
 
@@ -39,13 +39,13 @@ namespace AKIRA.UIFramework {
         }
 
         /// <summary>
-        /// 注册协程事件
+        /// 注册异步事件
         /// </summary>
-        /// <param name="coroutine"></param>
-        public void RegistTransitionAction(IEnumerator coroutine) {
-            if (coroutines.Contains(coroutine))
+        /// <param name="task"></param>
+        public void RegistTransitionAction(UniTask task) {
+            if (tasks.Contains(task))
                 return;
-            coroutines.Add(coroutine);
+            tasks.Add(task);
         }
 
         /// <summary>
@@ -65,13 +65,13 @@ namespace AKIRA.UIFramework {
         }
 
         /// <summary>
-        /// 移除协程事件
+        /// 移除异步事件
         /// </summary>
-        /// <param name="coroutine"></param>
-        public void RemoveTransitionAction(IEnumerator coroutine) {
-            if (!coroutines.Contains(coroutine))
+        /// <param name="task"></param>
+        public void RemoveTransitionAction(UniTask task) {
+            if (!tasks.Contains(task))
                 return;
-            coroutines.Remove(coroutine);
+            tasks.Remove(task);
         }
 
         /// <summary>
@@ -87,54 +87,48 @@ namespace AKIRA.UIFramework {
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public IEnumerator StartTransition(Color color) {
+        public void StartTransition(Color color) {
             TransitionImg.color = color;
-            yield return StartTransition();
+            StartTransition();
         }
 
         /// <summary>
         /// 过渡
         /// </summary>
         /// <returns></returns>
-        public IEnumerator StartTransition() {
-            yield return null;
-        
+        private async void StartTransition() {
             TransitionRect.anchoredPosition = StartPosition;
             Show();
             // 图片上移动画
             var position = TransitionRect.anchoredPosition;
-            while (Vector3.Distance(position, Vector2.zero) >= 0.01f) {
+            await this.UniRepeat(() => {
                 position = Vector3.Lerp(position, Vector2.zero, Time.deltaTime * AnimationSpeed);
                 TransitionRect.anchoredPosition = position;
-                yield return null;
-            }
+            }, () => Vector3.Distance(position, Vector2.zero) >= 0.01f);
             // 图片到达中央，进行放大
             var scale = StartScale;
-            while (Vector3.Distance(scale, TargetScale) >= 0.01f) {
+            await this.UniRepeat(() => {
                 scale = Vector3.Lerp(scale, TargetScale, Time.deltaTime * AnimationSpeed);
                 TransitionRect.localScale = scale;
-                yield return null;
-            }
+            }, () => Vector3.Distance(scale, TargetScale) >= 0.01f);
 
             // 运行过渡事件
-            // 先执行协程事件
-            foreach (var coroutine in coroutines)
-                yield return coroutine;
+            // 先执行异步事件
+            foreach (var task in tasks)
+                await task;
             // 执行事件
             onTransition?.Invoke();
 
             // 事件完成 图片开始缩小
-            while (Vector3.Distance(scale, StartScale) >= 0.01f) {
+            await this.UniRepeat(() => {
                 scale = Vector3.Lerp(scale, StartScale, Time.deltaTime * AnimationSpeed);
                 TransitionRect.localScale = scale;
-                yield return null;
-            }
+            }, () => Vector3.Distance(scale, StartScale) >= 0.01f);
             // 图片回到开始位置
-            while (Vector3.Distance(position, StartPosition) >= 0.01f) {
+            await this.UniRepeat(() => {
                 position = Vector3.Lerp(position, StartPosition, Time.deltaTime * AnimationSpeed);
                 TransitionRect.anchoredPosition = position;
-                yield return null;
-            }
+            }, () => Vector3.Distance(position, StartPosition) >= 0.01f);
 
             // 过渡完成，隐藏页面
             Hide();

@@ -59,11 +59,11 @@ namespace AKIRA.UIFramework {
         }
 
         public void Wake() {
-            this.Regist();
+            this.Regist(UI.UIGroup);
         }
 
         public void Recycle() {
-            this.Remove();
+            this.Remove(UI.UIGroup);
         }
     }
 }

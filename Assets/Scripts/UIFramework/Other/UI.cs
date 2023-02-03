@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace AKIRA.UIFramework {
     public static class UI {
@@ -18,6 +17,11 @@ namespace AKIRA.UIFramework {
         public static GameObject Background { get; private set; }
         // 顶部 最上层
         public static GameObject Top { get; private set; }
+
+        /// <summary>
+        /// UI更新组
+        /// </summary>
+        internal const string UIGroup = "UI";
 
         private static Camera uiCamera;
         /// <summary>

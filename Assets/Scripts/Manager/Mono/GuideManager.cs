@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using AKIRA.UIFramework;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AKIRA.Manager {
@@ -20,6 +21,8 @@ namespace AKIRA.Manager {
         private GuideCompleteType lastType = GuideCompleteType.None;
 
         // 当前指引键值
+        [CNName("当前指引键值", true)]
+        [SerializeField]
         private int currentIndex = 0;
         // 存储名称
         private const string GuideIndexKey = "GuideIndexKey";
@@ -71,13 +74,13 @@ namespace AKIRA.Manager {
             if (currentIndex == infos.Count || infos.Count == 0)
                 return;
             // UI初始化完成后开始指引
-            UIManager.Instance.RegistAfterUIIInitAction(() => StartCoroutine(StartGuide(currentIndex)));
+            UIManager.Instance.RegistAfterUIIInitAction(() => StartGuide(currentIndex));
         }
 
         /// <summary>
         /// 开始指引
         /// </summary>
-        private IEnumerator StartGuide(int index) {
+        private async void StartGuide(int index) {
             var info = infos[index];
             
             // 如果是IGuide控制，while直到解锁为止
@@ -87,8 +90,7 @@ namespace AKIRA.Manager {
                 onGuideUIPause?.Invoke();
                 onGuide3DPause?.Invoke();
                 // 循环判断
-                while (!CurrentIGuide.UnlockCondition())
-                    yield return null;
+                await UniTask.WaitUntil(CurrentIGuide.UnlockCondition);
             }
 
             if (info.completeType == GuideCompleteType.UIWorld) {
@@ -126,7 +128,7 @@ namespace AKIRA.Manager {
                 return;
             }
             
-            this.Delay(() => StartCoroutine(StartGuide(currentIndex)), waitTime);
+            this.UniDelay(() => StartGuide(currentIndex), waitTime);
         }
 
         /// <summary>

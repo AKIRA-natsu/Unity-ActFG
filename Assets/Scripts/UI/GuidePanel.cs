@@ -40,16 +40,16 @@ namespace AKIRA.UIFramework {
                 UpdateDialogPosition(info.dialogDirection);
                 DialogContext.text = info.dialog;
                 if (DialogGroup.alpha <= 0.99f) {
-                    this.Repeat(() => {
+                    this.UniRepeat(() => {
                         DialogGroup.alpha = Mathf.Lerp(DialogGroup.alpha, 1f, Time.deltaTime * 5f);
-                    }, () => DialogGroup.alpha <= 0.99f).End(() => {
+                    }, () => DialogGroup.alpha <= 0.99f).UniCompleted(() => {
                         DialogGroup.alpha = 1f;
                     });
                 }
             }
 
             Rigid.enabled = true;
-            this.Regist();
+            this.Regist(UI.UIGroup);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace AKIRA.UIFramework {
         /// 结束教程
         /// </summary>
         private void EndGuide() {
-            this.Remove();
+            this.Remove(UI.UIGroup);
             Rigid.enabled = false;
             Mask.Active(false);
             GuideManager.Instance.NextGuide(0.3f);

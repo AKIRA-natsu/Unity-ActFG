@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using AKIRA.Coroutine;
 using AKIRA.Manager;
 using UnityEngine;
 using Time = UnityEngine.Time;
@@ -235,11 +234,8 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
         }
     }
 
-    private void Update() {
-        // 协程更新
-        CoroutineManager.Instance.UpdateCoroutine();
-        Update(UpdateMode.Update);
-    }
+    private void Update()
+        => Update(UpdateMode.Update);
 
     private void FixedUpdate()
         => Update(UpdateMode.FixedUpdate);
