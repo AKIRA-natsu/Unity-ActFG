@@ -9,7 +9,7 @@ namespace AKIRA.UIFramework {
         public override void Awake(WinType type) {
             base.Awake(type);
             // 初始化隐藏
-            DialogGroup.alpha = 0f;
+            Hide();
             Mask.Active(false);
             // 注册指引事件
             GuideManager.Instance.RegistOnGuideFinishAction(Hide);
@@ -35,7 +35,7 @@ namespace AKIRA.UIFramework {
             }
 
             if (info.dialogDirection == GuideDialogDirection.None || String.IsNullOrWhiteSpace(info.dialog)) {
-                DialogGroup.alpha = 0f;
+                Hide();
             } else {
                 UpdateDialogPosition(info.dialogDirection);
                 DialogContext.text = info.dialog;

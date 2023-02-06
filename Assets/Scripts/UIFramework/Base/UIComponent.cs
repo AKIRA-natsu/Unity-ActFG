@@ -12,6 +12,10 @@ namespace AKIRA.UIFramework {
 
         // 可适配组件列表
         public List<RectTransform> MatchableList { get; private set; } = new List<RectTransform>();
+        /// <summary>
+        /// 是否激活
+        /// </summary>
+        public bool Active { get; protected set; } = true;
 
         public override void Awake(WinType type) {
             // 初始化创建
@@ -82,6 +86,7 @@ namespace AKIRA.UIFramework {
             group.alpha = 1f;
             group.blocksRaycasts = true;
             group.interactable = true;
+            Active = true;
             this.OnEnter();
         }
 
@@ -93,6 +98,7 @@ namespace AKIRA.UIFramework {
             group.alpha = 0f;
             group.blocksRaycasts = false;
             group.interactable = false;
+            Active = false;
             this.OnExit();
         }
 
