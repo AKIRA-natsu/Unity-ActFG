@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using AKIRA.Manager;
+using UnityEditorInternal;
 
 /// <summary>
 /// Guide Editor
@@ -17,12 +18,60 @@ public class GuideWindow : EditorWindow {
     private List<GuideInfo> infos = new List<GuideInfo>();
     // ScrollView滑动
     private Vector2 scrollView;
+    // 
+    private ReorderableList guideList;
 
     [MenuItem("Tools/Framework/GuideWindow")]
     private static void ShowWindow() {
         var window = GetWindow<GuideWindow>();
         window.titleContent = new GUIContent("GuideWindow");
         window.Show();
+    }
+
+    private void OnEnable() {
+        guideList = new ReorderableList(infos, typeof(GuideInfo));
+        guideList.drawElementCallback = DrawElement;
+        guideList.drawHeaderCallback = DrawElementHeader;
+        guideList.onChangedCallback = UpdateInfoID;
+    }
+
+    private void OnDisable() {
+        guideList = null;
+    }
+
+    /// <summary>
+    /// 更新键值
+    /// </summary>
+    /// <param name="list"></param>
+    private void UpdateInfoID(ReorderableList list) {
+        for (int i = 0; i < infos.Count; i++) {
+            infos[i].ID = i;
+        }
+    }
+
+    /// <summary>
+    /// 元素绘制
+    /// </summary>
+    /// <param name="rect"></param>
+    /// <param name="index"></param>
+    /// <param name="isActive"></param>
+    /// <param name="isFocused"></param>
+    private void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+        GuideInfo element = guideList.list[index] as GuideInfo;
+        EditorGUI.LabelField(new Rect(rect.x, rect.y, 100, EditorGUIUtility.singleLineHeight), $"Guide Index {element.ID}");
+        EditorGUI.LabelField(new Rect(rect.x + 100, rect.y, rect.width - 100, EditorGUIUtility.singleLineHeight), $"{element.completeType}");
+
+        if (index == guideList.index) {
+            DrawInfoProperty(element, index);
+        }
+    }
+
+    /// <summary>
+    /// 列表名称
+    /// </summary>
+    /// <param name="rect"></param>
+    private void DrawElementHeader(Rect rect) {
+        EditorGUI.LabelField(rect, "Guide Infos");
     }
 
     private void OnGUI() {
@@ -32,6 +81,8 @@ public class GuideWindow : EditorWindow {
             if (xml.Exist()) {
                 xml.Read((x) => {
                     var nodes= x.SelectSingleNode("Data").ChildNodes;
+                    // 清空上一次
+                    infos.Clear();
                     foreach (XmlElement node in nodes) {
                         infos.Add(new GuideInfo() {
                             ID = node.GetAttribute(GuideInfoName.ID).TryParseInt(),
@@ -58,65 +109,17 @@ public class GuideWindow : EditorWindow {
         GUILayout.Label($"Path: {GuideManager.GuideDataPath}");
         GUILayout.EndHorizontal();
 
-        if (GUILayout.Button("Create Guide")) {
-            infos.Add(new GuideInfo() {
-                ID = infos.Count,
-            });
-        }
-
+        EditorGUILayout.BeginHorizontal("box");
         if (GUILayout.Button("Save File"))
             SaveFile();
         
         if (GUILayout.Button("Delete File"))
             DeleteFile();
+        EditorGUILayout.EndHorizontal();
 
         scrollView = EditorGUILayout.BeginScrollView(scrollView);
-        for (int i = 0; i < infos.Count; i++) {
-            var info = infos[i];
-
-            // 设置排颜色（info类决定）
-            var message = info.GetInfoGUIMessage();
-            GUI.color = message.Color;
-            GUILayout.BeginHorizontal("box");
-            EditorGUILayout.BeginVertical("frameBox");
-            if (!String.IsNullOrEmpty(message.WarnMessage))
-                EditorGUILayout.HelpBox(message.WarnMessage, MessageType.Info);
-            EditorGUI.BeginDisabledGroup(true);
-            info.ID = EditorGUILayout.IntField(GuideInfoName.ID, i);
-            EditorGUI.EndDisabledGroup();
-            info.completeType = (GuideCompleteType)EditorGUILayout.EnumPopup(GuideInfoName.GuideCompleteType, info.completeType);
-
-            if (info.completeType != GuideCompleteType.None)
-                info.arrowTarget = (GameObject)EditorGUILayout.ObjectField(GuideInfoName.ArrowTargetPath, info.arrowTarget, typeof(GameObject), allowSceneObjects : true);
-
-            // 检测是否有IGuide接口
-            info.controlByIGuide = info.arrowTarget != null && info.arrowTarget.TryGetComponent<IGuide>(out _);
-
-            if (info.completeType == GuideCompleteType.TDWorld) {
-                if (!info.controlByIGuide)
-                    info.reachDistance = EditorGUILayout.FloatField(GuideInfoName.ReachDistance, info.reachDistance);
-            }
-
-            if (info.completeType == GuideCompleteType.UIWorld) {
-                info.isShowBg = EditorGUILayout.Toggle(GuideInfoName.IsShowBg, info.isShowBg);
-                info.dialogDirection = (GuideDialogDirection)EditorGUILayout.EnumPopup(GuideInfoName.DialogDirection, info.dialogDirection);
-                if (info.dialogDirection != GuideDialogDirection.None)
-                    info.dialog = EditorGUILayout.TextField(GuideInfoName.Dialog, info.dialog);
-            }
-
-            
-            GUILayout.BeginHorizontal("box");
-            if (GUILayout.Button("Remove"))
-                infos.RemoveAt(i--);
-            if (GUILayout.Button("Up") && i != 0)
-                SwitchIndex(i, i - 1);
-            if (GUILayout.Button("Down") && i != infos.Count - 1)
-                SwitchIndex(i, i + 1);
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-        }
+        // 更新ReorderableList
+        guideList.DoLayoutList();
         EditorGUILayout.EndScrollView();
     }
 
@@ -131,16 +134,9 @@ public class GuideWindow : EditorWindow {
                 infos.RemoveAt(i--);
                 continue;
             }
+            // 重新更新键值
+            info.ID = i;
             tempMap.Add(info.ID, info);
-        }
-
-        // 删除后的重新新建xml文件
-        if (xml == null) {
-            xml = new XML(GuideManager.GuideDataPath, false);
-            xml.Create((x) => {
-                var root = x.CreateElement("Data");
-                x.AppendChild(root);
-            });
         }
 
         xml.Update((x) => {
@@ -181,18 +177,47 @@ public class GuideWindow : EditorWindow {
         xml.Delete();
         infos.Clear();
         xml = null;
-        xml = new XML(GuideManager.GuideDataPath, false);
     }
 
     /// <summary>
-    /// 交换键值
+    /// 绘制元素
     /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    private void SwitchIndex(int a, int b) {
-        var temp = infos[a];
-        infos[a] = infos[b];
-        infos[b] = temp;
+    /// <param name="info"></param>
+    /// <param name="i"></param>
+    private void DrawInfoProperty(GuideInfo info, int i) {
+        // 设置排颜色（info类决定）
+        var message = info.GetInfoGUIMessage();
+        GUI.color = message.Color;
+        GUILayout.BeginHorizontal("box");
+        EditorGUILayout.BeginVertical("frameBox");
+        if (!String.IsNullOrEmpty(message.WarnMessage))
+            EditorGUILayout.HelpBox(message.WarnMessage, MessageType.Info);
+        EditorGUI.BeginDisabledGroup(true);
+        info.ID = EditorGUILayout.IntField(GuideInfoName.ID, i);
+        EditorGUI.EndDisabledGroup();
+        info.completeType = (GuideCompleteType)EditorGUILayout.EnumPopup(GuideInfoName.GuideCompleteType, info.completeType);
+
+        if (info.completeType != GuideCompleteType.None)
+            info.arrowTarget = (GameObject)EditorGUILayout.ObjectField(GuideInfoName.ArrowTargetPath, info.arrowTarget, typeof(GameObject), allowSceneObjects : true);
+
+        // 检测是否有IGuide接口
+        info.controlByIGuide = info.arrowTarget != null && info.arrowTarget.TryGetComponent<IGuide>(out _);
+
+        if (info.completeType == GuideCompleteType.TDWorld) {
+            if (!info.controlByIGuide)
+                info.reachDistance = EditorGUILayout.FloatField(GuideInfoName.ReachDistance, info.reachDistance);
+        }
+
+        if (info.completeType == GuideCompleteType.UIWorld) {
+            info.isShowBg = EditorGUILayout.Toggle(GuideInfoName.IsShowBg, info.isShowBg);
+            info.dialogDirection = (GuideDialogDirection)EditorGUILayout.EnumPopup(GuideInfoName.DialogDirection, info.dialogDirection);
+            if (info.dialogDirection != GuideDialogDirection.None)
+                info.dialog = EditorGUILayout.TextField(GuideInfoName.Dialog, info.dialog);
+        }
+        GUI.color = Color.white;
+
+        EditorGUILayout.EndVertical();
+        GUILayout.EndHorizontal();
     }
 
     /// <summary>
