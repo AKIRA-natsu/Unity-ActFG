@@ -56,6 +56,22 @@ public class UpdateGroup : ReferenceBase {
 
     // 更新中
     public bool Updating { get; set; } = true;
+    // 是否为空，Remove时判断回收
+    public bool Empty {
+        get {
+            foreach (var value in updateMap.Values) {
+                if (value.Count != 0)
+                    return false;
+            }
+
+            foreach (var value in spaceUpdateMap.Values) {
+                if (value.Count != 0)
+                    return false;
+            }
+
+            return true;
+        }
+    }
 
     public UpdateGroup() {
         // 表初始化
@@ -188,7 +204,12 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// <param name="mode">更新类型</param>
     public void Remove(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
         if (groupMap.ContainsKey(key)) {
-            groupMap[key].Remove(update, mode);
+            var group = groupMap[key];
+            group.Remove(update, mode);
+            if (group.Empty) {
+                groupMap.Remove(key);
+                this.Detach(group);
+            }
         } else {
             $"Update Log Message: Remove {key} Not Find!".Colorful(Color.yellow).Log();
         }
@@ -202,7 +223,12 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// <param name="mode"></param>
     public void RemoveSpaceUpdate(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
         if (groupMap.ContainsKey(key)) {
-            groupMap[key].RemoveSpaceUpdate(update, mode);
+            var group = groupMap[key];
+            group.RemoveSpaceUpdate(update, mode);
+            if (group.Empty) {
+                groupMap.Remove(key);
+                this.Detach(group);
+            }
         } else {
             $"Update Log Message: Remove {key} Not Find!".Colorful(Color.yellow).Log();
         }

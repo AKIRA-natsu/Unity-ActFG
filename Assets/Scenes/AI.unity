@@ -1224,6 +1224,11 @@ PrefabInstance:
       objectReference: {fileID: 1404567799}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
+      propertyPath: testObjs.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
+        type: 3}
       propertyPath: sceneInitedObjs.Array.data[0]
       value: 
       objectReference: {fileID: 802550443616605318, guid: 70c1d91519577a149a105a4a943f8ac3,

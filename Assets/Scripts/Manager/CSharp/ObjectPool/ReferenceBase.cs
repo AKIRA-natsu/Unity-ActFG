@@ -26,6 +26,10 @@ namespace AKIRA.Manager {
     /// </summary>
     public static class ReferenceHelp {
         private static Dictionary<Component, List<ReferenceBase>> ComponentReferenceMap = new();
+        /// <summary>
+        /// 只读，面板使用
+        /// </summary>
+        public static IReadOnlyDictionary<Component, List<ReferenceBase>> ReadOnlyComponentReferenceMap => ComponentReferenceMap;
 
         /// <summary>
         /// 为Component添加对象引用
@@ -57,6 +61,10 @@ namespace AKIRA.Manager {
                     if (refer is T) {
                         componentList.RemoveAt(i);
                         ReferencePool.Instance.Destory(refer);
+                        // 没有引用，字典删除键值
+                        if (componentList.Count == 0) {
+                            ComponentReferenceMap.Remove(component);
+                        }
                         return true;
                     }
                 }
@@ -80,6 +88,9 @@ namespace AKIRA.Manager {
                 if (componentList.Contains(refer)) {
                     componentList.Remove(refer);
                     ReferencePool.Instance.Destory(refer);
+                    if (componentList.Count == 0) {
+                        ComponentReferenceMap.Remove(component);
+                    }
                     return true;
                 } else {
                     $"{component}不包含{typeof(T)}引用".Colorful(Color.red).Log();
@@ -114,7 +125,7 @@ namespace AKIRA.Manager {
         /// <param name="component"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T GetReference<T>(Component component) where T : ReferenceBase, new() {
+        public static T GetReference<T>(this Component component) where T : ReferenceBase, new() {
             if (ComponentReferenceMap.ContainsKey(component)) {
                 var componentList = ComponentReferenceMap[component];
                 foreach (var refer in componentList) {

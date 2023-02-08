@@ -69,12 +69,27 @@ namespace AKIRA.UIFramework {
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public T Get<T>() where T : UIComponent {
-            var name = typeof(T).Name;
+            // var name = typeof(T).Name;
+            // if (!UIMap.ContainsKey(name)) {
+            //     $"UI dont contains {name}".Colorful(Color.red).Log();
+            //     return null;
+            // }
+            // return UIMap[name] as T;
+            return Get(typeof(T)) as T;
+        }
+
+        /// <summary>
+        /// 获得UIComponent
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public UIComponent Get(Type type) {
+            var name = type.Name;
             if (!UIMap.ContainsKey(name)) {
                 $"UI dont contains {name}".Colorful(Color.red).Log();
                 return null;
             }
-            return UIMap[name] as T;
+            return UIMap[name];
         }
 
         /// <summary>
