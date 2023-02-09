@@ -4,7 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 
 namespace AKIRA.UIFramework {
-    [Win(WinEnum.Transition, "UI/SampleTransition", WinType.Interlude)]
+    [Win(WinEnum.Transition, "Prefabs/UI/SampleTransition", WinType.Interlude)]
     public class SampleTransitionPanel : SampleTransitionPanelProp {
         // 起始大小
         private Vector3 StartScale = Vector3.one * 0.2f;
@@ -22,8 +22,8 @@ namespace AKIRA.UIFramework {
         // 过渡结束事件
         private Action onTransitionEnd;
 
-        public override void Awake(WinType type) {
-            base.Awake(type);
+        public override void Awake(object obj) {
+            base.Awake(obj);
             Hide();
             StartPosition = Vector3.down * (Screen.height / 2 + 100f);
             TransitionRect.localScale = StartScale;

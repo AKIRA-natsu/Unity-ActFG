@@ -9,7 +9,7 @@
         /// <summary>
         /// 唤醒
         /// </summary>
-        public abstract void Awake(WinType type);
+        public abstract void Awake(object obj);
         /// <summary>
         /// 进入
         /// </summary>

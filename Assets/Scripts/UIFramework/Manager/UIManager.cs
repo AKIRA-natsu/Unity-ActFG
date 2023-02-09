@@ -30,7 +30,7 @@ namespace AKIRA.UIFramework {
         /// <para>UI Awake</para>
         /// </summary>
         public void Initialize() {
-            var wins = AttributeHelp<WinAttribute>.Handle();
+            var wins = ReflectionHelp.Handle<WinAttribute>();
             foreach (var win in wins) {
                 // attribute运行了两次！
                 var com = win.CreateInstance<UIComponent>();

@@ -8,7 +8,7 @@ namespace AKIRA.UIFramework {
     /// <summary>
     /// 应对要多个Bezier表现的时候用
     /// </summary>
-    [Win(WinEnum.Bezier, "UI/Bezier", WinType.Notify)]
+    [Win(WinEnum.Bezier, "Prefabs/UI/Bezier", WinType.Notify)]
     public class BezierPanel : BezierPanelProp {
         // Tween go 前缀路劲
         private const string Path = "Prefabs/";
@@ -18,8 +18,8 @@ namespace AKIRA.UIFramework {
         // 
         // private List<BezierTween> tweens = new List<BezierTween>();
 
-        public override void Awake(WinType type) {
-            base.Awake(type);
+        public override void Awake(object obj) {
+            base.Awake(obj);
             mode = UI.Canvas.renderMode;
         }
 

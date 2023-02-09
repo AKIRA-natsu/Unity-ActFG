@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 清空信号
-/// 来源：https://www.bilibili.com/video/av21513489/?p=14&vd_source=b6cbace78cacac5f94717102502c11d0
+/// <para>清空信号</para>
+/// <para>来源：https://www.bilibili.com/video/av21513489/?p=14&vd_source=b6cbace78cacac5f94717102502c11d0</para>
 /// </summary>
 public class ClearSingals : StateMachineBehaviour {
     // 开始时清理的动画

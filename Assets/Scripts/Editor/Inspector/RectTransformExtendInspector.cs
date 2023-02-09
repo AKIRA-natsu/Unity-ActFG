@@ -12,17 +12,15 @@ public class RectTransformExtendInspector : DecoratorEditor {
 
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
-        var type = $"{target.name}Panel".GetConfigTypeByAssembley();
-        if (type == null) {
-            return;
-        } else {
+        var panelType = $"{target.name}Panel".GetConfigTypeByAssembley();
+        if (panelType != null) {
             EditorGUILayout.Space();
             if (!Application.isPlaying) {
                 if (GUILayout.Button("Update Props")) {
                     GenerateUIGUI.UpdateUI((target as RectTransform).gameObject);
                 }
             } else {
-                var component = UIManager.Instance.Get(type);
+                var component = UIManager.Instance.Get(panelType);
                 if (GUILayout.Button("Active")) {
                     if (component.Active) {
                         component.Hide();
@@ -30,6 +28,18 @@ public class RectTransformExtendInspector : DecoratorEditor {
                         component.Show();
                     }
                 }
+            }
+        }
+
+        var componentType = $"{target.name}Component".GetConfigTypeByAssembley();
+        if (componentType != null) {
+            EditorGUILayout.Space();
+            if (!Application.isPlaying) {
+                if (GUILayout.Button("Update Props")) {
+                    GenerateUIPropGUI.UpdateUIProp((target as RectTransform).gameObject);
+                }
+            } else {
+                // TODO: 暂时拿不到脚本
             }
         }
     }

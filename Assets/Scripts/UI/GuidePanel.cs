@@ -4,10 +4,10 @@ using System;
 using UnityEngine.InputSystem;
 
 namespace AKIRA.UIFramework {
-    [Win(WinEnum.Guide, "UI/Guide", WinType.Interlude)]
+    [Win(WinEnum.Guide, "Prefabs/UI/Guide", WinType.Interlude)]
     public class GuidePanel : GuidePanelProp, IUpdate {
-        public override void Awake(WinType type) {
-            base.Awake(type);
+        public override void Awake(object obj) {
+            base.Awake(obj);
             // 初始化隐藏
             Hide();
             Mask.Active(false);

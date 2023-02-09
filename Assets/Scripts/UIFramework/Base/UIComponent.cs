@@ -4,6 +4,10 @@ using UnityEngine;
 using AKIRA.Manager;
 
 namespace AKIRA.UIFramework {
+    /// <summary>
+    /// <para>UI 基类</para>
+    /// <para>拿取获得的基类</para>
+    /// </summary>
     public abstract class UIComponent : UIBase {
         public GameObject gameObject { get; private set; }
         public Transform transform { get; private set; }
@@ -17,7 +21,8 @@ namespace AKIRA.UIFramework {
         /// </summary>
         public bool Active { get; protected set; } = true;
 
-        public override void Awake(WinType type) {
+        public override void Awake(object obj) {
+            WinType type = (WinType)obj;
             // 初始化创建
             this.gameObject = UIDataManager.Instance.GetUIData(this).path.Load<GameObject>()
                                                 .Instantiate()
@@ -55,7 +60,17 @@ namespace AKIRA.UIFramework {
                 var uIControls = field.GetCustomAttributes(typeof(UIControlAttribute), false);
                 if (uIControls.Length == 0) continue;
                 var uIControl = uIControls[0] as UIControlAttribute;
-                field.SetValue(this, this.transform.Find(uIControl.Path).GetComponent(field.FieldType));
+
+                if (field.FieldType.IsSubclassOf(typeof(UIComponentProp))) {
+                    var componentProp = field.FieldType.CreateInstance<UIComponentProp>();
+                    componentProp.Log();
+                    this.transform.Find(uIControl.Path).Log();
+                    componentProp.Awake(this.transform.Find(uIControl.Path));
+                    field.SetValue(this, componentProp);
+                } else {
+                    field.SetValue(this, this.transform.Find(uIControl.Path).GetComponent(field.FieldType));
+                }
+
                 if (uIControl.Matchable)
                     MatchableList.Add(this.transform.Find(uIControl.Path).GetComponent<RectTransform>());
             }

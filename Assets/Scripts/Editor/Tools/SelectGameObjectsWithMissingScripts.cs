@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement; 
 
 /// <summary>
-/// 检测场景缺少脚本 Missing Scripts
-/// 来源：https://blog.csdn.net/piai9568/article/details/99660290
+/// <para>检测场景缺少脚本 Missing Scripts</para>
+/// <para>来源：https://blog.csdn.net/piai9568/article/details/99660290</para>
 /// </summary>
 public class SelectGameObjectsWithMissingScripts : Editor
 {
