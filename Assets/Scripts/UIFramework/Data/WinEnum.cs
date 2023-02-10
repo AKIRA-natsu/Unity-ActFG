@@ -3,21 +3,37 @@ namespace AKIRA.UIFramework {
     /// UI窗口
     /// </summary>
     public enum WinEnum {
-        [Remark("空")]
+        /// <summary>
+        /// 空
+        /// </summary>
         None = 100,
-        [Remark("主界面")]
+        /// <summary>
+        /// 主界面
+        /// </summary>
         Main,
-        [Remark("暂停界面")]
+        /// <summary>
+        /// 暂停界面
+        /// </summary>
         Pause,
-        [Remark("设置界面")]
+        /// <summary>
+        /// 设置界面
+        /// </summary>
         Setting,
-        [Remark("指引界面")]
+        /// <summary>
+        /// 指引界面
+        /// </summary>
         Guide,
-        [Remark("贝塞尔界面")]
+        /// <summary>
+        /// 贝塞尔界面
+        /// </summary>
         Bezier,
-        [Remark("过渡界面")]
+        /// <summary>
+        /// 过渡界面
+        /// </summary>
         Transition,
-        [Remark("测试")]
+        /// <summary>
+        /// 测试
+        /// </summary>
         Test,
     }
 }

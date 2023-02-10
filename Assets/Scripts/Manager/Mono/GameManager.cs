@@ -11,8 +11,6 @@ namespace AKIRA.Manager {
         /// 游戏状态
         /// </summary>
         public static GameState State { get; private set; } = GameState.None;
-        // 上一个状态
-        public GameState LastState { get; private set; }
 
         // 状态 - 事件
         private Dictionary<GameState, Action> StateActionMap = new Dictionary<GameState, Action>();
@@ -46,12 +44,11 @@ namespace AKIRA.Manager {
             if (State == state)
                 return;
 
-            $"游戏状态：切换{state}".Colorful(Color.magenta).Log();
+            $"游戏状态：切换{state}".Colorful(Color.cyan).Log();
             if (StateActionMap.ContainsKey(state))
                 StateActionMap[state]?.Invoke();
             
             onStateChange?.Invoke(state);
-            LastState = State;
             State = state;
         }
 

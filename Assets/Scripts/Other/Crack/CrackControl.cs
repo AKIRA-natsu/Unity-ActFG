@@ -10,7 +10,7 @@ public class CrackControl : MonoBehaviour, IPool
     public float speed;
     public float range;
 
-    private static string crackPath = "Prefab/CrackControl";
+    private static string crackPath = "Prefabs/CrackControl";
     private List<Crack> cracks = new List<Crack>();
     private List<CrackControl> crackControls = new List<CrackControl>();
 

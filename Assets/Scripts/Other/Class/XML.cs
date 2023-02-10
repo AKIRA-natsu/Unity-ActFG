@@ -48,7 +48,7 @@ public class XML {
         create.Invoke(xml);
         
         xml.Save(path);
-        $"XML: 创建{path}成功".Colorful(Color.cyan).Log();
+        $"XML: 创建{path}成功".Colorful(Color.green).Log();
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class XML {
     /// <param name="read"></param>
     public void Read(Action<XmlDocument> read) {
         read.Invoke(xml);
-        $"XML: 读取{path}成功".Colorful(Color.cyan).Log();
+        $"XML: 读取{path}成功".Colorful(Color.green).Log();
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class XML {
         update.Invoke(xml);
 
         xml.Save(path);
-        $"XML: 更新{path}成功".Colorful(Color.cyan).Log();
+        $"XML: 更新{path}成功".Colorful(Color.green).Log();
     }
 
     /// <summary>

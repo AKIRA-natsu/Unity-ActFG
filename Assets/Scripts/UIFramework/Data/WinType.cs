@@ -3,13 +3,21 @@ namespace AKIRA.UIFramework {
     /// UI类型
     /// </summary>
     public enum WinType {
-        [Remark("空")]
+        /// <summary>
+        /// 空
+        /// </summary>
         None = 200,
-        [Remark("正常UI 隐藏游戏本体")]
+        /// <summary>
+        /// 正常UI 隐藏游戏本体
+        /// </summary>
         Normal,
-        [Remark("过场 与游戏并存 并且可以操控（过场动画等）")]
+        /// <summary>
+        /// 过场 与游戏并存 并且可以操控（过场动画等）
+        /// </summary>
         Interlude,
-        [Remark("过场 与游戏并存 屏幕一边通知")]
+        /// <summary>
+        /// 过场 与游戏并存 屏幕一边通知
+        /// </summary>
         Notify,
     }
 }

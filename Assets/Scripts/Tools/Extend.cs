@@ -288,6 +288,17 @@ public static class Extend {
     }
 
     /// <summary>
+    /// 富文本
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="color">System.Drawing.Color</param>
+    /// <returns></returns>
+    public static string Colorful(this string str, System.Drawing.Color color) {
+        // 转16进制输出
+        return Colorful(str, String.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B));
+    }
+
+    /// <summary>
     /// 文本大小
     /// </summary>
     /// <param name="str"></param>
