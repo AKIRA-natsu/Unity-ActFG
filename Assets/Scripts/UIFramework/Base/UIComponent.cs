@@ -63,8 +63,6 @@ namespace AKIRA.UIFramework {
 
                 if (field.FieldType.IsSubclassOf(typeof(UIComponentProp))) {
                     var componentProp = field.FieldType.CreateInstance<UIComponentProp>();
-                    componentProp.Log();
-                    this.transform.Find(uIControl.Path).Log();
                     componentProp.Awake(this.transform.Find(uIControl.Path));
                     field.SetValue(this, componentProp);
                 } else {

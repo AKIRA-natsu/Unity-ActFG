@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEditor;
 using AKIRA.UIFramework;
@@ -12,6 +11,7 @@ public class RectTransformExtendInspector : DecoratorEditor {
 
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
+        #region Panel部分
         var panelType = $"{target.name}Panel".GetConfigTypeByAssembley();
         if (panelType != null) {
             EditorGUILayout.Space();
@@ -30,7 +30,9 @@ public class RectTransformExtendInspector : DecoratorEditor {
                 }
             }
         }
+        #endregion
 
+        #region Component部分
         var componentType = $"{target.name}Component".GetConfigTypeByAssembley();
         if (componentType != null) {
             EditorGUILayout.Space();
@@ -38,9 +40,9 @@ public class RectTransformExtendInspector : DecoratorEditor {
                 if (GUILayout.Button("Update Props")) {
                     GenerateUIPropGUI.UpdateUIProp((target as RectTransform).gameObject);
                 }
-            } else {
                 // TODO: 暂时拿不到脚本
             }
         }
+        #endregion
     }
 }
