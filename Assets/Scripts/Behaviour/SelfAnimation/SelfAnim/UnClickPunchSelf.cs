@@ -11,7 +11,7 @@ public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandle
     // 自身按钮
     private Button selfButton;
     // 重写静态PunchWard
-    private static PunchWard ward = PunchWard.Forward;
+    private static Ward ward = Ward.Forward;
     // 重写静态时间time
     private static float time = 0f;
     // 实例计数
@@ -27,8 +27,7 @@ public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandle
         useInstanceCount++;
     }
 
-    protected override void OnDisable() {
-        base.OnDisable();
+    private void OnDisable() {
         useInstanceCount--;
     }
 
@@ -36,14 +35,14 @@ public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandle
         // 维持静态的time增量与Time.deltaTime一致
         var deltaTime = Time.deltaTime / useInstanceCount;
 
-        if (ward == PunchWard.Forward) {
+        if (ward == Ward.Forward) {
             time += deltaTime;
             if (time >= punchTime)
-                ward = PunchWard.Backward;
+                ward = Ward.Backward;
         } else {
             time -= deltaTime;
             if (time <= 0)
-                ward = PunchWard.Forward;
+                ward = Ward.Forward;
         }
 
         if (!selfButton.interactable)
@@ -54,12 +53,10 @@ public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandle
 
     public void OnPointerDown(PointerEventData eventData) {
         this.transform.localScale = originScale;
-        if (auto)
-            this.Remove(AnimationGroup);
+        Enable = false;
     }
 
     public void OnPointerUp(PointerEventData eventData) {
-        if (auto)
-            this.Regist(AnimationGroup);
+        Enable = true;
     }
 }

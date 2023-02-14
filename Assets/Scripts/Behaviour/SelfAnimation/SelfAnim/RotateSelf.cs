@@ -28,8 +28,7 @@ public class RotateSelf : SelfAnim {
         DecideTowards();
     }
 
-    protected override void OnEnable() {
-        base.OnEnable();
+    private void OnEnable() {
         DecideTowards();
     }
 

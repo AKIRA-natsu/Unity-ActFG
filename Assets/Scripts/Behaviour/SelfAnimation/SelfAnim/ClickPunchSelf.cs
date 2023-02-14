@@ -6,23 +6,22 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class ClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandler {
     protected override void OnEnable() {
+        Enable = false;
         punchOffset = originScale * (punchValue - 1f);
     }
-
-    protected override void OnDisable() { }
 
     private void OnValidate() {
         punchOffset = originScale * (punchValue - 1f);
     }
 
     public override void GameUpdate() {
-        if (ward == PunchWard.Forward) {
+        if (ward == Ward.Forward) {
             if (time >= punchTime)
                 return;
             time += Time.deltaTime;
         } else {
             if (time <= 0) {
-                this.Remove();
+                Enable = false;
                 return;
             }
             time -= Time.deltaTime;
@@ -32,11 +31,11 @@ public class ClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandler 
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        ward = PunchWard.Forward;
-        this.Regist(AnimationGroup);
+        ward = Ward.Forward;
+        Enable = true;
     }
 
     public void OnPointerUp(PointerEventData eventData) {
-        ward = PunchWard.Backward;
+        ward = Ward.Backward;
     }
 }
