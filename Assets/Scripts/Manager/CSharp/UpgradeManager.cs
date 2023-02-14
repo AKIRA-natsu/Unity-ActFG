@@ -19,15 +19,6 @@ public class UpgradeManager : Singleton<UpgradeManager> {
             var upgradeBase = type.CreateInstance<UpgradeBase>();
             upgradeMap.Add(value, upgradeBase);
         }
-
-        // UI初始化完成后注册升级按钮
-        // UIManager.Instance.RegistAfterUIIInitAction(() => {
-        //     var upgradePanel = UIManager.Instance.Get<UpgradePanel>();
-        //     foreach (var value in upgradeMap.Values)
-        //         upgradePanel.RegistUpgradeButton(value);
-        //     // 不会立刻适配，需要延迟一点时间
-        //     this.Delay(upgradePanel.EndButtonFitter, 0.3f);
-        // });
     }
 
     /// <summary>
@@ -35,8 +26,8 @@ public class UpgradeManager : Singleton<UpgradeManager> {
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public float GetUpgradeValue(UpgradeType type)
-        => upgradeMap[type].value;
+    public UpgradeBase GetUpgrade(UpgradeType type)
+        => upgradeMap[type];
 
     /// <summary>
     /// 注册升级回调

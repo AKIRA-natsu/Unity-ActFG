@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using AKIRA.Manager;
 using UnityEngine;
-using Time = UnityEngine.Time;
 
 /// <summary>
 /// 更新模式
@@ -257,6 +256,16 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
             groupMap[key].Updating = enable;
         } else {
             $"Update Log Message: Enable/Disable Group Update {key} Not Find!".Colorful(Color.yellow).Log();
+        }
+    }
+
+    /// <summary>
+    /// 开启/关闭所有组的更新
+    /// </summary>
+    /// <param name="enable"></param>
+    public void EnableGroupUpdate(bool enable) {
+        foreach (var value in groupMap.Values) {
+            value.Updating = enable;
         }
     }
 

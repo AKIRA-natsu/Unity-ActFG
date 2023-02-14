@@ -32,6 +32,10 @@ namespace AKIRA.UIFramework {
         /// </summary>
         Transition,
         /// <summary>
+        /// 作弊指令界面
+        /// </summary>
+        Command,
+        /// <summary>
         /// 测试
         /// </summary>
         Test,

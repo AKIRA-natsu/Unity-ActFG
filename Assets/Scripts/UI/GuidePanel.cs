@@ -11,10 +11,16 @@ namespace AKIRA.UIFramework {
             // 初始化隐藏
             Hide();
             Mask.Active(false);
-            // 注册指引事件
-            GuideManager.Instance.RegistOnGuideFinishAction(Hide);
-            GuideManager.Instance.RegistOnGuideUIResumeAction(Show);
-            GuideManager.Instance.RegistOnGuideUIPauseAction(Hide);
+            
+            if (GuideManager.Instance == null) {
+                // 没有引导，销毁页面
+                UIManager.Instance.Destory<GuidePanel>();
+            } else {
+                // 注册指引事件
+                GuideManager.Instance.RegistOnGuideFinishAction(Hide);
+                GuideManager.Instance.RegistOnGuideUIResumeAction(Show);
+                GuideManager.Instance.RegistOnGuideUIPauseAction(Hide);
+            }
         }
 
         /// <summary>

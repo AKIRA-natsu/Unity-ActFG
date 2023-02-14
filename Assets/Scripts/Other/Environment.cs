@@ -32,10 +32,10 @@ namespace AKIRA.Behaviour.Prepare {
 
 #region 虚拟摄像机相关
         /// <summary>
-        /// 获得场景所有虚拟摄像机
+        /// 隐藏所有摄像机时开启的摄像机
         /// </summary>
         /// <returns></returns>
-        public static CinemachineVirtualCameraBase[] GetCameras() => cameras;
+        private static List<CinemachineVirtualCameraBase> ActiveCameras = new();
 
         /// <summary>
         /// 获得场景所有类型的虚拟摄像机
@@ -73,6 +73,31 @@ namespace AKIRA.Behaviour.Prepare {
         public static bool TryGetCamera<T>(out T value) where T : CinemachineVirtualCameraBase {
             value = GetCamera<T>();
             return value != default;
+        }
+
+        /// <summary>
+        /// 开启上次关闭时激活的摄像机
+        /// </summary>
+        public static void EnableCameras() {
+            foreach (var camera in cameras) {
+                camera.enabled = ActiveCameras.Contains(camera);
+            }
+            ActiveCameras.Clear();
+        }
+
+        /// <summary>
+        /// 关闭所有摄像机，并记录开启的摄像机
+        /// </summary>
+        public static void DisableCameras() {
+            ActiveCameras.Clear();
+            foreach (var camera in cameras) {
+                if (camera.enabled) {
+                    ActiveCameras.Add(camera);
+                    camera.enabled = false;
+                } else {
+                    continue;
+                }
+            }
         }
     }
 #endregion

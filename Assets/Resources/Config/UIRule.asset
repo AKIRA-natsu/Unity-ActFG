@@ -29,12 +29,15 @@ MonoBehaviour:
     - Title
     - Count
     - Amount
-  - controlName: ScrollView
-    ruleNames:
-    - View
   - controlName: ParticleSystem
     ruleNames:
     - FX
   - controlName: RectTransform
     ruleNames:
     - Rect
+  - controlName: ScrollListComponent
+    ruleNames:
+    - Content
+  - controlName: Scrollbar
+    ruleNames:
+    - Scrollbar

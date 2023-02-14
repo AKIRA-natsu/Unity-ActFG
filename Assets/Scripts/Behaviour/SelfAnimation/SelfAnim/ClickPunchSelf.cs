@@ -33,7 +33,7 @@ public class ClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandler 
 
     public void OnPointerDown(PointerEventData eventData) {
         ward = PunchWard.Forward;
-        this.Regist();
+        this.Regist(AnimationGroup);
     }
 
     public void OnPointerUp(PointerEventData eventData) {

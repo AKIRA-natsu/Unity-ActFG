@@ -21,7 +21,7 @@ public static class ReflectionHelp {
         // var types = Assembly.Load(DLLName).GetTypes();
         var types = asm.GetTypes();
         foreach (var type in types) {
-            if (type.Name.Contains(className)) {
+            if (type.Name.Equals(className)) {
                 return type;
             }
         }

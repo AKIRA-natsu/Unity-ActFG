@@ -53,12 +53,13 @@ public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandle
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        this.Remove();
         this.transform.localScale = originScale;
+        if (auto)
+            this.Remove(AnimationGroup);
     }
 
     public void OnPointerUp(PointerEventData eventData) {
         if (auto)
-            this.Regist();
+            this.Regist(AnimationGroup);
     }
 }
