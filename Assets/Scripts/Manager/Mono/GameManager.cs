@@ -1,5 +1,6 @@
-using System.Collections;
 using System;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using AKIRA.UIFramework;
 using UnityEngine;
@@ -101,10 +102,7 @@ namespace AKIRA.Manager {
         /// <param name="states"></param>
         /// <returns></returns>
         public static bool IsStateEqual(params GameState[] states) {
-            foreach (var state in states)
-                if (state == State)
-                    return true;
-            return false;
+            return states.Contains(State);
         }
 
         /// <summary>

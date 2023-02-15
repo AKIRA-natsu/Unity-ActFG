@@ -418,42 +418,6 @@ public static class Extend {
     }
     #endregion
 
-    #region Array
-    /// <summary>
-    /// 获得父节点下所有子节点的 <paramref name="T" />
-    /// </summary>
-    /// <param name="parent"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static T[] GetChildrenComponents<T>(this Transform parent) {
-        var count = parent.childCount;
-        T[] result = new T[count];
-        for (int i = 0; i < count; i++)
-            result[i] = parent.GetChild(i).GetComponent<T>();
-        // 去掉空项
-        result = result.Where(r => r != null).ToArray();
-        return result;
-    }
-    #endregion
-
-    #region Layer
-    /// <summary>
-    /// 获得Layer值
-    /// </summary>
-    /// <param name="mask"></param>
-    /// <returns></returns>
-    public static int[] GetLayerValue(this LayerMask mask) {
-        List<int> result = new List<int>();
-        int value = mask.value;
-        while (value >= 1) {
-            int num = (int)Mathf.Log(value, 2);
-            result.Add(num);
-            value -= (int)Mathf.Pow(2, num);
-        }
-        return result.ToArray();
-    }
-    #endregion
-
     #region TryParse
     /// <summary>
     /// int32.TryParse封装

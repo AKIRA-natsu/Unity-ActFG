@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -43,12 +44,7 @@ namespace AKIRA.Behaviour.Prepare {
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T[] GetCameras<T>() where T : CinemachineVirtualCameraBase {
-            List<T> result = new();
-            foreach (var camera in cameras) {
-                if (camera is T)
-                    result.Add(camera as T);
-            }
-            return result.ToArray();
+            return cameras.Where(camera => camera is T).ToArray() as T[];
         }
 
         /// <summary>
@@ -57,11 +53,7 @@ namespace AKIRA.Behaviour.Prepare {
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T GetCamera<T>() where T : CinemachineVirtualCameraBase {
-            foreach (var camera in cameras) {
-                if (camera is T)
-                    return camera as T;
-            }
-            return default;
+            return cameras.First(camera => camera is T) as T;
         }
 
         /// <summary>
@@ -79,9 +71,9 @@ namespace AKIRA.Behaviour.Prepare {
         /// 开启上次关闭时激活的摄像机
         /// </summary>
         public static void EnableCameras() {
-            foreach (var camera in cameras) {
+            cameras.ToList().ForEach(camera => {
                 camera.enabled = ActiveCameras.Contains(camera);
-            }
+            });
             ActiveCameras.Clear();
         }
 
@@ -90,14 +82,10 @@ namespace AKIRA.Behaviour.Prepare {
         /// </summary>
         public static void DisableCameras() {
             ActiveCameras.Clear();
-            foreach (var camera in cameras) {
-                if (camera.enabled) {
-                    ActiveCameras.Add(camera);
-                    camera.enabled = false;
-                } else {
-                    continue;
-                }
-            }
+            cameras.Where(camera => camera.enabled).ToList().ForEach(camera => {
+                ActiveCameras.Add(camera);
+                camera.enabled = false;
+            });
         }
     }
 #endregion

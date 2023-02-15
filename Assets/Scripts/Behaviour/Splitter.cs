@@ -1,20 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using EzySlice;
 
 public class Splitter : MonoBehaviour {
-    public LayerMask layerMask;
+    public LayerMask mask;
     private Vector3 size;
     public Material material;
-
-    private int[] layers;
 
     // Start is called before the first frame update
     void Start()
     {
         size = this.transform.GetSize();
-        layers = layerMask.GetLayerValue();
     }
     
     // Update is called once per frame
@@ -24,9 +19,7 @@ public class Splitter : MonoBehaviour {
         transform.Rotate(0, 0, -mx);
 
         if (Input.GetMouseButtonDown(0)) {
-            List<Collider> colliders = new List<Collider>();
-            foreach (var layer in layers)
-                colliders.AddRange(Physics.OverlapBox(this.transform.position, size, this.transform.rotation, ~layer));
+            Collider[] colliders = Physics.OverlapBox(this.transform.position, size, this.transform.rotation, mask);
 
             foreach (var c in colliders) {
                 c.gameObject.Destory();
