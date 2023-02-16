@@ -219,7 +219,7 @@ public static class Extend {
     }
 
     /// <summary>
-    /// <para>获得 <paramref name="component" /> ID</para>
+    /// <para>获得 <paramref name="component" /> ID（路径）</para>
     /// <para>遍历父节点</para>
     /// </summary>
     /// <param name="component"></param>
@@ -296,6 +296,15 @@ public static class Extend {
     public static string Colorful(this string str, System.Drawing.Color color) {
         // 转16进制输出
         return Colorful(str, String.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B));
+    }
+
+    /// <summary>
+    /// Color的简单转换（System.Drawing.Color => UnityEngine.Color）
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public static Color ToUnityColor(this System.Drawing.Color color) {
+        return new Color(color.A, color.G, color.B);
     }
 
     /// <summary>
@@ -415,6 +424,19 @@ public static class Extend {
         }
 
         return true;
+    }
+    #endregion
+
+    #region Layer
+    /// <summary>
+    /// <para><paramref name="layer" /> 是否包含在 <paramref name="mask" /> 内</para>
+    /// <para>来源：https://answers.unity.com/questions/50279/check-if-layer-is-in-layermask.html</para>
+    /// </summary>
+    /// <param name="layer"></param>
+    /// <param name="mask"></param>
+    /// <returns></returns>
+    public static bool IsLayerEqualMask(this int layer, LayerMask mask) {
+        return mask == (mask | (1 << layer));
     }
     #endregion
 
