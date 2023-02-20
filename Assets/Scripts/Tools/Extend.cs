@@ -162,20 +162,22 @@ public static class Extend {
     /// 获得物体大小
     /// </summary>
     /// <returns></returns>
-    public static Vector3 GetSize(this GameObject obj) {
-        return GetSize(obj.transform);
+    public static Vector3 GetFilterSize(this GameObject obj) {
+        return GetFilterSize(obj.transform);
     }
 
     /// <summary>
     /// 获得物体大小
     /// </summary>
+    /// <param name="component">从自身或子物体找第一个MeshFilter</param>
     /// <returns></returns>
-    public static Vector3 GetSize(this Transform obj) {
-        var length = obj.GetComponent<MeshFilter>().sharedMesh.bounds.size;
+    public static Vector3 GetFilterSize(this Component component) {
+        var filter = component.GetComponentInChildren<MeshFilter>();
+        var length = filter.sharedMesh.bounds.size;
         Vector3 size;
-        size.x = length.x * obj.lossyScale.x;
-        size.y = length.y * obj.lossyScale.y;
-        size.z = length.z * obj.lossyScale.z;
+        size.x = length.x * filter.transform.lossyScale.x;
+        size.y = length.y * filter.transform.lossyScale.y;
+        size.z = length.z * filter.transform.lossyScale.z;
         return size;
     }
 
@@ -304,7 +306,7 @@ public static class Extend {
     /// <param name="color"></param>
     /// <returns></returns>
     public static Color ToUnityColor(this System.Drawing.Color color) {
-        return new Color(color.A, color.G, color.B);
+        return new Color(color.R / 255f, color.G / 255f, color.B / 255f);
     }
 
     /// <summary>
