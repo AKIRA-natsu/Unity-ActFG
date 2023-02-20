@@ -9,7 +9,7 @@ public class Splitter : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        size = this.transform.GetSize();
+        size = this.GetFilterSize();
     }
     
     // Update is called once per frame
