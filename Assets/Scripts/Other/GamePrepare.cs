@@ -55,6 +55,9 @@ namespace AKIRA.Behaviour.Prepare {
 
             if (GameManager.Instance != null) 
                 GameManager.Instance.Switch(calledEndState);
+
+            // 销毁自身
+            Destroy(this.gameObject);
         }
     }
 }

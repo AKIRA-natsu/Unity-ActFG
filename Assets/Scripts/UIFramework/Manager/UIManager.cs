@@ -14,7 +14,7 @@ namespace AKIRA.UIFramework {
         private Action onAfterUIInit;
 
         // 是否已经初始化
-        private bool isInited = false;
+        public static bool IsInited { get; private set; } = false;
 
         private UIManager() {
             // 默认 [UI] 为UI根节点
@@ -45,7 +45,7 @@ namespace AKIRA.UIFramework {
                 AddUI(com);
             }
 
-            isInited = true;
+            IsInited = true;
             onAfterUIInit?.Invoke();
 
         }
@@ -124,7 +124,7 @@ namespace AKIRA.UIFramework {
         /// </summary>
         /// <param name="action"></param>
         public void RegistAfterUIIInitAction(Action action) {
-            if (isInited)
+            if (IsInited)
                 action?.Invoke();
             else
                 onAfterUIInit += action;

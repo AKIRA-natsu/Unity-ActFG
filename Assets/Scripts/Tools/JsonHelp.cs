@@ -1,6 +1,7 @@
 using System.Text;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 
 /// <summary>
 /// <para>Json存储</para>
@@ -18,7 +19,9 @@ public static class JsonHelp {
             File.Create(target.Path).Dispose();
         }
 
-        string json = JsonUtility.ToJson(target.Data);
+        // JsonConvert.SerializeObject 会换行。。
+        string json = JsonConvert.SerializeObject(target.Data, Formatting.Indented);
+        // string json = JsonUtility.ToJson(target.Data);
         File.WriteAllText(target.Path, json, Encoding.UTF8);
         $"Json: {target} save".Colorful(Color.cyan).Log();
     }

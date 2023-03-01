@@ -13,6 +13,7 @@ public struct FloatRange
     /// <para>PropertyDrawer</para>
     /// </summary>
     [SerializeField]
+    [HideInInspector]
     private float value;
     /// <summary>
     /// 滑动值
@@ -35,5 +36,14 @@ public struct FloatRange
         {
             return Random.Range(min, max);
         }
+    }
+
+    /// <summary>
+    /// 在范围内
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool InRange(float value) {
+        return value >= min && value <= max;
     }
 }

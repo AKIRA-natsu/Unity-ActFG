@@ -49,7 +49,7 @@ namespace AKIRA.UIFramework {
             // 没有数据，进行一次拿取和ScrollComponent的初始化
             if (CommandDatas == null) {
                 CommandDatas = CommandManager.Instance.GetActionMap();
-                Content.Initialization(CommandDatas.Length, Mask, typeof(GirdButton));
+                Content.Initialization(CommandDatas.Length, Mask, typeof(GridButton));
             }
             AcitvePanel(true);
         }
@@ -77,7 +77,7 @@ namespace AKIRA.UIFramework {
     /// <summary>
     /// Scroll View 作弊格子
     /// </summary>
-    public class GirdButton : MonoBehaviour, IScrollItem {
+    public class GridButton : MonoBehaviour, IScrollItem {
         // 作弊按钮
         private Button button;
         // 作弊文本
