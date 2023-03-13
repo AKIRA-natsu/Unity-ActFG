@@ -4,9 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : AIBase {
-    // 更新方式
-    [SerializeField]
-    private UpdateMode mode;
     // 移动方向存储 差值
     private Vector3 moveDir;
     // 移动速度
@@ -25,12 +22,12 @@ public class Player : AIBase {
 
     private void Start() {
         var inputSystem = PlayerInputSystem.Instance;
-        inputSystem.RegistOnInputSwitchPlayer(() => this.Regist(mode : mode));
-        inputSystem.RegistOnInputSwitchUI(() => this.Remove(mode : mode));
+        inputSystem.RegistOnInputSwitchPlayer(() => this.Regist(Group, mode));
+        inputSystem.RegistOnInputSwitchUI(() => this.Remove(Group, mode));
         InputActions.Player.Run.performed += OnRunPreformed;
         InputActions.Player.Jump.performed += OnJumpPreformed;
         
-        this.Regist(mode : mode);
+        this.Regist(Group, mode);
     }
 
     /// <summary>
@@ -56,8 +53,10 @@ public class Player : AIBase {
         Move(InputActions.Player.Move.ReadValue<Vector2>());
     }
 
+    #region dont used methods
     public override void Wake() { }
     public override void Recycle() { }
+    #endregion
 
     /// <summary>
     /// 移动

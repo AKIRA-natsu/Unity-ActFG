@@ -2,8 +2,10 @@ using System;
 using AKIRA.Behaviour.AI;
 using UnityEngine;
 
-public class AnimatorBehaviour : MonoBehaviour, IAnima
-{
+/// <summary>
+/// 动画控制器
+/// </summary>
+public class AnimatorBehaviour : MonoBehaviour, IAnima {
     // 控制器
     private Animator animator;
 
@@ -16,8 +18,7 @@ public class AnimatorBehaviour : MonoBehaviour, IAnima
         animator = this.GetComponentInChildren<Animator>();
     }
 
-    public void SwitchAnima(AIState state, object data = null)
-    {
+    public void SwitchAnima(AIState state, object data = null) {
         switch (state) {
             case AIState.Speed:
                 Move(Convert.ToSingle(data));
@@ -44,5 +45,14 @@ public class AnimatorBehaviour : MonoBehaviour, IAnima
     /// </summary>
     private void Jump() {
         animator.SetTrigger(jumpHash);
+    }
+
+    /// <summary>
+    /// 切换动画，CrossFade
+    /// </summary>
+    /// <param name="hash"></param>
+    /// <param name="time"></param>
+    protected void SwitchAnima(int hash, float time = 0.2f) {
+        animator.CrossFade(hash, time);
     }
 }

@@ -31,7 +31,7 @@ namespace AKIRA.Behaviour.Prepare {
             volume?.gameObject.SetActive(enableVolume);
         }
 
-#region 虚拟摄像机相关
+        #region 虚拟摄像机相关
         /// <summary>
         /// 隐藏所有摄像机时开启的摄像机
         /// </summary>
@@ -87,6 +87,6 @@ namespace AKIRA.Behaviour.Prepare {
                 camera.enabled = false;
             });
         }
+        #endregion
     }
-#endregion
 }

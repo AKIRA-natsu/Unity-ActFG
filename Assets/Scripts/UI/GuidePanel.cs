@@ -2,6 +2,7 @@ using UnityEngine;
 using AKIRA.Manager;
 using System;
 using UnityEngine.InputSystem;
+using Cysharp.Threading.Tasks;
 
 namespace AKIRA.UIFramework {
     [Win(WinEnum.Guide, "Prefabs/UI/Guide", WinType.Interlude)]
@@ -27,7 +28,7 @@ namespace AKIRA.UIFramework {
         /// 接收指引
         /// </summary>
         /// <param name="info"></param>
-        public void ReceiveGuideInfo(in GuideInfo info) {
+        public async void ReceiveGuideInfo(GuideInfo info) {
             if (info.isShowBg) {
                 Mask.RefreshMask(info);
                 Mask.Active(true);
@@ -46,11 +47,11 @@ namespace AKIRA.UIFramework {
                 UpdateDialogPosition(info.dialogDirection);
                 DialogContext.text = info.dialog;
                 if (DialogGroup.alpha <= 0.99f) {
-                    this.UniRepeat(() => {
+                    while (DialogGroup.alpha <= 0.99f) {
+                        await UniTask.DelayFrame(0);
                         DialogGroup.alpha = Mathf.Lerp(DialogGroup.alpha, 1f, Time.deltaTime * 5f);
-                    }, () => DialogGroup.alpha <= 0.99f).UniCompleted(() => {
-                        DialogGroup.alpha = 1f;
-                    });
+                    }
+                    DialogGroup.alpha = 1f;
                 }
             }
 

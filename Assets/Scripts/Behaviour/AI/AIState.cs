@@ -6,6 +6,14 @@ namespace AKIRA.Behaviour.AI {
     /// </summary>
     public enum AIState {
         /// <summary>
+        /// 待机
+        /// </summary>
+        Idle,
+        /// <summary>
+        /// 等待
+        /// </summary>
+        Wait,
+        /// <summary>
         /// 移动
         /// </summary>
         Speed,
@@ -18,8 +26,16 @@ namespace AKIRA.Behaviour.AI {
         /// </summary>
         Climb,
         /// <summary>
-        /// 攀爬结束 
+        /// 准备攻击
         /// </summary>
-        ClimbToTop,
+        ReadyAttack,
+        /// <summary>
+        /// 攻击
+        /// </summary>
+        Attack,
+        /// <summary>
+        /// 死亡
+        /// </summary>
+        Die,
     }
 }

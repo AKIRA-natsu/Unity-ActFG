@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace AKIRA.UIFramework {
     [Win(WinEnum.Transition, "Prefabs/UI/SampleTransition", WinType.Interlude)]
-    public class SampleTransitionPanel : SampleTransitionPanelProp {
+    public class SampleTransitionPanel : SampleTransitionPanelProp, IUpdate {
         // 起始大小
         private Vector3 StartScale = Vector3.one * 0.2f;
         // 起始位置 屏幕中下位置-100f
@@ -27,6 +27,14 @@ namespace AKIRA.UIFramework {
             Hide();
             StartPosition = Vector3.down * (Screen.height / 2 + 100f);
             TransitionRect.localScale = StartScale;
+
+            this.Regist(UI.UIGroup);
+        }
+
+        public void GameUpdate() {
+            if (UnityEngine.InputSystem.Keyboard.current.sKey.wasPressedThisFrame) {
+                StartTransition();
+            }
         }
 
         /// <summary>
@@ -101,16 +109,18 @@ namespace AKIRA.UIFramework {
             Show();
             // 图片上移动画
             var position = TransitionRect.anchoredPosition;
-            await this.UniRepeat(() => {
+            while (Vector3.Distance(position, Vector2.zero) >= 0.01f) {
+                await UniTask.DelayFrame(0);
                 position = Vector3.Lerp(position, Vector2.zero, Time.deltaTime * AnimationSpeed);
                 TransitionRect.anchoredPosition = position;
-            }, () => Vector3.Distance(position, Vector2.zero) >= 0.01f);
+            }
             // 图片到达中央，进行放大
             var scale = StartScale;
-            await this.UniRepeat(() => {
+            while (Vector3.Distance(scale, TargetScale) >= 0.01f) {
+                await UniTask.DelayFrame(0);
                 scale = Vector3.Lerp(scale, TargetScale, Time.deltaTime * AnimationSpeed);
                 TransitionRect.localScale = scale;
-            }, () => Vector3.Distance(scale, TargetScale) >= 0.01f);
+            }
 
             // 运行过渡事件
             // 先执行异步事件
@@ -120,15 +130,17 @@ namespace AKIRA.UIFramework {
             onTransition?.Invoke();
 
             // 事件完成 图片开始缩小
-            await this.UniRepeat(() => {
+            while (Vector3.Distance(scale, StartScale) >= 0.01f) {
+                await UniTask.DelayFrame(0);
                 scale = Vector3.Lerp(scale, StartScale, Time.deltaTime * AnimationSpeed);
                 TransitionRect.localScale = scale;
-            }, () => Vector3.Distance(scale, StartScale) >= 0.01f);
+            }
             // 图片回到开始位置
-            await this.UniRepeat(() => {
+            while (Vector3.Distance(position, StartPosition) >= 0.01f) {
+                await UniTask.DelayFrame(0);
                 position = Vector3.Lerp(position, StartPosition, Time.deltaTime * AnimationSpeed);
                 TransitionRect.anchoredPosition = position;
-            }, () => Vector3.Distance(position, StartPosition) >= 0.01f);
+            }
 
             // 过渡完成，隐藏页面
             Hide();

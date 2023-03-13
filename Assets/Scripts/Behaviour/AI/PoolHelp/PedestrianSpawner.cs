@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using AKIRA.Manager;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AKIRA.Behaviour.AI {
@@ -8,8 +9,11 @@ namespace AKIRA.Behaviour.AI {
         public GameObject pedestrianPrefab;
         public int pedestriansToSpawn;
 
-        private void Start() {
-            this.UniRepeat(Spawn, pedestriansToSpawn, 1f);
+        private async void Start() {
+            for (int i = 0; i < pedestriansToSpawn; i++) {
+                Spawn(i);
+                await UniTask.Delay(1000);
+            }
         }
 
         private void Spawn(int index) {

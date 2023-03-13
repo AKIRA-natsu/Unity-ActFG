@@ -120,7 +120,7 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 下一个指引
         /// </summary>
-        public void NextGuide(float waitTime = 0f) {
+        public async void NextGuide(float waitTime = 0f) {
             CurrentIGuide = null;
             GuideIndexKey.Save(++currentIndex);
             if (currentIndex >= infos.Count) {
@@ -128,7 +128,8 @@ namespace AKIRA.Manager {
                 return;
             }
             
-            this.UniDelay(() => StartGuide(currentIndex), waitTime);
+            await UniTask.Delay(Mathf.RoundToInt(waitTime * 1000));
+            StartGuide(currentIndex);
         }
 
         /// <summary>

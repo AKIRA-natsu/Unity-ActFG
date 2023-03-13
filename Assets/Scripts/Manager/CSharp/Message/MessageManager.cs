@@ -21,7 +21,7 @@ namespace AKIRA.Message {
         /// </summary>
         /// <param name="type">消息类型</param>
         /// <param name="handle">事件</param>
-        public void RegisterListener(int type, MsgDeletege handle) {
+        public void RegistListener(int type, MsgDeletege handle) {
             if (handle == null) return;
 
             MsgDeletege myHandle = null;

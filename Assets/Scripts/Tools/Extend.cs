@@ -266,6 +266,15 @@ public static class Extend {
     public static void Error(this object message) {
         Debug.LogError(message);
     }
+
+    /// <summary>
+    /// 日志 指定编译器忽略
+    /// </summary>
+    /// <param name="message"></param>
+    [System.Diagnostics.Conditional("IGNORE_LOG")]
+    public static void LogIgnore(this object message) {
+        Debug.Log(message);
+    }
     #endregion
 
     #region string 字体

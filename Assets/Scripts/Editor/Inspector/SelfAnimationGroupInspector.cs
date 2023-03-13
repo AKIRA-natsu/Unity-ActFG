@@ -1,5 +1,4 @@
 using System;
-using Beans.Unity.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
