@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 动画控制器
 /// </summary>
+[RequireComponent(typeof(Animator))]
 public class AnimatorBehaviour : MonoBehaviour, IAnima {
     // 控制器
     private Animator animator;
@@ -15,7 +16,7 @@ public class AnimatorBehaviour : MonoBehaviour, IAnima {
     private readonly int jumpHash = Animator.StringToHash("Jump");
 
     private void Awake() {
-        animator = this.GetComponentInChildren<Animator>();
+        animator = this.GetComponent<Animator>();
     }
 
     public void SwitchAnima(AIState state, object data = null) {
@@ -24,12 +25,21 @@ public class AnimatorBehaviour : MonoBehaviour, IAnima {
                 Move(Convert.ToSingle(data));
             break;
             case AIState.Jump:
-                Jump();
+                Jump((NextPlayerMovement)data);
             break;
             // other states
             default:
             break;
         }
+    }
+
+    /// <summary>
+    /// 切换动画，CrossFade
+    /// </summary>
+    /// <param name="hash"></param>
+    /// <param name="time"></param>
+    protected void SwitchAnima(int hash, float time = 0.2f) {
+        animator.CrossFade(hash, time);
     }
 
     /// <summary>
@@ -43,16 +53,21 @@ public class AnimatorBehaviour : MonoBehaviour, IAnima {
     /// <summary>
     /// 跳跃
     /// </summary>
-    private void Jump() {
-        animator.SetTrigger(jumpHash);
+    private void Jump(NextPlayerMovement movement) {
+        switch (movement) {
+            case NextPlayerMovement.Jump:
+                animator.SetTrigger(jumpHash);
+            break;
+            case NextPlayerMovement.ClimbLow:
+            break;
+            case NextPlayerMovement.ClimbHeight:
+            break;
+        }
     }
 
-    /// <summary>
-    /// 切换动画，CrossFade
-    /// </summary>
-    /// <param name="hash"></param>
-    /// <param name="time"></param>
-    protected void SwitchAnima(int hash, float time = 0.2f) {
-        animator.CrossFade(hash, time);
+    private void OnAnimatorIK(int layerIndex) {
+        // 矫正双手
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
     }
 }

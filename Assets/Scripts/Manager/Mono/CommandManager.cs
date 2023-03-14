@@ -36,8 +36,15 @@ namespace AKIRA.Manager {
         [SerializeField]
         private CommandBindKey[] commands;
 
-        // 键盘是否在使用中
+        /// <summary>
+        /// 键盘是否在使用中
+        /// </summary>
         public bool KeyBoardUsed = true;
+
+        /// <summary>
+        /// 更新组
+        /// </summary>
+        public const string Group = "Command";
 
         public void GameUpdate() {
             if (KeyBoardUsed)
@@ -56,10 +63,7 @@ namespace AKIRA.Manager {
         }
 
         private void Start() {
-            UpdateManager.GetOrCreateDefaultInstance().Regist(this, "Command");
-            RegistSpecialAction(Command.EarnMoney, () => MoneyManager.Instance.Earn(100000));
-            RegistSpecialAction(Command.NextLevel, LevelManager.Instance.NextLevel);
-            RegistSpecialAction(Command.LastLevel, LevelManager.Instance.LastLevel);
+            UpdateManager.GetOrCreateDefaultInstance().Regist(this, Group);
         }
 
         /// <summary>

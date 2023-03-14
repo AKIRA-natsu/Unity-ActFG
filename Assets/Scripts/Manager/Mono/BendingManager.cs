@@ -25,7 +25,8 @@ namespace AKIRA.Manager {
             RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
         }
 
-        private void OnDisable() {
+        protected override void OnDisable() {
+            base.OnDisable();
             RenderPipelineManager.beginCameraRendering -= OnBeginCameraRendering;
             RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
         }

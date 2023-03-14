@@ -3,6 +3,9 @@ using AKIRA.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// 玩家控制器
+/// </summary>
 public class Player : AIBase {
     // 移动方向存储 差值
     private Vector3 moveDir;
@@ -13,12 +16,21 @@ public class Player : AIBase {
     /// 移动速度 跑步加倍
     /// </summary>
     public float Speed => run ? speed * 2f : speed;
+    // 是否在跑步
     private bool run = false;
     /// <summary>
     /// 输入系统 C#类
     /// </summary>
     private PlayerInputAction InputActions
         => PlayerInputSystem.Instance.InputActions;
+    /// <summary>
+    /// 移动环境检测表现
+    /// </summary>
+    private MoveEnvironmentBehaviour moveEnvironmentBehaviour;
+
+    private void Awake() {
+        moveEnvironmentBehaviour = this.GetComponentInChildren<MoveEnvironmentBehaviour>();
+    }
 
     private void Start() {
         var inputSystem = PlayerInputSystem.Instance;
@@ -26,8 +38,14 @@ public class Player : AIBase {
         inputSystem.RegistOnInputSwitchUI(() => this.Remove(Group, mode));
         InputActions.Player.Run.performed += OnRunPreformed;
         InputActions.Player.Jump.performed += OnJumpPreformed;
-        
+    }
+
+    private void OnEnable() {
         this.Regist(Group, mode);
+    }
+
+    private void OnDisable() {
+        this.Remove(Group, mode);
     }
 
     /// <summary>
@@ -36,7 +54,7 @@ public class Player : AIBase {
     /// <param name="context"></param>
     private void OnJumpPreformed(InputAction.CallbackContext context)
     {
-        Animation.SwitchAnima(AIState.Jump);
+        Animation.SwitchAnima(AIState.Jump, moveEnvironmentBehaviour.ClimbDirect(moveDir));
     }
 
     /// <summary>
