@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace AKIRA.UIFramework {
     [Win(WinEnum.Transition, "Prefabs/UI/SampleTransition", WinType.Interlude)]
-    public class SampleTransitionPanel : SampleTransitionPanelProp, IUpdate {
+    public class SampleTransitionPanel : SampleTransitionPanelProp {
         // 起始大小
         private Vector3 StartScale = Vector3.one * 0.2f;
         // 起始位置 屏幕中下位置-100f
@@ -28,13 +28,6 @@ namespace AKIRA.UIFramework {
             StartPosition = Vector3.down * (Screen.height / 2 + 100f);
             TransitionRect.localScale = StartScale;
 
-            this.Regist(UI.UIGroup);
-        }
-
-        public void GameUpdate() {
-            if (UnityEngine.InputSystem.Keyboard.current.sKey.wasPressedThisFrame) {
-                StartTransition();
-            }
         }
 
         /// <summary>
