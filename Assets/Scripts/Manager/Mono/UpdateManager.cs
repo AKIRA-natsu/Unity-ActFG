@@ -53,9 +53,50 @@ public class UpdateGroup : ReferenceBase {
     // 间隔更新列表 面板
     public IReadOnlyDictionary<UpdateMode, List<SpaceUpdateInfo>> SpaceUpdateMap => spaceUpdateMap;
 
-    // 更新中
-    public bool Updating { get; set; } = true;
-    // 是否为空，Remove时判断回收
+    private bool updating = true;
+    /// <summary>
+    /// 更新中
+    /// </summary>
+    public bool Updating {
+        get => updating;
+        set {
+            // 防止面板问题会多次赋值
+            if (updating == value)
+                return;
+            updating = value;
+
+            if (value) {
+                // 更新恢复
+                foreach (var list in updateMap.Values) {
+                    foreach (var update in list) {
+                        Resume(update);
+                    }
+                }
+
+                foreach (var list in spaceUpdateMap.Values) {
+                    foreach (var update in list) {
+                        Resume(update.iupdate);
+                    }
+                }
+            } else {
+                // 更新暂停
+                foreach (var list in updateMap.Values) {
+                    foreach (var update in list) {
+                        Stop(update);
+                    }
+                }
+
+                foreach (var list in spaceUpdateMap.Values) {
+                    foreach (var update in list) {
+                        Stop(update.iupdate);
+                    }
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// 是否为空，Remove时判断回收
+    /// </summary>
     public bool Empty {
         get {
             foreach (var value in updateMap.Values) {
@@ -82,12 +123,14 @@ public class UpdateGroup : ReferenceBase {
 
     public override void Wake() {
         base.Wake();
-        Updating = true;
+        // Updating = true;
+        updating = true;
     }
 
     public override void Recycle() {
         base.Recycle();
-        Updating = false;
+        // Updating = false;
+        updating = false;
         foreach (var value in updateMap.Values)
             value.Clear();
         foreach (var value in spaceUpdateMap.Values)
@@ -145,6 +188,26 @@ public class UpdateGroup : ReferenceBase {
                 result.Remove(info);
                 return;
             }
+        }
+    }
+
+    /// <summary>
+    /// 停止
+    /// </summary>
+    /// <param name="update"></param>
+    private void Stop(IUpdate update) {
+        if (update is IUpdateCallback) {
+            (update as IUpdateCallback).OnUpdateStop();
+        }
+    }
+
+    /// <summary>
+    /// 恢复
+    /// </summary>
+    /// <param name="update"></param>
+    private void Resume(IUpdate update) {
+        if (update is IUpdateCallback) {
+            (update as IUpdateCallback).OnUpdateResume();
         }
     }
 }

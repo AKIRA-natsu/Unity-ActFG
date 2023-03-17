@@ -4,7 +4,7 @@ namespace AKIRA.Behaviour.AI {
     /// <summary>
     /// 基类
     /// </summary>
-    public abstract class AIBase : MonoBehaviour, IPool, IUpdate, ILinkAnima {
+    public abstract class AIBase : MonoBehaviour, IPool, IUpdateCallback, ILinkAnima {
         // parameters
         private IAnima ianima;
         /// <summary>
@@ -43,5 +43,7 @@ namespace AKIRA.Behaviour.AI {
         public abstract void Wake();
         public abstract void Recycle();
         public abstract void GameUpdate();
+        public abstract void OnUpdateStop();
+        public abstract void OnUpdateResume();
     }
 }

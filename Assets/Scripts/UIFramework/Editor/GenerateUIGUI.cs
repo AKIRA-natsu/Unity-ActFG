@@ -32,10 +32,6 @@ public class GenerateUIGUI : EditorWindow {
 #endregion
 
 #region params
-    private WinEnum chooseWinEnum = WinEnum.None;
-    private string winName = "";
-    private WinType chooseWinType = WinType.None;
-
     internal static UIRule rule = null;
     private static List<UINode> nodes = new List<UINode>();
     private static List<string> btns = new List<string>();

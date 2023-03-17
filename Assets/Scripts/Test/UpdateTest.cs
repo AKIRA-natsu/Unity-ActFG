@@ -10,7 +10,7 @@ namespace AKIRA.Test {
         public UpdateMode mode;
 
         private void OnEnable() {
-            this.Regist();
+            UpdateManager.GetOrCreateDefaultInstance().Regist(this);
         }
 
         private void OnDisable() {
@@ -46,7 +46,7 @@ namespace AKIRA.Test {
         }
     }
 
-    public class UpdateClass : ReferenceBase, IUpdate {
+    public class UpdateClass : ReferenceBase, IUpdateCallback {
         public UpdateClass() {}
 
         private UpdateMode mode = UpdateMode.FixedUpdate;
@@ -64,6 +64,16 @@ namespace AKIRA.Test {
         public override void Recycle() {
             base.Recycle();
             this.Remove(Key, mode);
+        }
+
+        public void OnUpdateStop()
+        {
+            "暂停了".Log();
+        }
+
+        public void OnUpdateResume()
+        {
+            "恢复了".Log();
         }
     }
 

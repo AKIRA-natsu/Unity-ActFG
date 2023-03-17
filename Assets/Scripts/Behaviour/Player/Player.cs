@@ -67,14 +67,18 @@ public class Player : AIBase {
             run = !run;
     }
 
-    public override void GameUpdate() {
-        Move(InputActions.Player.Move.ReadValue<Vector2>());
-    }
-
     #region dont used methods
     public override void Wake() { }
     public override void Recycle() { }
     #endregion
+
+    public override void GameUpdate() {
+        Move(InputActions.Player.Move.ReadValue<Vector2>());
+    }
+
+    public override void OnUpdateStop() { }
+
+    public override void OnUpdateResume() { }
 
     /// <summary>
     /// 移动

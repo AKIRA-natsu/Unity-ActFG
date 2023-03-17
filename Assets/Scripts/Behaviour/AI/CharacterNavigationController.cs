@@ -15,6 +15,10 @@ namespace AKIRA.Behaviour.AI {
         // 旋转速度
         public float turnSpeed = 1f;
 
+        public override void Recycle() { }
+
+        public override void Wake() { }
+        
         public override void GameUpdate() {
             // FIXME: 测试视野
             if (this.TryGetComponent<FieldView>(out FieldView view)) {
@@ -24,9 +28,9 @@ namespace AKIRA.Behaviour.AI {
             }
         }
 
-        public override void Recycle() { }
+        public override void OnUpdateStop() { }
 
-        public override void Wake() { }
+        public override void OnUpdateResume() { }
 
         public void SetDestination(Vector3 vector3) { }
 
