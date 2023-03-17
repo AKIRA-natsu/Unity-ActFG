@@ -266,7 +266,7 @@ public static class Extend {
     public static void Error(this object message) {
         Debug.LogError(message);
     }
-
+    
     /// <summary>
     /// 日志 指定编译器忽略
     /// </summary>
@@ -277,7 +277,7 @@ public static class Extend {
     }
     #endregion
 
-    #region string 字体
+    #region Color/String
     /// <summary>
     /// 富文本
     /// </summary>
@@ -319,13 +319,34 @@ public static class Extend {
     }
 
     /// <summary>
-    /// 文本大小
+    /// <para>获得一个粉嫩的颜色</para>
+    /// <para>来源: https://blog.csdn.net/weixin_43994445/article/details/98728416</para>
     /// </summary>
-    /// <param name="str"></param>
-    /// <param name="size"></param>
     /// <returns></returns>
-    public static string Size(this string str, int size) {
-        return $"<size={size}>{str}</size>";
+    public static Color GetBeautifulColor() {
+        float r = 0f, g = 0f, b = 0f;
+        //定义3个颜色备用
+        float c1 = 1f;
+        float c2 = 150 / 255f;
+        float c3 = UnityEngine.Random.Range(150 / 255f, 1f);
+        //将3个颜色随机分配给R,G,B
+        int choose = UnityEngine.Random.Range(0, 6);
+        switch (choose)
+        {
+            case 0:
+                r = c1; g = c2; b = c3; break;
+            case 1:
+                r = c1; g = c3; b = c2; break;
+            case 2:
+                r = c2; g = c1; b = c3; break;
+            case 3:
+                r = c2; g = c3; b = c1; break;
+            case 4:
+                r = c3; g = c1; b = c2; break;
+            case 5:
+                r = c3; g = c2; b = c1; break;
+        }
+        return new Color(r, g, b);
     }
     #endregion
 
