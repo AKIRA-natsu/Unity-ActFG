@@ -68,27 +68,27 @@ public class UpdateGroup : ReferenceBase {
             if (value) {
                 // 更新恢复
                 foreach (var list in updateMap.Values) {
-                    foreach (var update in list) {
-                        Resume(update);
+                    for (int i = 0; i < list.Count; i++) {
+                        Resume(list[i]);
                     }
                 }
 
                 foreach (var list in spaceUpdateMap.Values) {
-                    foreach (var update in list) {
-                        Resume(update.iupdate);
+                    for (int i = 0; i < list.Count; i++) {
+                        Resume(list[i].iupdate);
                     }
                 }
             } else {
                 // 更新暂停
                 foreach (var list in updateMap.Values) {
-                    foreach (var update in list) {
-                        Stop(update);
+                    for (int i = 0; i < list.Count; i++) {
+                        Stop(list[i]);
                     }
                 }
 
                 foreach (var list in spaceUpdateMap.Values) {
-                    foreach (var update in list) {
-                        Stop(update.iupdate);
+                    for (int i = 0; i < list.Count; i++) {
+                        Stop(list[i].iupdate);
                     }
                 }
             }
