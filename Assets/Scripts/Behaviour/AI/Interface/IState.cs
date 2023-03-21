@@ -1,5 +1,7 @@
+using UnityEngine.AI;
+
 namespace AKIRA.Behaviour.AI {
-    public interface IState : IUpdate {
+    public interface IState : IUpdate<FSMMachine> {
         /// <summary>
         /// 状态
         /// </summary>

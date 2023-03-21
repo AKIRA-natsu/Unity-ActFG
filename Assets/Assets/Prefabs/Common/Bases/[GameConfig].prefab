@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   registCommands: 1
-  loadPlayer: 1
+  loadPlayer: 0
   player: {fileID: 5970756549542502802, guid: 4d10723d9efadd84286739b09bd43558, type: 3}

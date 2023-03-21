@@ -14,7 +14,7 @@ namespace AKIRA.Behaviour.AI {
 
         private void Start() {
             direction = Mathf.RoundToInt(Random.Range(0f, 1f));
-            controller.SetDestination(currentWaypoint.GetPosition());
+            controller.FSM.SetDestination(currentWaypoint.GetPosition());
             this.Regist();
         }
 
@@ -23,7 +23,7 @@ namespace AKIRA.Behaviour.AI {
         }
 
         public void GameUpdate() {
-            if (controller.reachDestination) {
+            if (controller.FSM.Reach) {
                 bool shouldBranch = false;
 
                 if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0) {
@@ -50,7 +50,7 @@ namespace AKIRA.Behaviour.AI {
                     }
                 }
 
-                controller.SetDestination(currentWaypoint.GetPosition());
+                controller.FSM.SetDestination(currentWaypoint.GetPosition());
             }
         }
     }

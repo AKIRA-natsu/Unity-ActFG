@@ -4,6 +4,7 @@ namespace AKIRA.Behaviour.AI {
     /// <summary>
     /// 基类
     /// </summary>
+    [SelectionBase]
     public abstract class AIBase : MonoBehaviour, IPool, IUpdateCallback, ILinkAnima {
         // parameters
         private IAnima ianima;
@@ -26,13 +27,6 @@ namespace AKIRA.Behaviour.AI {
         /// </summary>
         [SerializeField]
         protected UpdateMode mode = UpdateMode.Update;
-        
-        /// <summary>
-        /// 状态
-        /// </summary>
-        [ReadOnly]
-        [SerializeField]
-        protected AIState state = AIState.Idle;
 
         /// <summary>
         /// 更新组

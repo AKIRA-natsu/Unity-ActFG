@@ -95,8 +95,8 @@ public class Player : AIBase {
         // 如果转向小于50才移动
         if (Vector3.Angle(this.transform.forward, moveDir.normalized) <= 50f) {
             this.transform.Translate(moveDir * Speed * Time.deltaTime, Space.World);
-            Animation.SwitchAnima(AIState.Speed, moveDir.Equals(Vector3.zero) ? 0 : run ? 1f : 0.5f);
+            Animation.SwitchAnima(AIState.Move, moveDir.Equals(Vector3.zero) ? 0 : run ? 1f : 0.5f);
         } else
-            Animation.SwitchAnima(AIState.Speed, 0);
+            Animation.SwitchAnima(AIState.Move, 0);
     }
 }
