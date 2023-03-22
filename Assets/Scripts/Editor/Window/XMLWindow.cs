@@ -119,6 +119,23 @@ public class XMLWindow : EditorWindow {
             }
             EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
+
+            // 删除存档
+            EditorGUILayout.BeginVertical();
+            if (GUILayout.Button("删除非勾选Xml文件及存档")) {
+                PlayerPrefsHelp.Delete();
+                foreach (var kvp in FilterMap) {
+                    if (kvp.Key.Equals(BuildHelpName))
+                        continue;
+                    if (!kvp.Value)
+                        continue;
+                    File.Delete(Path.Combine(Application.streamingAssetsPath, kvp.Key.Replace("_", " ")));
+                }
+
+                $"清除存档文档 及 PlayerPrefs存档结束".Colorful(Color.green).Log();
+                AssetDatabase.Refresh();
+            }
+            EditorGUILayout.EndVertical();
         }
     }
 
