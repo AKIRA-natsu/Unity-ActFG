@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// 指引接口
 /// </summary>
@@ -13,4 +15,10 @@ public interface IGuide {
     /// </summary>
     /// <returns></returns>
     bool FinishCondition();
+
+    /// <summary>
+    /// 获得箭头更新的位置
+    /// </summary>
+    /// <returns></returns>
+    Vector3 GetArrowUpdatePosition();
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 using AKIRA.UIFramework;
 using Cysharp.Threading.Tasks;
@@ -24,6 +23,10 @@ namespace AKIRA.Manager {
         [CNName("当前指引键值", true)]
         [SerializeField]
         private int currentIndex = 0;
+        /// <summary>
+        /// 当前指引键值
+        /// </summary>
+        public int CurrentGuideIndex => currentIndex;
         // 存储名称
         private const string GuideIndexKey = "GuideIndexKey";
 
@@ -41,6 +44,10 @@ namespace AKIRA.Manager {
         [CNName("跳过指引")]
         [SerializeField]
         private bool skip = false;
+        /// <summary>
+        /// 是否跳过指引
+        /// </summary>
+        public bool Skip => skip;
 
         /// <summary>
         /// 当前指引接口
@@ -48,9 +55,12 @@ namespace AKIRA.Manager {
         /// <value></value>
         public IGuide CurrentIGuide { get; private set; }
 
-        private void Start() {
+        private async void Start() {
             if (skip)
                 return;
+            
+            // 等待UI初始化完成
+            await UniTask.WaitUntil(() => !IsApplicationOut && UIManager.IsInited);
 
             currentIndex = GuideIndexKey.GetInt();
             XML xml = new XML(GuideDataPath);
@@ -58,13 +68,29 @@ namespace AKIRA.Manager {
                 xml.Read((x) => {
                     var nodes= x.SelectSingleNode("Data").ChildNodes;
                     foreach (XmlElement node in nodes) {
+                        // 提前处理一下路径问题
+                        var completeType = (GuideCompleteType)node.GetAttribute(GuideInfoName.GuideCompleteType).TryParseInt();
+                        var path = node.GetAttribute(GuideInfoName.ArrowTargetPath);
+                        GameObject target = default;
+                        if (completeType == GuideCompleteType.UIWorld) {
+                            // UI实例化Manager下查找物体
+                            var prefabName = path.Split("/")[0];
+                            var type = $"{prefabName}Panel".GetConfigTypeByAssembley();
+                            target = UIManager.Instance.Get(type).transform.Find(path.Replace($"{prefabName}/", "")).gameObject;
+                        } else {
+                            // 3D物体下简单找到对象
+                            // FIXME: 也修改为预制体
+                            target = GameObject.Find(path);
+                        }
+
                         infos.Add(new GuideInfo() {
                             ID = node.GetAttribute(GuideInfoName.ID).TryParseInt(),
-                            completeType = (GuideCompleteType)node.GetAttribute(GuideInfoName.GuideCompleteType).TryParseInt(),
+                            completeType = completeType,
                             isShowBg = node.GetAttribute(GuideInfoName.IsShowBg).TryParseInt() == 1,
                             dialog = node.GetAttribute(GuideInfoName.Dialog),
                             dialogDirection = (GuideDialogDirection)node.GetAttribute(GuideInfoName.DialogDirection).TryParseInt(),
-                            arrowTarget = GameObject.Find(node.GetAttribute(GuideInfoName.ArrowTargetPath)),
+                            useArrow = node.GetAttribute(GuideInfoName.UseArrow).TryParseInt() == 1,
+                            arrowTarget = target,
                             reachDistance = node.GetAttribute(GuideInfoName.ReachDistance).TryParseFloat(),
                             controlByIGuide = node.GetAttribute(GuideInfoName.ControlByIGuide).TryParseInt() == 1,
                         });
@@ -73,8 +99,8 @@ namespace AKIRA.Manager {
             }
             if (currentIndex == infos.Count || infos.Count == 0)
                 return;
-            // UI初始化完成后开始指引
-            UIManager.Instance.RegistAfterUIIInitAction(() => StartGuide(currentIndex));
+            // 开始指引
+            StartGuide(currentIndex);
         }
 
         /// <summary>
@@ -127,7 +153,7 @@ namespace AKIRA.Manager {
                 onGuideFinish?.Invoke();
                 return;
             }
-            
+
             await UniTask.Delay(Mathf.RoundToInt(waitTime * 1000));
             StartGuide(currentIndex);
         }
@@ -174,10 +200,10 @@ namespace AKIRA.Manager {
 
 #if UNITY_EDITOR
         [ContextMenu("DeleteGuideKey")]
-#endif
         private void DeleteGuideKey() {
             GuideIndexKey.Delete();
         }
+#endif
     }
 
     /// <summary>
@@ -238,13 +264,15 @@ namespace AKIRA.Manager {
         public void ReceiveGuideInfo(in GuideInfo info) {
             target = info.arrowTarget.transform;
             distance = info.reachDistance;
-            // 设置箭头位置
-            var position = target.position;
-            position.y += heightOffset;
-            arrow3D.transform.position = position;
-            arrow3D.SetActive(true);
-            // 设置2D箭头
-            arrow2D.SetTarget(target);
+            if (info.useArrow) {
+                // 设置箭头位置
+                var position = target.position;
+                position.y += heightOffset;
+                arrow3D.transform.position = position;
+                arrow3D.SetActive(true);
+                // 设置2D箭头
+                arrow2D.SetTarget(target);
+            }
             // 开始更新
             this.Regist();
         }
@@ -252,12 +280,15 @@ namespace AKIRA.Manager {
         public void GameUpdate() {
             arrow2D.UpdateArrow();
 
-            if (GuideManager.Instance.CurrentIGuide == null) {
+            var iGuide = GuideManager.Instance.CurrentIGuide;
+            if (iGuide == null) {
+                arrow3D.transform.position = target.position;
                 var dis = Vector3.Distance(player.position, target.position);
                 if (dis <= distance)
                     EndGuide();
             } else {
-                if (GuideManager.Instance.CurrentIGuide.FinishCondition())
+                arrow3D.transform.position = iGuide.GetArrowUpdatePosition();
+                if (iGuide.FinishCondition())
                     EndGuide();
             }
         }

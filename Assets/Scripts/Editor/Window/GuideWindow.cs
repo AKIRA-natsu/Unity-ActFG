@@ -60,6 +60,7 @@ public class GuideWindow : EditorWindow {
         GuideInfo element = guideList.list[index] as GuideInfo;
         EditorGUI.LabelField(new Rect(rect.x, rect.y, 100, EditorGUIUtility.singleLineHeight), $"Guide Index {element.ID}");
         EditorGUI.LabelField(new Rect(rect.x + 100, rect.y, rect.width - 100, EditorGUIUtility.singleLineHeight), $"{element.completeType}");
+        EditorGUI.LabelField(new Rect(rect.x + 180, rect.y, rect.width - 180, EditorGUIUtility.singleLineHeight), $"{element.arrowTarget?.name}");
 
         if (index == guideList.index) {
             DrawInfoProperty(element, index);
@@ -84,13 +85,29 @@ public class GuideWindow : EditorWindow {
                     // 清空上一次
                     infos.Clear();
                     foreach (XmlElement node in nodes) {
+                        // 提前处理一下路径问题
+                        var completeType = (GuideCompleteType)node.GetAttribute(GuideInfoName.GuideCompleteType).TryParseInt();
+                        var path = node.GetAttribute(GuideInfoName.ArrowTargetPath);
+                        GameObject target = default;
+                        if (completeType == GuideCompleteType.UIWorld) {
+                            // 查找预制体
+                            var prefabName = path.Split("/")[0];
+                            var prefab = $"Prefabs/UI/{prefabName}".Load<GameObject>();
+                            target = prefab.transform.Find(path.Replace($"{prefabName}/", "")).gameObject;
+                        } else {
+                            // 3D物体下简单找到对象
+                            // FIXME: 也修改为预制体
+                            target = GameObject.Find(path);
+                        }
+
                         infos.Add(new GuideInfo() {
                             ID = node.GetAttribute(GuideInfoName.ID).TryParseInt(),
-                            completeType = (GuideCompleteType)node.GetAttribute(GuideInfoName.GuideCompleteType).TryParseInt(),
+                            completeType = completeType,
                             isShowBg = node.GetAttribute(GuideInfoName.IsShowBg).TryParseInt() == 1,
                             dialog = node.GetAttribute(GuideInfoName.Dialog),
                             dialogDirection = (GuideDialogDirection)node.GetAttribute(GuideInfoName.DialogDirection).TryParseInt(),
-                            arrowTarget = GameObject.Find(node.GetAttribute(GuideInfoName.ArrowTargetPath)),
+                            useArrow = node.GetAttribute(GuideInfoName.UseArrow).TryParseInt() == 1,
+                            arrowTarget = target,
                             reachDistance = node.GetAttribute(GuideInfoName.ReachDistance).TryParseFloat(),
                             controlByIGuide = node.GetAttribute(GuideInfoName.ControlByIGuide).TryParseInt() == 1,
                         });
@@ -204,6 +221,7 @@ public class GuideWindow : EditorWindow {
         info.controlByIGuide = info.arrowTarget != null && info.arrowTarget.TryGetComponent<IGuide>(out _);
 
         if (info.completeType == GuideCompleteType.TDWorld) {
+            info.useArrow = EditorGUILayout.Toggle(GuideInfoName.UseArrow, info.useArrow);
             if (!info.controlByIGuide)
                 info.reachDistance = EditorGUILayout.FloatField(GuideInfoName.ReachDistance, info.reachDistance);
         }
@@ -231,7 +249,8 @@ public class GuideWindow : EditorWindow {
         node.SetAttribute(GuideInfoName.IsShowBg, (info.isShowBg ? 1 : 0).ToString());
         node.SetAttribute(GuideInfoName.Dialog, info.dialog);
         node.SetAttribute(GuideInfoName.DialogDirection, ((int)info.dialogDirection).ToString());
-        node.SetAttribute(GuideInfoName.ArrowTargetPath, info.arrowTarget.GetPath());
+        node.SetAttribute(GuideInfoName.UseArrow, (info.useArrow ? 1 : 0).ToString());
+        node.SetAttribute(GuideInfoName.ArrowTargetPath, info.arrowTarget.GetPath().Replace(GuideInfo.UIRemovePathName, ""));
         node.SetAttribute(GuideInfoName.ReachDistance, info.reachDistance.ToString());
         node.SetAttribute(GuideInfoName.ControlByIGuide, (info.controlByIGuide ? 1 : 0).ToString());
     }

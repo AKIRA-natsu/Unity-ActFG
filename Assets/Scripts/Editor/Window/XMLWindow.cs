@@ -122,7 +122,7 @@ public class XMLWindow : EditorWindow {
 
             // 删除存档
             EditorGUILayout.BeginVertical();
-            if (GUILayout.Button("删除非勾选Xml文件及存档")) {
+            if (GUILayout.Button("删除勾选Xml文件及存档")) {
                 PlayerPrefsHelp.Delete();
                 foreach (var kvp in FilterMap) {
                     if (kvp.Key.Equals(BuildHelpName))

@@ -52,7 +52,6 @@ public class GuideInfo {
     /// 是否显示遮罩
     /// </summary>
     public bool isShowBg = false;
-
     /// <summary>
     /// 提示文本
     /// </summary>
@@ -63,6 +62,10 @@ public class GuideInfo {
     public GuideDialogDirection dialogDirection = GuideDialogDirection.None;
 
     /// <summary>
+    /// 是否使用箭头
+    /// </summary>
+    public bool useArrow = false;
+    /// <summary>
     /// 箭头指向目标
     /// </summary>
     public GameObject arrowTarget;
@@ -71,12 +74,20 @@ public class GuideInfo {
     /// </summary>
     public float reachDistance = 0f;
 
+    /// <summary>
+    /// <para>UI剔除名字</para>
+    /// <para>从Prefab拿取UI下路径，剔除常量 <see cref="UIRemovePathName" /></para>
+    /// <para>实际游戏运行是拿UI相对路径下</para>
+    /// </summary>
+    /// <returns></returns>
+    public const string UIRemovePathName = "Canvas (Environment)/";
+
 #if UNITY_EDITOR
     /// <summary>
     /// 是否可以提供
     /// </summary>
     /// <returns></returns>
-    public bool IsVailiable { get; private set; }
+    public bool IsVailiable { get; private set; } = true;
 
     /// <summary>
     /// 获得指引UGUI颜色及指引信息

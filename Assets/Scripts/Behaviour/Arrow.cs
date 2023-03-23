@@ -24,6 +24,7 @@ public class Arrow : MonoBehaviour {
     public void Init(Transform follow) {
         this.follow = follow;
         render = this.transform.GetChild(0);
+        render.transform.localScale = Vector3.zero;
     }
 
     /// <summary>

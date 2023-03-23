@@ -7,6 +7,7 @@ public static class GuideInfoName {
     public static readonly string IsShowBg = "ShowMaskOrBg";
     public static readonly string Dialog = "Dialog";
     public static readonly string DialogDirection = "GuideDialogDirection";
+    public static readonly string UseArrow = "UseArrow";
     public static readonly string ArrowTargetPath = "ArrowTargetPath";
     public static readonly string ReachDistance = "ReachDistance";
     public static readonly string ControlByIGuide = "ControlByIGuide";
