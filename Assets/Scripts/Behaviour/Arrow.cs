@@ -24,7 +24,7 @@ public class Arrow : MonoBehaviour {
     public void Init(Transform follow) {
         this.follow = follow;
         render = this.transform.GetChild(0);
-        render.transform.localScale = Vector3.zero;
+        render.localScale = Vector3.zero;
     }
 
     /// <summary>
@@ -53,6 +53,18 @@ public class Arrow : MonoBehaviour {
         this.transform.position = follow.position;
         // 调整转向
         this.transform.LookAt(target);
+        // 更新箭头位置
+        render.transform.position = this.transform.position + this.transform.forward * radius;
+    }
+
+    /// <summary>
+    /// 更新箭头
+    /// </summary>
+    /// <param name="position"></param>
+    public void UpdateArrow(Vector3 position) {
+        this.transform.position = follow.position;
+        // 调整转向
+        this.transform.LookAt(position);
         // 更新箭头位置
         render.transform.position = this.transform.position + this.transform.forward * radius;
     }

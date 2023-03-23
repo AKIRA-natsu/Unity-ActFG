@@ -225,7 +225,7 @@ namespace AKIRA.Manager {
         // 玩家身下的箭头
         private Arrow arrow2D;
         // 箭头高度差值
-        private float heightOffset = 0.5f;
+        private float heightOffset = 1f;
 
         /// <summary>
         /// 玩家标签
@@ -276,16 +276,17 @@ namespace AKIRA.Manager {
         }
 
         public void GameUpdate() {
-            arrow2D.UpdateArrow();
-
             var iGuide = GuideManager.Instance.CurrentIGuide;
             if (iGuide == null) {
                 arrow3D.transform.position = target.position + Vector3.up * heightOffset;
+                arrow2D.UpdateArrow();
                 var dis = Vector3.Distance(player.position, target.position);
                 if (dis <= distance)
                     EndGuide();
             } else {
-                arrow3D.transform.position = iGuide.GetArrowUpdatePosition() + Vector3.up * heightOffset;
+                var targetPosition = iGuide.GetArrowUpdatePosition();
+                arrow3D.transform.position = targetPosition + Vector3.up * heightOffset;
+                arrow2D.UpdateArrow(targetPosition);
                 if (iGuide.FinishCondition())
                     EndGuide();
             }
