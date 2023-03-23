@@ -42,7 +42,7 @@ namespace AKIRA.UIFramework {
             }
 
             if (info.dialogDirection == GuideDialogDirection.None || String.IsNullOrWhiteSpace(info.dialog)) {
-                Hide();
+                DialogGroup.alpha = 0f;
             } else {
                 UpdateDialogPosition(info.dialogDirection);
                 DialogContext.text = info.dialog;

@@ -122,20 +122,16 @@ namespace AKIRA.Manager {
             if (info.completeType == GuideCompleteType.UIWorld) {
                 // 向UIGuidePanel发送
                 UIManager.Instance.Get<GuidePanel>().ReceiveGuideInfo(info);
-                if (lastType == GuideCompleteType.TDWorld) {
+                if (lastType != GuideCompleteType.UIWorld) {
                     onGuideUIResume?.Invoke();
                     onGuide3DPause?.Invoke();
-                } else if (info.controlByIGuide) {
-                    onGuideUIResume?.Invoke();
                 }
             } else {
                 // 向3D指引系统发送
                 Guide3DSystem.Instance.ReceiveGuideInfo(info);
-                if (lastType == GuideCompleteType.UIWorld) {
+                if (lastType != GuideCompleteType.TDWorld) {
                     onGuide3DResume?.Invoke();
                     onGuideUIPause?.Invoke();
-                } else if (info.controlByIGuide) {
-                    onGuide3DResume?.Invoke();
                 }
             }
 
