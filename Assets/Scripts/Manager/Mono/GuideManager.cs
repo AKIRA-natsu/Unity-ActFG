@@ -59,10 +59,10 @@ namespace AKIRA.Manager {
             if (skip)
                 return;
             
+            currentIndex = GuideIndexKey.GetInt();
             // 等待UI初始化完成
             await UniTask.WaitUntil(() => !IsApplicationOut && UIManager.IsInited);
 
-            currentIndex = GuideIndexKey.GetInt();
             XML xml = new XML(GuideDataPath);
             if (xml.Exist()) {
                 xml.Read((x) => {
