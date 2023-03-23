@@ -266,9 +266,7 @@ namespace AKIRA.Manager {
             distance = info.reachDistance;
             if (info.useArrow) {
                 // 设置箭头位置
-                var position = target.position;
-                position.y += heightOffset;
-                arrow3D.transform.position = position;
+                arrow3D.transform.position = target.position + Vector3.up * heightOffset;
                 arrow3D.SetActive(true);
                 // 设置2D箭头
                 arrow2D.SetTarget(target);
@@ -282,12 +280,12 @@ namespace AKIRA.Manager {
 
             var iGuide = GuideManager.Instance.CurrentIGuide;
             if (iGuide == null) {
-                arrow3D.transform.position = target.position;
+                arrow3D.transform.position = target.position + Vector3.up * heightOffset;
                 var dis = Vector3.Distance(player.position, target.position);
                 if (dis <= distance)
                     EndGuide();
             } else {
-                arrow3D.transform.position = iGuide.GetArrowUpdatePosition();
+                arrow3D.transform.position = iGuide.GetArrowUpdatePosition() + Vector3.up * heightOffset;
                 if (iGuide.FinishCondition())
                     EndGuide();
             }
