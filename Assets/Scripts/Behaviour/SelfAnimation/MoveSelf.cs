@@ -25,13 +25,15 @@ public class MoveSelf : SelfAnim {
         DecideDirection();
     }
 
-    private void OnEnable() {
+    protected override void OnEnable() {
+        base.OnEnable();
         DecideDirection();
         // 隐藏期间改动位置
         localPosition = this.transform.localPosition;
     }
 
-    private void OnDisable() {
+    protected override void OnDisable() {
+        base.OnDisable();
         // 回到最初位置
         this.transform.localPosition = localPosition;
     }

@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using AKIRA.Manager;
 using UnityEngine;
 
 /// <summary>
@@ -15,17 +18,18 @@ public class PunchSelf : SelfAnim {
     // 当前动画时间
     protected float time = 0f;
     // 动画朝向
-    protected Ward ward = Ward.Forward;
+    protected PunchWard ward = PunchWard.Forward;
     // 原来的缩放大小
     protected Vector3 originScale;
     // 缩放目标和当前的差值
     protected Vector3 punchOffset;
 
     protected virtual void Awake() {
-        originScale = this.transform.localScale;
+        this.originScale = this.transform.localScale;
     }
 
-    protected virtual void OnEnable() {
+    protected override void OnEnable() {
+        base.OnEnable();
         punchOffset = originScale * (punchValue - 1f);
     }
 
@@ -34,14 +38,14 @@ public class PunchSelf : SelfAnim {
     }
 
     public override void GameUpdate() {
-        if (ward == Ward.Forward) {
+        if (ward == PunchWard.Forward) {
             time += Time.deltaTime;
             if (time > punchTime)
-                ward = Ward.Backward;
+                ward = PunchWard.Backward;
         } else {
             time -= Time.deltaTime;
             if (time < 0)
-                ward = Ward.Forward;
+                ward = PunchWard.Forward;
         }
 
         this.transform.localScale = punchCurve.Evaluate(time / punchTime) * punchOffset + originScale;
