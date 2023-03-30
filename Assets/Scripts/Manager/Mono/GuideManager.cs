@@ -97,7 +97,7 @@ namespace AKIRA.Manager {
                     }
                 });
             }
-            if (currentIndex == infos.Count || infos.Count == 0)
+            if (currentIndex >= infos.Count || infos.Count == 0)
                 return;
             // 开始指引
             StartGuide(currentIndex);

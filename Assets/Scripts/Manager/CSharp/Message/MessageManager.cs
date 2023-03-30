@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AKIRA.Manager;
 
-namespace AKIRA.Message {
+namespace AKIRA.Manager.Message {
     /// <summary>
     /// 消息管理
     /// 参考：https://blog.csdn.net/u014361280/article/details/104199926

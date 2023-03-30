@@ -32,7 +32,7 @@ public class GenerateUIGUI : EditorWindow {
 #endregion
 
 #region params
-    internal static UIRule rule = null;
+    internal static UIRuleConfig rule = null;
     private static List<UINode> nodes = new List<UINode>();
     private static List<string> btns = new List<string>();
 #endregion
@@ -169,7 +169,7 @@ $@"    }}
     internal static StringBuilder LinkControlContent(Transform _transform) {
         if (nodes.Count != 0) nodes.Clear();
         if (btns.Count != 0) btns.Clear();
-        if (rule == null) rule = UIRule.DefaultPath.Load<UIRule>();
+        if (rule == null) rule = UIRuleConfig.DefaultPath.Load<UIRuleConfig>();
         TraverseUI(_transform.transform, "");
         StringBuilder content = new StringBuilder();
         // 最后一个是transform根节点

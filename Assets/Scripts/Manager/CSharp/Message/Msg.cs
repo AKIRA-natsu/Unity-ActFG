@@ -1,4 +1,4 @@
-﻿namespace AKIRA.Message {
+﻿namespace AKIRA.Manager.Message {
     /// <summary>
     /// 消息体
     /// </summary>

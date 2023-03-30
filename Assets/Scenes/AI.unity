@@ -544,7 +544,7 @@ PrefabInstance:
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
       propertyPath: testObjs.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
@@ -565,7 +565,7 @@ PrefabInstance:
         type: 3}
       propertyPath: testObjs.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1047715821}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
       propertyPath: testObjs.Array.data[3]

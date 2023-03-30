@@ -92,7 +92,7 @@ public class UpdateManagerInspector : Editor {
                 var infoCount = spaceUpdateList.Count;
                 if (updateCount + infoCount != 0) {
                     EditorGUILayout.BeginVertical("frameBox");
-                    foldData.data[mode] = EditorGUILayout.Foldout(foldData.data[mode], $"{mode}列表");
+                    foldData.data[mode] = EditorGUILayout.Foldout(foldData.data[mode], $"{mode}列表：总数: {updateCount + infoCount}");
                     if (foldData.data[mode]) {
 
                         if (updateCount != 0) {
@@ -122,9 +122,7 @@ public class UpdateManagerInspector : Editor {
             EditorGUILayout.EndHorizontal();
         }
 
-        // Editor OnInspectorGUI方法中
         // 强制每帧刷新一次
-        // 来源：https://cxywk.com/gamedev/q/QZdC6snb
         // if (EditorApplication.isPlaying)
             Repaint();
     }

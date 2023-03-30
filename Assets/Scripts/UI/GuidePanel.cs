@@ -3,6 +3,10 @@ using AKIRA.Manager;
 using System;
 using UnityEngine.InputSystem;
 using Cysharp.Threading.Tasks;
+#if UNITY_ANDROID || UNITY_IOS
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+#endif
 
 namespace AKIRA.UIFramework {
     [Win(WinEnum.Guide, "Prefabs/UI/Guide", WinType.Interlude)]
@@ -22,6 +26,10 @@ namespace AKIRA.UIFramework {
                 GuideManager.Instance.RegistOnGuideUIResumeAction(Show);
                 GuideManager.Instance.RegistOnGuideUIPauseAction(Hide);
             }
+
+#if UNITY_ANDROID || UNITY_IOS
+        EnhancedTouchSupport.Enable();
+#endif
         }
 
         /// <summary>
@@ -99,9 +107,18 @@ namespace AKIRA.UIFramework {
 
         public void GameUpdate() {
             if (GuideManager.Instance.CurrentIGuide == null) {
-                if (Mouse.current.leftButton.isPressed) {
+#if UNITY_EDITOR
+                if (Mouse.current.leftButton.wasPressedThisFrame)
+#else
+                if (Touch.activeTouches.Count > 0)
+#endif
+                {
                     // 判断是否按在目标上
+#if UNITY_EDITOR
                     var hit = Physics2D.Raycast(UI.UICamera.transform.position, Mouse.current.position.ReadValue().ScreenToUGUI());
+#else
+                    var hit = Physics2D.Raycast(UI.UICamera.transform.position, Touch.activeTouches[0].screenPosition.ScreenToUGUI());
+#endif
                     if (hit.collider != null && hit.collider.Equals(Rigid))
                         EndGuide();
                 }

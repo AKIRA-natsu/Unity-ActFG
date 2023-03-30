@@ -10,26 +10,32 @@ using AKIRA.UIFramework;
 /// UI测试
 /// </summary>
 public class RuleTestGUI : EditorWindow {
+    /// <summary>
+    /// 面板大小
+    /// </summary>
+    private Vector2 size;
+
     [MenuItem("Tools/Framework/UI/UIRuleTest(GUI)")]
     public static void Open() {
         var gui = GetWindow<RuleTestGUI>();
         gui.titleContent = new GUIContent("UI规则测试");
     }
 
-    private static UIRule rule = null;
+    private static UIRuleConfig rule = null;
     private List<UINode> nodes = new List<UINode>();
 
     private void OnGUI() {
-        EditorGUI.BeginChangeCheck();
+        // EditorGUI.BeginChangeCheck();
+        size = EditorGUILayout.BeginScrollView(size);
         // title
         EditorGUILayout.LabelField("自动生成 UI (GUI)");
         EditorGUILayout.Space();
 
-        rule = UIRule.DefaultPath.Load<UIRule>();
+        rule = UIRuleConfig.DefaultPath.Load<UIRuleConfig>();
 
         if (rule == null) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.LabelField($"路径下没有规则文件 => {UIRule.DefaultPath}");
+            EditorGUILayout.LabelField($"路径下没有规则文件 => {UIRuleConfig.DefaultPath}");
             EditorGUI.EndDisabledGroup();
 
             // if (GUILayout.Button("规则文件位置")) {
@@ -54,6 +60,8 @@ public class RuleTestGUI : EditorWindow {
         // EditorGUILayout.TextArea(n + "   " + controlName);
         // EditorGUI.EndDisabledGroup();
         LinkControlContent(obj.transform);
+        EditorGUILayout.EndScrollView();
+        // EditorGUI.EndChangeCheck();
     }
 
     /// <summary>

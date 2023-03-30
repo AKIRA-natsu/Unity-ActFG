@@ -39,7 +39,9 @@ public class ReferencePoolWindow : EditorWindow {
     private void DrawElement(Component component, List<ReferenceBase> refers) {
         ReorderableList list = new ReorderableList(refers, typeof(ReferenceBase));
         EditorGUILayout.BeginVertical("framebox");
-        EditorGUILayout.LabelField(component.ToString());
+        GUI.enabled = false;
+        EditorGUILayout.ObjectField(component, typeof(Component), allowSceneObjects : true);
+        GUI.enabled = true;
         EditorGUILayout.BeginHorizontal("box");
         list.DoLayoutList();
         EditorGUILayout.EndHorizontal();
