@@ -1,51 +1,115 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 namespace AKIRA.Manager.Audio {
     public class AudioManager : Singleton<AudioManager> {
-        // 场景中的音乐
+        // 音乐保存名称
+        public const string MusicEnable = "MusicEnable";
+        // 音乐激活
+        public bool Active = true;
+
+        // 音频配置文件
+        private AudioResourceConfig config;
+        // 场景中正在播放的音乐
         private List<AudioPlayer> audioPlayers = new List<AudioPlayer>();
-        // 音效路径
-        private const string AudioPath = "Audio/";
-        // 保存音乐
-        private Dictionary<AudioID, AudioClip> AudioMap = new Dictionary<AudioID, AudioClip>();
+        // 字典保存，方便下一次快速找到
+        private Dictionary<string, AudioClip> ClipMap = new();
         // 父节点
         private Transform root;
 
         protected AudioManager() {
             root = new GameObject("[AudioManager]").DontDestory().transform;
+            config = AudioResourceConfig.DefaultPath.Load<AudioResourceConfig>();
+            Active = MusicEnable.GetInt(1) == 1 ? true : false;
         }
 
         /// <summary>
-        /// 
+        /// 播放音频
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="position">位置，影响音效声音大小</param>
+        /// <param name="looping">是否循环</param>
+        public AudioPlayer Play(string tag, Vector3 position, bool looping) {
+            if (TryCreatePlayer(tag, out (AudioPlayer player, AudioClip clip) audio)) {
+                audio.player.transform.position = position;
+                audio.player.Play(audio.clip, true, looping);
+                return audio.player;
+            } else {
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// 播放音频
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="looping">是否循环</param>
+        public AudioPlayer Play(string tag, bool looping) {
+            if (TryCreatePlayer(tag, out (AudioPlayer player, AudioClip clip) audio)) {
+                audio.player.Play(audio.clip, false, looping);
+                return audio.player;
+            } else {
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// 自动播放/回收
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="position">位置，影响音效声音大小</param>
+        public void Play(string tag, Vector3 position) {
+            if (TryCreatePlayer(tag, out (AudioPlayer player, AudioClip clip) audio)) {
+                audio.player.transform.position = position;
+                var time = audio.player.Play(audio.clip, true);
+                AutoPlay(audio.player, time);
+            }
+        }
+
+        /// <summary>
+        /// 自动播放/回收
+        /// </summary>
+        /// <param name="tag"></param>
+        public void Play(string tag) {
+            if (TryCreatePlayer(tag, out (AudioPlayer player, AudioClip clip) audio)) {
+                var time = audio.player.Play(audio.clip, false);
+                AutoPlay(audio.player, time);
+            }
+        }
+
+        /// <summary>
+        /// 自动播放/回收
         /// </summary>
         /// <param name="player"></param>
-        /// <param name="id"></param>
-        /// <param name="looping"></param>
+        /// <param name="time"></param>
         /// <returns></returns>
-        private AudioPlayer Play(AudioPlayer player, AudioID id, bool looping) {
-            player.Play(FindAudio(id), looping);
-            audioPlayers.Add(player);
-            return player;
+        private async void AutoPlay(AudioPlayer player, float time) {
+            await UniTask.Delay(Mathf.RoundToInt(time * 1000));
+            Stop(player);
         }
 
         /// <summary>
-        /// 播放音乐
+        /// 尝试获得播放器
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="looping">是否循环</param>
-        public AudioPlayer Play(AudioID id, bool looping = false) {
-            AudioPlayer player = null;
-            foreach (var p in audioPlayers)
-                if (!p.IsPlaying()) {
-                    player = p;
-                    break;
-                }
+        /// <param name="tag"></param>
+        /// <param name="audio"></param>
+        /// <returns></returns>
+        private bool TryCreatePlayer(string tag, out (AudioPlayer player, AudioClip clip) audio) {
+            audio = default;
+            if (!Active || String.IsNullOrEmpty(tag))
+                return false;
 
-            if (player == null)
-                player = ObjectPool.Instance.Instantiate<AudioPlayer>(AudioPlayer.DefaultPath, root);
-            
-            return Play(player, id, looping);
+            audio.clip = FindAudio(tag);
+            if (audio.clip == null) {
+                $"音频： Tag => {tag} 不存在".Colorful(Color.yellow).Log();
+                return false;
+            } else {
+                audio.player = ObjectPool.Instance.Instantiate<AudioPlayer>(AudioPlayer.DefaultPath, root);
+                audioPlayers.Add(audio.player);
+                return true;
+            }
         }
 
         /// <summary>
@@ -53,7 +117,13 @@ namespace AKIRA.Manager.Audio {
         /// </summary>
         /// <param name="player"></param>
         public void Stop(AudioPlayer player) {
+            // 已经停掉不在列表中
+            if (!audioPlayers.Contains(player))
+                return;
+
             player.Stop();
+            ObjectPool.Instance.Destory(player);
+            audioPlayers.Remove(player);
         }
 
         /// <summary>
@@ -61,7 +131,8 @@ namespace AKIRA.Manager.Audio {
         /// </summary>
         public void Stop() {
             foreach (var player in audioPlayers) {
-                player.Stop();
+                if (player.IsPlaying())
+                    player.Stop();
                 ObjectPool.Instance.Destory(player);
             }
             audioPlayers.Clear();
@@ -70,13 +141,16 @@ namespace AKIRA.Manager.Audio {
         /// <summary>
         /// Resources/Audio/下查找音乐
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="tag"></param>
         /// <returns></returns>
-        private AudioClip FindAudio(AudioID id) {
-            if (AudioMap.ContainsKey(id))
-                return AudioMap[id];
-            var clip = $"{AudioPath}{id}".Load<AudioClip>();
-            AudioMap.Add(id, clip);
+        private AudioClip FindAudio(string tag) {
+            if (ClipMap.ContainsKey(tag))
+                return ClipMap[tag];
+            
+            var clip = config.FindClip(tag);
+            if (clip != null) {
+                ClipMap.Add(tag, clip);
+            }
             return clip;
         }
     }
