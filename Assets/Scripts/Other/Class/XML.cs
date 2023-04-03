@@ -37,6 +37,14 @@ public class XML {
     }
 
     /// <summary>
+    /// 此构造函数不需要判断是否存在，判断TextAsset即可
+    /// </summary>
+    /// <param name="asset"></param>
+    public XML(TextAsset asset) {
+        xml.LoadXml(asset.text);
+    }
+
+    /// <summary>
     /// 创建
     /// </summary>
     /// <param name="create"></param>

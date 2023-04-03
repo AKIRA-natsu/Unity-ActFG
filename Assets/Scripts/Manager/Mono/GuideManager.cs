@@ -55,14 +55,17 @@ namespace AKIRA.Manager {
         /// <value></value>
         public IGuide CurrentIGuide { get; private set; }
 
-        private async void Start() {
+        private void Start() {
             if (skip)
                 return;
-            
             currentIndex = GuideIndexKey.GetInt();
-            // 等待UI初始化完成
-            await UniTask.WaitUntil(() => !IsApplicationOut && UIManager.IsInited);
+            UIManager.Instance.RegistAfterUIIInitAction(Init);
+        }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        private void Init() {
             XML xml = new XML(GuideDataPath);
             if (xml.Exist()) {
                 xml.Read((x) => {
@@ -97,6 +100,7 @@ namespace AKIRA.Manager {
                     }
                 });
             }
+            
             if (currentIndex >= infos.Count || infos.Count == 0)
                 return;
             // 开始指引

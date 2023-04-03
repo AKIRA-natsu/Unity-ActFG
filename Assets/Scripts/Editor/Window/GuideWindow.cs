@@ -78,7 +78,7 @@ public class GuideWindow : EditorWindow {
     private void OnGUI() {
         // 第一次打开窗口读取指引数据
         if (xml == null) {
-            xml = new XML(GuideManager.GuideDataPath, false);
+            xml = new XML(GuideManager.GuideDataPath);
             if (xml.Exist()) {
                 xml.Read((x) => {
                     var nodes= x.SelectSingleNode("Data").ChildNodes;
