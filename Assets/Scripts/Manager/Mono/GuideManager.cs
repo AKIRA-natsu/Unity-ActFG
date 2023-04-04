@@ -23,10 +23,6 @@ namespace AKIRA.Manager {
         [CNName("当前指引键值", true)]
         [SerializeField]
         private int currentIndex = 0;
-        /// <summary>
-        /// 当前指引键值
-        /// </summary>
-        public int CurrentGuideIndex => currentIndex;
         // 存储名称
         private const string GuideIndexKey = "GuideIndexKey";
 
@@ -82,7 +78,7 @@ namespace AKIRA.Manager {
                             target = UIManager.Instance.Get(type).transform.Find(path.Replace($"{prefabName}/", "")).gameObject;
                         } else {
                             // 3D物体下简单找到对象
-                            // FIXME: 也修改为预制体
+                            // FIXME: 修改为预制体
                             target = GameObject.Find(path);
                         }
 
@@ -156,6 +152,25 @@ namespace AKIRA.Manager {
 
             await UniTask.Delay(Mathf.RoundToInt(waitTime * 1000));
             StartGuide(currentIndex);
+        }
+
+        /// <summary>
+        /// <para>当前指引是否是 <see cref="index" /> 且非跳过</para>
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public bool IsGuideOfIndex(int index) {
+            return !Skip && currentIndex == index;
+        }
+
+        /// <summary>
+        /// <para>当前 <see cref="CurrentIGuide" /> 是否已经开始</para>
+        /// <para>当前指引的键值 <see cref="index" /> 且已经解锁状态 (会调用IGuide.UnlockCondition()) 且非跳过</para>
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public bool IsGuideOfInterface(int index) {
+            return !Skip && currentIndex == index && CurrentIGuide.UnlockCondition();
         }
 
         /// <summary>
@@ -271,8 +286,11 @@ namespace AKIRA.Manager {
                 // 设置2D箭头
                 arrow2D.SetTarget(target);
             }
+
             // 开始更新
-            this.Regist();
+            // 否则就是在IGuide里重新开了一个GuideInfo传递给UI，在UI进行判断完成
+            if (!UIManager.Instance.Get<GuidePanel>().Active)
+                this.Regist();
         }
 
         public void GameUpdate() {
