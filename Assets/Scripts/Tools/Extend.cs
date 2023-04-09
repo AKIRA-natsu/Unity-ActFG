@@ -45,7 +45,7 @@ public static class Extend {
     /// <param name="rotation"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T Instantiate<T>(this T com, Vector3 position = default, Quaternion rotation = default) where T : Component {
+    public static T Instantiate<T>(this T com, Vector3 position, Quaternion rotation) where T : Component {
         return GameObject.Instantiate(com.gameObject, position, rotation).GetComponent<T>();
     }
 
@@ -67,7 +67,7 @@ public static class Extend {
     /// <param name="position"></param>
     /// <param name="rotation"></param>
     /// <returns></returns>
-    public static GameObject Instantiate(this GameObject obj, Vector3 position = default, Quaternion rotation = default) {
+    public static GameObject Instantiate(this GameObject obj, Vector3 position, Quaternion rotation) {
         var go = GameObject.Instantiate(obj, position, rotation);
         go.name = obj.name;
         return go;

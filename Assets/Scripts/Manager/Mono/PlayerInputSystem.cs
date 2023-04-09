@@ -21,7 +21,7 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 是否切换到UI
         /// </summary>
-        public bool IsUI { get; private set; } = false;
+        public bool IsUI { get; private set; } = true;
 
         /// <summary>
         /// 输入系统切换UI
@@ -43,6 +43,8 @@ namespace AKIRA.Manager {
             
             if (playerInput == null)
                 throw new System.NullReferenceException($"{this.name} dont have PlayInput MonoBehaviour, InputSystem Unavailable");
+            
+            IsUI = playerInput.defaultActionMap.Equals("UI");
                 
             inputActions.Enable();
         }
@@ -56,23 +58,17 @@ namespace AKIRA.Manager {
             if (Keyboard.current.escapeKey.wasPressedThisFrame)
 #elif UNITY_ANDROID || UNITY_IOS
 #elif UNITY_STANDALONE
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
 #elif UNITY_PS4 || UNITY_PS5
 #elif UNITY_XBOX
 #elif UNITY_SWITCH
 #endif
             {
                 if (IsUI) {
-                    playerInput.SwitchCurrentActionMap(ActionMap_Player);
-                    inputActions.Player.Enable();
-                    inputActions.UI.Disable();
-                    OnInputSwitchPlayer?.Invoke();
+                    SwtichPlayer();
                 } else {
-                    playerInput.SwitchCurrentActionMap(ActionMap_UI);
-                    inputActions.Player.Disable();
-                    inputActions.UI.Enable();
-                    OnInputSwitchUI?.Invoke();
+                    SwitchUI();
                 }
-                IsUI = !IsUI;
             }
 
                 // FIXME: 更换键盘绑定的一个案例
@@ -88,8 +84,35 @@ namespace AKIRA.Manager {
 
             // FIXME: 电脑下鼠标隐藏/显示
 #if UNITY_EDITOR || UNITY_STANDALONE
-            Cursor.visible = Keyboard.current.leftAltKey.isPressed;
+            if (IsUI) {
+                Cursor.visible = true;
+            } else {
+                Cursor.visible = false;
+                Cursor.visible = Keyboard.current.leftAltKey.isPressed;
+            }
 #endif
+        }
+
+        /// <summary>
+        /// 切换到UI
+        /// </summary>
+        public void SwitchUI() {
+            playerInput.SwitchCurrentActionMap(ActionMap_UI);
+            inputActions.Player.Disable();
+            inputActions.UI.Enable();
+            OnInputSwitchUI?.Invoke();
+            IsUI = true;
+        }
+
+        /// <summary>
+        /// 切换到玩家
+        /// </summary>
+        public void SwtichPlayer() {
+            playerInput.SwitchCurrentActionMap(ActionMap_Player);
+            inputActions.Player.Enable();
+            inputActions.UI.Disable();
+            OnInputSwitchPlayer?.Invoke();
+            IsUI = false;
         }
 
         /// <summary>

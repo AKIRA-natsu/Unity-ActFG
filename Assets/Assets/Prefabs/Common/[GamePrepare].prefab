@@ -44,16 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cc18bd174b9d24fa4487448f0dbcda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  managers:
+  globalObjs:
   - {fileID: 4840052776985412774, guid: 88eb10cc01489254fbb9f0696b65ad43, type: 3}
   - {fileID: 3520678650196313858, guid: ad4192b5b541cab4c899aec2375ce309, type: 3}
   - {fileID: 7767464722158204339, guid: 789420429e4b00a45a3aa7bf15d7583a, type: 3}
   - {fileID: 5108117294097185719, guid: 04afae29ac20dc54ca5e660a3cdefafa, type: 3}
   - {fileID: 5649498513286063466, guid: 22f7e2848fc0a124b972a5a01e43740b, type: 3}
-  sceneInitedObjs:
   - {fileID: 802550443616605318, guid: 70c1d91519577a149a105a4a943f8ac3, type: 3}
+  prepareObjs:
   - {fileID: 2740321450211306325, guid: 7b10016b108b0bd40aac377cf9997e4f, type: 3}
   testObjs: []
-  managerAsDontDestory: 1
-  sceneAsDontDestory: 0
+  globalAsDontDestory: 1
+  prepareAsDontDestory: 0
   calledEndState: 1000

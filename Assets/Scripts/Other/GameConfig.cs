@@ -1,4 +1,6 @@
 using AKIRA.Manager;
+using AKIRA.Manager.Audio;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -29,7 +31,7 @@ public class GameConfig : MonoBehaviour {
     /// <summary>
     /// 玩家
     /// </summary>
-    public static Player Player;
+    public static Player Player { get; private set; }
 
     private void Start() {
         CommandRegister();

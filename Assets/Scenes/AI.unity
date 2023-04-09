@@ -536,10 +536,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[GamePrepare]'
       objectReference: {fileID: 0}
-    - target: {fileID: 4748938485982313604, guid: 173094d2482fff4419c98551eb0763d4,
+    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: calledEndState
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
+        type: 3}
+      propertyPath: enterGameDirect
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
@@ -548,8 +553,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
-      propertyPath: managerAsDontDestory
-      value: 1
+      propertyPath: prepareObjs.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
@@ -568,33 +573,7 @@ PrefabInstance:
       objectReference: {fileID: 1047715821}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
-      propertyPath: testObjs.Array.data[3]
-      value: 
-      objectReference: {fileID: 1047715821}
-    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
-        type: 3}
-      propertyPath: testObjs.Array.data[4]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
-        type: 3}
-      propertyPath: testObjs.Array.data[5]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
-        type: 3}
-      propertyPath: sceneInitedObjs.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
-        type: 3}
-      propertyPath: sceneInitedObjs.Array.data[0]
-      value: 
-      objectReference: {fileID: 802550443616605318, guid: 70c1d91519577a149a105a4a943f8ac3,
-        type: 3}
-    - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
-        type: 3}
-      propertyPath: sceneInitedObjs.Array.data[2]
+      propertyPath: prepareObjs.Array.data[1]
       value: 
       objectReference: {fileID: 3129504785972373578, guid: 3863ada1549c3c2499cd2fea6d95284b,
         type: 3}

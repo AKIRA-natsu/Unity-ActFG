@@ -4,11 +4,26 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 namespace AKIRA.Manager.Audio {
+    /// <summary>
+    /// 音频管理器
+    /// </summary>
     public class AudioManager : Singleton<AudioManager> {
-        // 音乐保存名称
-        public const string MusicEnable = "MusicEnable";
-        // 音乐激活
-        public bool Active = true;
+        /// <summary>
+        /// 本地存储键值：音乐保存名称
+        /// </summary>
+        public const string MusicEnableKey = "MusicEnable";
+        private bool audioEnabled = true;
+        /// <summary>
+        /// 音乐是否激活
+        /// </summary>
+        public bool AudioEnabled {
+            get => audioEnabled;
+            set {
+                if (audioEnabled == value)
+                    return;
+                MusicEnableKey.Save(value ? 1 : 0);
+            }
+        }
 
         // 音频配置文件
         private AudioResourceConfig config;
@@ -16,13 +31,10 @@ namespace AKIRA.Manager.Audio {
         private List<AudioPlayer> audioPlayers = new List<AudioPlayer>();
         // 字典保存，方便下一次快速找到
         private Dictionary<string, AudioClip> ClipMap = new();
-        // 父节点
-        private Transform root;
 
         protected AudioManager() {
-            root = new GameObject("[AudioManager]").DontDestory().transform;
             config = AudioResourceConfig.DefaultPath.Load<AudioResourceConfig>();
-            Active = MusicEnable.GetInt(1) == 1 ? true : false;
+            audioEnabled = MusicEnableKey.GetInt(1) == 1 ? true : false;
         }
 
         /// <summary>
@@ -98,7 +110,7 @@ namespace AKIRA.Manager.Audio {
         /// <returns></returns>
         private bool TryCreatePlayer(string tag, out (AudioPlayer player, AudioClip clip) audio) {
             audio = default;
-            if (!Active || String.IsNullOrEmpty(tag))
+            if (!audioEnabled || String.IsNullOrEmpty(tag))
                 return false;
 
             audio.clip = FindAudio(tag);
@@ -106,7 +118,7 @@ namespace AKIRA.Manager.Audio {
                 $"音频： Tag => {tag} 不存在".Colorful(Color.yellow).Log();
                 return false;
             } else {
-                audio.player = ObjectPool.Instance.Instantiate<AudioPlayer>(AudioPlayer.DefaultPath, root);
+                audio.player = ObjectPool.Instance.Instantiate<AudioPlayer>(AudioPlayer.DefaultPath);
                 audioPlayers.Add(audio.player);
                 return true;
             }
