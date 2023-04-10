@@ -20,6 +20,7 @@ public class ExtraInfoAttributeDrawer: PropertyDrawer {
             position.x,
             position.y + height + 2.5f,
             position.width,
+            // 如果是英文，存在高度不对的问题
             12f * GetMessageHeightCount(info.message) + 7f
         );
         EditorGUI.PropertyField(origin, property, label);
@@ -32,6 +33,7 @@ public class ExtraInfoAttributeDrawer: PropertyDrawer {
     {
         var info = attribute as ExtraInfoAttribute;
         var height = base.GetPropertyHeight(property, label);
+        // 如果是英文，存在高度不对的问题
         return height + 12f * GetMessageHeightCount(info.message) + 7f;
     }
 

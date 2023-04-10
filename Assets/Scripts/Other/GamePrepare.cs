@@ -29,6 +29,7 @@ namespace AKIRA.Behaviour.Prepare {
 
         // 是否直接进入游戏
         // 如果直接进入游戏，进入Playing，否则进入Ready
+        [ExtraInfo(@"如果true，进入Playing状态，否则进入Ready状态")]
         [SerializeField]
         private bool enterGameDirect = false;
 
