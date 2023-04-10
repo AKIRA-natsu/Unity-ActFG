@@ -1,8 +1,10 @@
 using AKIRA.Manager;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AKIRA.Behaviour.Prepare {
+    /// <summary>
+    /// 游戏准备入口
+    /// </summary>
     public class GamePrepare : MonoBehaviour {
         // 全局物体
         [SerializeField]
@@ -26,19 +28,11 @@ namespace AKIRA.Behaviour.Prepare {
         private bool prepareAsDontDestory = false;
 
         // 是否直接进入游戏
+        // 如果直接进入游戏，进入Playing，否则进入Ready
         [SerializeField]
         private bool enterGameDirect = false;
 
-        // 完成所有Instantiate后切换的Game状态
-        [Space]
-        [SerializeField]
-        private GameState calledEndState = GameState.None;
-
         private void Start() {
-            // regist game action first
-            GamePrepareManager.Instance.RegistOnGameEnter(EnterGame);
-            GamePrepareManager.Instance.RegistOnGameExit(ExitGame);
-
             // Call Managers
             if (globalObjs.Length != 0) {
                 GameObject GlobalRoot = new GameObject("[Global]");
@@ -48,18 +42,35 @@ namespace AKIRA.Behaviour.Prepare {
                     obj.Instantiate().SetParent(GlobalRoot);
             }
 
+            // 
+            var manager = GameManager.Instance;
+            if (manager == null) 
+                return;
+            // regist gamestate method
+            var inputSystem = PlayerInputSystem.Instance;
             if (enterGameDirect) {
-                GamePrepareManager.Instance.EnterGame();
-                PlayerInputSystem.Instance.SwtichPlayer();
+                manager.RegistStateAction(GameState.Playing, EnterGame);
+                manager.Switch(GameState.Playing);
+                inputSystem.SwtichPlayer();
             } else {
-                PlayerInputSystem.Instance.SwitchUI();
+                manager.RegistStateAction(GameState.Ready, GameReady);
+                manager.Switch(GameState.Ready);
+                inputSystem.SwitchUI();
             }
+        }
+
+        /// <summary>
+        /// 游戏准备
+        /// </summary>
+        private void GameReady() {
+            GameManager.Instance.RegistStateAction(GameState.Playing, EnterGame);
+            ExitGame();
         }
 
         /// <summary>
         /// 进入游戏
         /// </summary>
-        private async UniTask EnterGame() {
+        private void EnterGame() {
             // Call Config Objs Active After Scene Inited
             if (prepareObjs.Length != 0) {
                 if (!GameObject.Find("[Base]")) {
@@ -72,8 +83,6 @@ namespace AKIRA.Behaviour.Prepare {
                     GameObject.Find("[Base]").SetActive(true);
                 }
             }
-            await UniTask.DelayFrame(1);
-
 
             // Call Test Objs Active After Scene Inited
             if (testObjs.Length != 0) {
@@ -85,22 +94,18 @@ namespace AKIRA.Behaviour.Prepare {
                     GameObject.Find("[Test]").SetActive(true);
                 }
             }
-            await UniTask.DelayFrame(1);
-
-            // switch game state
-            if (GameManager.Instance != null) 
-                GameManager.Instance.Switch(calledEndState);
 
             // 销毁自身
             // Destroy(this.gameObject);
+
+            // 进入游戏后移除事件
+            GameManager.Instance.RemoveStateAction(GameState.Playing, EnterGame);
         }
 
         /// <summary>
-        /// 初始游戏
+        /// 退出游戏
         /// </summary>
-        /// <returns></returns>
-        private async UniTask ExitGame() {
-            await UniTask.DelayFrame(1);
+        private void ExitGame() {
             GameObject.Find("[Test]")?.SetActive(false);
             GameObject.Find("[Base]")?.SetActive(false);
         }

@@ -62,6 +62,7 @@ namespace AKIRA.Manager {
         /// 初始化
         /// </summary>
         private void Init() {
+            infos.Clear();
             XML xml = new XML(GuideDataPath);
             if (xml.Exist()) {
                 xml.Read((x) => {
@@ -213,6 +214,24 @@ namespace AKIRA.Manager {
             this.onGuide3DPause += onGuide3DPause;
         }
 
+        /// <summary>
+        /// 停止指引
+        /// </summary>
+        public void StopGuide() {
+            if (lastType == GuideCompleteType.UIWorld) {
+                onGuideUIPause?.Invoke();
+            } else {
+                onGuide3DPause?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 恢复指引
+        /// </summary>
+        public void ResumeGuide() {
+            StartGuide(currentIndex);
+        }
+
 #if UNITY_EDITOR
         [ContextMenu("DeleteGuideKey")]
         private void DeleteGuideKey() {
@@ -233,8 +252,8 @@ namespace AKIRA.Manager {
         private float distance;
 
         // 箭头路径
-        internal const string Arrow3DPath = "Prefabs/Arrow";
-        internal const string Arrow2DPath = "Prefabs/Arrow2D";
+        private const string Arrow3DPath = "Prefabs/Arrow";
+        private const string Arrow2DPath = "Prefabs/Arrow2D";
         // 箭头
         private GameObject arrow3D;
         // 玩家身下的箭头
@@ -270,6 +289,8 @@ namespace AKIRA.Manager {
                 GameObject.Destroy(arrow3D);
                 GameObject.Destroy(arrow2D.gameObject);
             });
+            // 指引停止
+            GuideManager.Instance.RegistOnGuide3DPauseAction(Stop);
         }
 
         /// <summary>
@@ -285,12 +306,13 @@ namespace AKIRA.Manager {
                 arrow3D.SetActive(true);
                 // 设置2D箭头
                 arrow2D.SetTarget(target);
+            } else {
+                Stop();
             }
 
+            // 就算不用指引也不一定是UI的，但不是UI的情况比较少
             // 开始更新
-            // 否则就是在IGuide里重新开了一个GuideInfo传递给UI，在UI进行判断完成
-            if (!UIManager.Instance.Get<GuidePanel>().Active)
-                this.Regist();
+            this.Regist();
         }
 
         public void GameUpdate() {
@@ -302,11 +324,17 @@ namespace AKIRA.Manager {
                 if (dis <= distance)
                     EndGuide();
             } else {
-                var targetPosition = iGuide.GetArrowUpdatePosition();
-                arrow3D.transform.position = targetPosition + Vector3.up * heightOffset;
-                arrow2D.UpdateArrow(targetPosition);
-                if (iGuide.FinishCondition())
-                    EndGuide();
+                // 否则就是在IGuide里重新开了一个GuideInfo传递给UI，在UI进行判断完成
+                if (!UIManager.Instance.Get<GuidePanel>().Active) {
+                    this.Remove();
+                    return;
+                } else {
+                    var targetPosition = iGuide.GetArrowUpdatePosition();
+                    arrow3D.transform.position = targetPosition + Vector3.up * heightOffset;
+                    arrow2D.UpdateArrow(targetPosition);
+                    if (iGuide.FinishCondition())
+                        EndGuide();
+                }
             }
         }
 
@@ -314,10 +342,17 @@ namespace AKIRA.Manager {
         /// 结束一个阶段的指引
         /// </summary>
         private void EndGuide() {
+            Stop();
+            GuideManager.Instance.NextGuide(1f);
+        }
+
+        /// <summary>
+        /// 停止指引
+        /// </summary>
+        private void Stop() {
             this.Remove();
             arrow3D.SetActive(false);
             arrow2D.ClearTarget();
-            GuideManager.Instance.NextGuide(1f);
         }
     }
 }

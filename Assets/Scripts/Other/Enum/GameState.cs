@@ -15,6 +15,10 @@ public enum GameState {
     /// </summary>
     Playing,
     /// <summary>
+    /// 过渡
+    /// </summary>
+    Transition,
+    /// <summary>
     /// 恢复
     /// </summary>
     Resume,
@@ -30,4 +34,8 @@ public enum GameState {
     /// 完成
     /// </summary>
     Complete,
+    /// <summary>
+    /// 退出
+    /// </summary>
+    Exit,
 }
