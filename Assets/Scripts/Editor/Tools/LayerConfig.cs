@@ -20,17 +20,20 @@ public class LayerConfig {
     /// 更新Layer
     /// </summary>
     /// <param name="path"></param>
-    [MenuItem("Tools/Framework/LayerConfig/Update Layer")]
+    // [MenuItem("Tools/Framework/LayerConfig/Update Layer")]
+    [MenuItem("Tools/Framework/Update Layer")]
     private static void UpdateLayer() {
-        var path = EditorPrefsHelp.GetString(LayerConfigKey);
-        if (String.IsNullOrEmpty(path))
-            return;
-        // 检查文件是否还存在
-        if (!File.Exists(path)) {
-            DeletePathData();
-            "文件不存在".Colorful(Color.red).Log();
-            return;
-        }
+        var path = Path.Combine(Application.dataPath, "Scripts/Other/Class/Layer.cs");
+        $"Layer Update: Path => {path}".Log();
+        // var path = EditorPrefsHelp.GetString(LayerConfigKey);
+        // if (String.IsNullOrEmpty(path))
+        //     return;
+        // // 检查文件是否还存在
+        // if (!File.Exists(path)) {
+        //     DeletePathData();
+        //     "文件不存在".Colorful(Color.red).Log();
+        //     return;
+        // }
 
         var content = @"/// <summary>
 /// <para>层级</para>
@@ -58,27 +61,27 @@ public static class Layer {
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Tools/Framework/LayerConfig/Show Layer Save Path")]
-    private static void ShowLayerSavePath() {
-        var path = EditorPrefsHelp.GetString(LayerConfigKey);
-        path.GetString().Colorful(Color.green).Log();
-    }
+    // [MenuItem("Tools/Framework/LayerConfig/Show Layer Save Path")]
+    // private static void ShowLayerSavePath() {
+    //     var path = EditorPrefsHelp.GetString(LayerConfigKey);
+    //     path.GetString().Colorful(Color.green).Log();
+    // }
 
-    [MenuItem("Tools/Framework/LayerConfig/Select & Save Path Data")]
-    private static void SelectPathData() {
-        var path = EditorUtility.OpenFilePanel("Select Layer.cs File", Application.dataPath, "cs");
-        // 确保后缀
-        if (path.EndsWith(".cs")) {
-            $"保存LayerConfig路径位置 => {path}".Colorful(Color.cyan).Log();
-            EditorPrefsHelp.Set(LayerConfigKey, path);
-            UpdateLayer();
-        }
-    }
+    // [MenuItem("Tools/Framework/LayerConfig/Select & Save Path Data")]
+    // private static void SelectPathData() {
+    //     var path = EditorUtility.OpenFilePanel("Select Layer.cs File", Application.dataPath, "cs");
+    //     // 确保后缀
+    //     if (path.EndsWith(".cs")) {
+    //         $"保存LayerConfig路径位置 => {path}".Colorful(Color.cyan).Log();
+    //         EditorPrefsHelp.Set(LayerConfigKey, path);
+    //         UpdateLayer();
+    //     }
+    // }
 
-    [MenuItem("Tools/Framework/LayerConfig/Delete Path Data")]
-    private static void DeletePathData() {
-        $"删除LayerConfig保存路径".Colorful(Color.cyan).Log();
-        EditorPrefsHelp.Delete(LayerConfigKey);
-    }
+    // [MenuItem("Tools/Framework/LayerConfig/Delete Path Data")]
+    // private static void DeletePathData() {
+    //     $"删除LayerConfig保存路径".Colorful(Color.cyan).Log();
+    //     EditorPrefsHelp.Delete(LayerConfigKey);
+    // }
 
 }

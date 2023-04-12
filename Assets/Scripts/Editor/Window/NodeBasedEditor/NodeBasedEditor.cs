@@ -20,7 +20,7 @@ public class NodeBasedEditor : EditorWindow {
 
     private Rect menuBar;
 
-    [MenuItem("Tools/Framework/NodeBasedEditor(dont use)")]
+    // [MenuItem("Tools/Framework/NodeBasedEditor(dont use)")]
     private static void ShowWindow() {
         var window = GetWindow<NodeBasedEditor>();
         window.titleContent = new GUIContent("Node Based Editor");
