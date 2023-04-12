@@ -47,7 +47,6 @@ namespace AKIRA.UIFramework {
         private float containerHalfSize;
         private float prefabSize;
 
-        private Dictionary<int, int[]> itemDict = new Dictionary<int, int[]>();
         private List<RectTransform> listItemRect = new List<RectTransform>();
         private List<IScrollItem> listItems = new List<IScrollItem>();
         private int numItems = 0;
@@ -84,7 +83,6 @@ namespace AKIRA.UIFramework {
                 RectTransform t = obj.GetComponent<RectTransform>();
                 t.anchoredPosition3D = startPos + (offsetVec * i * prefabSize);
                 listItemRect.Add(t);
-                itemDict.Add(t.GetInstanceID(), new int[] { i, i });
                 obj.SetActive(true);
 
                 IScrollItem li = obj.AddComponent(type).GetComponent<IScrollItem>();
@@ -107,7 +105,7 @@ namespace AKIRA.UIFramework {
 
             int newIndex = firstIndex;
             for (int i = originalIndex; i < numItems; i++) {
-                moveItemByIndex(listItemRect[i], newIndex);
+                MoveItemByIndex(listItemRect[i], newIndex);
                 listItems[i].UpdateContent(newIndex);
                 newIndex++;
             }
@@ -117,15 +115,13 @@ namespace AKIRA.UIFramework {
                 if (newIndex >= Num)
                     break;
 
-                moveItemByIndex(listItemRect[i], newIndex);
+                MoveItemByIndex(listItemRect[i], newIndex);
                 listItems[i].UpdateContent(newIndex);
                 newIndex++;
             }
         }
 
-        private void moveItemByIndex(RectTransform item, int index) {
-            int id = item.GetInstanceID();
-            itemDict[id][0] = index;
+        private void MoveItemByIndex(RectTransform item, int index) {
             item.anchoredPosition3D = startPos + (offsetVec * index * prefabSize);
         }
     }

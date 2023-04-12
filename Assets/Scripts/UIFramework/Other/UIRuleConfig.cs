@@ -12,7 +12,11 @@ namespace AKIRA.UIFramework {
         /// </summary>
         public const string DefaultPath = "Config/UIRuleConfig";
         
-        public UIControlRule[] rules = {};
+        /// <summary>
+        /// 规则
+        /// </summary>
+        [SerializeField]
+        private UIControlRule[] rules;
 
         /// <summary>
         /// <para>获得组件名称（不判断大小写）</para>
