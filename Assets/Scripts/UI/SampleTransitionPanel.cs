@@ -18,7 +18,7 @@ namespace AKIRA.UIFramework {
         // 过渡事件
         private Action onTransition;
         // 切换场景事件 异步
-        private List<UniTask> tasks = new List<UniTask>();
+        private Func<UniTask> task;
         // 过渡结束事件
         private Action onTransitionEnd;
 
@@ -43,10 +43,8 @@ namespace AKIRA.UIFramework {
         /// 注册异步事件
         /// </summary>
         /// <param name="task"></param>
-        public void RegistTransitionAction(UniTask task) {
-            if (tasks.Contains(task))
-                return;
-            tasks.Add(task);
+        public void RegistTransitionAction(Func<UniTask> task) {
+            this.task += task;
         }
 
         /// <summary>
@@ -58,29 +56,11 @@ namespace AKIRA.UIFramework {
         }
 
         /// <summary>
-        /// 移除过渡事件
+        /// 注册固定控制延迟事件
         /// </summary>
-        /// <param name="onTransition"></param>
-        public void RemoveTransitionAction(Action onTransition) {
-            this.onTransition -= onTransition;
-        }
-
-        /// <summary>
-        /// 移除异步事件
-        /// </summary>
-        /// <param name="task"></param>
-        public void RemoveTransitionAction(UniTask task) {
-            if (!tasks.Contains(task))
-                return;
-            tasks.Remove(task);
-        }
-
-        /// <summary>
-        /// 移除过渡结束事件
-        /// </summary>
-        /// <param name="onTransitionEnd"></param>
-        public void RemoveTransitionEndAction(Action onTransitionEnd) {
-            this.onTransitionEnd -= onTransitionEnd;
+        /// <param name="time"></param>
+        public void RegistControlDelay(float time) {
+            RegistTransitionAction(async () => await UniTask.Delay(Mathf.RoundToInt(time * 1000)));
         }
 
         /// <summary>
@@ -116,11 +96,12 @@ namespace AKIRA.UIFramework {
             }
 
             // 运行过渡事件
-            // 先执行异步事件
-            foreach (var task in tasks)
-                await task;
             // 执行事件
             onTransition?.Invoke();
+            await UniTask.Delay(100);
+            // 执行异步事件
+            if (task != null)
+                await task.Invoke();
 
             // 事件完成 图片开始缩小
             while (Vector3.Distance(scale, StartScale) >= 0.01f) {
@@ -138,6 +119,9 @@ namespace AKIRA.UIFramework {
             // 过渡完成，隐藏页面
             Hide();
             onTransitionEnd?.Invoke();
+
+            onTransition = onTransitionEnd = null;
+            task = null;
         }
     }
 }
