@@ -434,9 +434,9 @@ public static class Extend {
     /// <summary>
     /// 移动端判断点击的位置是否有UI
     /// </summary>
-    /// <param name="screenPosition"></param>
+    /// <param name="screenPosition">Input.mousePosition / Mouse.current.position.ReadValue()</param>
     /// <returns></returns>
-    public static bool IsPointerOverUiObject(this Vector2 screenPosition) {
+    public static bool IsPointerOverUiObject(this Vector3 screenPosition) {
         if (!EventSystem.current.Equals(null)) {
             PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
             eventDataCurrentPosition.position = new Vector2(screenPosition.x, screenPosition.y);
@@ -444,6 +444,31 @@ public static class Extend {
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
             return results.Count > 0;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// 移动端判断点击的位置是否有含 <see cref="type" /> 的UI
+    /// </summary>
+    /// <param name="screenPosition">Input.mousePosition / Mouse.current.position.ReadValue()</param>
+    /// <param name="type">组件类型</param>
+    /// <returns></returns>
+    public static bool IsPointerOverUiObject(this Vector3 screenPosition, Type type) {
+        if (!EventSystem.current.Equals(null)) {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+            eventDataCurrentPosition.position = new Vector2(screenPosition.x, screenPosition.y);
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+            foreach (var result in results) {
+                if (result.gameObject.GetComponent(type) != null)
+                    return true;
+            }
+
+            return false;
         }
 
         return true;

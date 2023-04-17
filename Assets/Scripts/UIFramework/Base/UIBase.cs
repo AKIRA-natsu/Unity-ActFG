@@ -13,7 +13,7 @@
         /// <summary>
         /// 进入
         /// </summary>
-        public virtual void OnEnter() {}
+        protected virtual void OnEnter() {}
         /// <summary>
         /// 恢复
         /// </summary>
@@ -25,6 +25,6 @@
         /// <summary>
         /// 退出
         /// </summary>
-        public virtual void OnExit() {}
+        protected virtual void OnExit() {}
     }
 }

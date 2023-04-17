@@ -27,12 +27,12 @@ namespace AKIRA.UIFramework {
         // 上一次间隔时间
         private float lastIntervalTime;
 
-        public override void OnEnter() {
+        protected override void OnEnter() {
             this.Regist(UI.UIGroup);
             ShinImg.uvRect = Origin;
         }
 
-        public override void OnExit() {
+        protected override void OnExit() {
             this.Remove(UI.UIGroup);
         }
 

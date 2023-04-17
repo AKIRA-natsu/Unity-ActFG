@@ -9,17 +9,31 @@ namespace AKIRA.UIFramework {
     /// <para>拿取获得的基类</para>
     /// </summary>
     public abstract class UIComponent : UIBase {
-        public GameObject gameObject { get; private set; }
-        public Transform transform { get; private set; }
+        public GameObject gameObject { get; protected set; }
+        public Transform transform { get; protected set; }
         // 优化UI页面的显示与隐藏
         protected CanvasGroup group;
 
         // 可适配组件列表
         public List<RectTransform> MatchableList { get; private set; } = new List<RectTransform>();
+        
+        private bool active = true;
         /// <summary>
-        /// 是否激活
+        /// 是否激活，set调用Show/Hide方法
         /// </summary>
-        public bool Active { get; protected set; } = true;
+        public bool Active { 
+            get => active;
+            set {
+                if (active == value)
+                    return;
+                active = value;
+                if (value) {
+                    Show();
+                } else {
+                    Hide();
+                }
+            }
+        }
 
         public override void Awake(object obj) {
             WinType type = (WinType)obj;
@@ -54,7 +68,7 @@ namespace AKIRA.UIFramework {
         /// <summary>
         /// 绑定私有字段
         /// </summary>
-        private void BindFields() {
+        protected void BindFields() {
             var fields = this.GetType().GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             foreach (var field in fields) {
                 var uIControls = field.GetCustomAttributes(typeof(UIControlAttribute), false);
@@ -95,11 +109,10 @@ namespace AKIRA.UIFramework {
         /// 显示
         /// </summary>
         public virtual void Show() {
-            // this.gameObject.SetActive(true);
             group.alpha = 1f;
             group.blocksRaycasts = true;
             group.interactable = true;
-            Active = true;
+            active = true;
             this.OnEnter();
         }
 
@@ -107,11 +120,10 @@ namespace AKIRA.UIFramework {
         /// 隐藏
         /// </summary>
         public virtual void Hide() {
-            // this.gameObject.SetActive(false);
             group.alpha = 0f;
             group.blocksRaycasts = false;
             group.interactable = false;
-            Active = false;
+            active = false;
             this.OnExit();
         }
 
