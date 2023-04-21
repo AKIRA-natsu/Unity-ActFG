@@ -21,6 +21,7 @@ namespace AKIRA.Manager.Audio {
             set {
                 if (audioEnabled == value)
                     return;
+                audioEnabled = value;
                 MusicEnableKey.Save(value ? 1 : 0);
             }
         }
