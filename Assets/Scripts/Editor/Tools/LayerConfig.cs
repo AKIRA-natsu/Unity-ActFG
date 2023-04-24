@@ -9,10 +9,6 @@ using UnityEngine;
 /// </summary>
 // [InitializeOnLoad]
 public class LayerConfig {
-    /// <summary>
-    /// 存储键值
-    /// </summary>
-    internal const string LayerConfigKey = "LayerConfigPath";
 
     static LayerConfig() { }
 
@@ -23,11 +19,8 @@ public class LayerConfig {
     // [MenuItem("Tools/Framework/LayerConfig/Update Layer")]
     [MenuItem("Tools/Framework/Update Layer")]
     private static void UpdateLayer() {
-        var path = Path.Combine(Application.dataPath, "Scripts/Other/Class/Layer.cs");
+        var path = Path.Combine(Application.dataPath, "Scripts/Other/Layer.cs");
         $"Layer Update: Path => {path}".Log();
-        // var path = EditorPrefsHelp.GetString(LayerConfigKey);
-        // if (String.IsNullOrEmpty(path))
-        //     return;
         // // 检查文件是否还存在
         // if (!File.Exists(path)) {
         //     DeletePathData();
@@ -60,28 +53,5 @@ public static class Layer {
         File.WriteAllText(path, content);
         AssetDatabase.Refresh();
     }
-
-    // [MenuItem("Tools/Framework/LayerConfig/Show Layer Save Path")]
-    // private static void ShowLayerSavePath() {
-    //     var path = EditorPrefsHelp.GetString(LayerConfigKey);
-    //     path.GetString().Colorful(Color.green).Log();
-    // }
-
-    // [MenuItem("Tools/Framework/LayerConfig/Select & Save Path Data")]
-    // private static void SelectPathData() {
-    //     var path = EditorUtility.OpenFilePanel("Select Layer.cs File", Application.dataPath, "cs");
-    //     // 确保后缀
-    //     if (path.EndsWith(".cs")) {
-    //         $"保存LayerConfig路径位置 => {path}".Colorful(Color.cyan).Log();
-    //         EditorPrefsHelp.Set(LayerConfigKey, path);
-    //         UpdateLayer();
-    //     }
-    // }
-
-    // [MenuItem("Tools/Framework/LayerConfig/Delete Path Data")]
-    // private static void DeletePathData() {
-    //     $"删除LayerConfig保存路径".Colorful(Color.cyan).Log();
-    //     EditorPrefsHelp.Delete(LayerConfigKey);
-    // }
 
 }

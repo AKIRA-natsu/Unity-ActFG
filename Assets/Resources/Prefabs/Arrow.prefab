@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9de37c8b44b0e344fbd3a2a75dfe27ea,
@@ -88,6 +89,17 @@ PrefabInstance:
       value: Arrow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9de37c8b44b0e344fbd3a2a75dfe27ea,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 469626273}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9de37c8b44b0e344fbd3a2a75dfe27ea,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 469626274}
   m_SourcePrefab: {fileID: 100100000, guid: 9de37c8b44b0e344fbd3a2a75dfe27ea, type: 3}
 --- !u!1 &8145294704864035064 stripped
 GameObject:
@@ -107,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f31740e581f0f4d978805ba924daa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enable: 0
+  auto: 0
   towards: 2
   rotateSpeed: 1
 --- !u!114 &469626274
@@ -122,22 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf256ff03420cb74fbfdaa29ebc531a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enable: 0
+  auto: 0
   towards: 1
   moveSpeed: 1
   moveRadius: 0.7
---- !u!114 &4232059540466112440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8145294704864035064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb86a86bb0d31dd459217494b7557b79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  datas:
-  - {fileID: 469626273}
-  - {fileID: 469626274}

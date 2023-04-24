@@ -48,8 +48,6 @@ namespace AKIRA.Behaviour.Prepare {
         /// </summary>
         private void CommandRegister() {
             CommandManager.Instance.RegistSpecialAction(Command.EarnMoney, () => MoneyManager.Instance.Earn(100000));
-            CommandManager.Instance.RegistSpecialAction(Command.NextLevel, LevelManager.Instance.NextLevel);
-            CommandManager.Instance.RegistSpecialAction(Command.LastLevel, LevelManager.Instance.LastLevel);
         }
 
         #if UNITY_EDITOR

@@ -47,8 +47,4 @@ MonoBehaviour:
   commands:
   - keycode: 19
     command: 1
-  - keycode: 28
-    command: 2
-  - keycode: 26
-    command: 3
   KeyBoardUsed: 1
