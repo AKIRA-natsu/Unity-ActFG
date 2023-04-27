@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.IO;
 using UnityEditor;
@@ -8,7 +9,8 @@ using UnityEngine;
 /// 改手动更新
 /// </summary>
 // [InitializeOnLoad]
-public class LayerConfig {
+public class LayerConfig
+{
 
     static LayerConfig() { }
 
@@ -16,25 +18,25 @@ public class LayerConfig {
     /// 更新Layer
     /// </summary>
     /// <param name="path"></param>
-    // [MenuItem("Tools/Framework/LayerConfig/Update Layer")]
     [MenuItem("Tools/Framework/Update Layer")]
-    private static void UpdateLayer() {
-        var path = Path.Combine(Application.dataPath, "Scripts/Other/Layer.cs");
+    private static void UpdateLayer()
+    {
+        var path = "Layer".GetScriptLocation();
+        // 检查文件是否还存在
+        if (string.IsNullOrEmpty(path)) {
+            "Layer.cs文件不存在，请在项目内创建一个Layer.cs的脚本！".Colorful(Color.red).Log();
+            return;
+        }
         $"Layer Update: Path => {path}".Log();
-        // // 检查文件是否还存在
-        // if (!File.Exists(path)) {
-        //     DeletePathData();
-        //     "文件不存在".Colorful(Color.red).Log();
-        //     return;
-        // }
 
         var content = @"/// <summary>
 /// <para>层级</para>
-/// <para>Create&Update By GlobalConfig</para>
+/// <para>Create&Update By LayerConfig</para>
 /// </summary>
 public static class Layer {
             ";
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 32; i++)
+        {
             var name = LayerMask.LayerToName(i).Replace(" ", "");
             if (String.IsNullOrEmpty(name))
                 continue;
@@ -44,7 +46,7 @@ public static class Layer {
     /// </summary>
     public static readonly int {name} = {i};
                 ";
-            }
+        }
         content += @"
 }
 
@@ -53,5 +55,4 @@ public static class Layer {
         File.WriteAllText(path, content);
         AssetDatabase.Refresh();
     }
-
 }

@@ -1,6 +1,6 @@
 /// <summary>
 /// <para>层级</para>
-/// <para>Create&Update By GlobalConfig</para>
+/// <para>Create&Update By LayerConfig</para>
 /// </summary>
 public static class Layer {
             

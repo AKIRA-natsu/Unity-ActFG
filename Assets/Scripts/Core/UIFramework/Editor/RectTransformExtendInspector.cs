@@ -29,6 +29,10 @@ public class RectTransformExtendInspector : DecoratorEditor {
                     }
                 }
             }
+
+            if (GUILayout.Button("Edit")) {
+                System.Diagnostics.Process.Start($"{target.name}Panel".GetScriptLocation());
+            }
         }
         #endregion
 
@@ -40,7 +44,10 @@ public class RectTransformExtendInspector : DecoratorEditor {
                 if (GUILayout.Button("Update Props")) {
                     GenerateUIPropGUI.UpdateUIProp((target as RectTransform).gameObject);
                 }
-                // TODO: 暂时拿不到脚本
+            }
+
+            if (GUILayout.Button("Edit")) {
+                System.Diagnostics.Process.Start($"{target.name}Panel".GetScriptLocation());
             }
         }
         #endregion
