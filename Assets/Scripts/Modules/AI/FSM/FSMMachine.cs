@@ -54,7 +54,6 @@ namespace AKIRA.Behaviour.AI {
             foreach (var state in containStates) {
                 var behaviour = $"{state}State".GetConfigTypeByAssembley()?.CreateInstance<IState>();
                 if (behaviour != null) {
-                    $"add {state}".Log();
                     StateMap.Add(state, behaviour);
                 }
             }

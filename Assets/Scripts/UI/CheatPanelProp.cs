@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 
 namespace AKIRA.UIFramework {
-    public class CommandPanelProp : UIComponent {
+    public class CheatPanelProp : UIComponent {
         [UIControl("Mask")]
         protected RectTransform View;
         [UIControl("Mask")]

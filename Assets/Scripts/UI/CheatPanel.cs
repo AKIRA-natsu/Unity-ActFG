@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using AKIRA.Manager;
 using DG.Tweening;
 using TMPro;
@@ -8,8 +7,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace AKIRA.UIFramework {
-    [Win(WinEnum.Command, "Prefabs/UI/Command", WinType.Interlude)]
-    public class CommandPanel : CommandPanelProp, IUpdate {
+    [Win(WinEnum.Cheat, "Prefabs/UI/Cheat", WinType.Interlude)]
+    public class CheatPanel : CheatPanelProp, IUpdate {
         // 显示位置
         private Vector3 scrollviewShowPosition = Vector3.zero;
         private Vector3 btnShowPosition;
@@ -17,10 +16,10 @@ namespace AKIRA.UIFramework {
         private Vector3 scrollviewHidePosition;
         private Vector3 btnHidePosition;
 
-        // 页面是否显示中
+        // 页面是否显示中，非真的关闭
         public static bool CommandMode { get; private set; }
         // 作弊指令
-        internal static (string name, Action action)[] CommandDatas;
+        internal (string name, Action action)[] CheatDatas;
 
         public override void Awake(object obj) {
             base.Awake(obj);
@@ -47,9 +46,9 @@ namespace AKIRA.UIFramework {
         public override void Show() {
             base.Show();
             // 没有数据，进行一次拿取和ScrollComponent的初始化
-            if (CommandDatas == null) {
-                CommandDatas = CommandManager.Instance.GetActionMap();
-                Content.Initialization(CommandDatas.Length, Mask, typeof(GridButton));
+            if (CheatDatas == null) {
+                CheatDatas = CheatManager.Instance.GetActionMap();
+                Content.Initialization(CheatDatas.Length, typeof(GridButton));
             }
             AcitvePanel(true);
         }
@@ -94,7 +93,7 @@ namespace AKIRA.UIFramework {
 
         public void UpdateContent(int index) {
             commandCallback = null;
-            var data = CommandPanel.CommandDatas[index];
+            var data = UIManager.Instance.Get<CheatPanel>().CheatDatas[index];
             text.text = data.name.ToString();
             commandCallback = data.action;
         }

@@ -47,7 +47,7 @@ namespace AKIRA.Behaviour.Prepare {
         /// 作弊注册
         /// </summary>
         private void CommandRegister() {
-            CommandManager.Instance.RegistSpecialAction(Command.EarnMoney, () => MoneyManager.Instance.Earn(100000));
+            CheatManager.Instance.RegistSpecialAction("Get Money", () => MoneyManager.Instance.Earn(100000));
         }
 
         #if UNITY_EDITOR
