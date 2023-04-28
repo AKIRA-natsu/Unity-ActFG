@@ -14,12 +14,19 @@ public class LimbsIK : MonoBehaviour {
     // 
     public AvatarIKGoal goal;
 
+    // 是否启用
+    public bool acitve = true;
+
     private void Awake() {
         animator = this.GetComponent<Animator>();
     }
 
     private void OnAnimatorIK(int layerIndex) {
-        animator.SetIKPositionWeight(goal, 1);
-        animator.SetIKPosition(goal, targetPoint.position);
+        if (!acitve || targetPoint == null) {
+            animator.SetIKPositionWeight(goal, 0);            
+        } else {
+            animator.SetIKPositionWeight(goal, 1);
+            animator.SetIKPosition(goal, targetPoint.position);
+        }
     }
 }

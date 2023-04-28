@@ -10,16 +10,19 @@ public class HeadIK : MonoBehaviour {
     private Animator animator;
     // 头看向目标
     public Transform headLookPoint;
-    // 目标原来位置
-    private Vector3 originPos;
+    // 是否启用
+    public bool acitve = true;
 
     private void Awake() {
         animator = this.GetComponent<Animator>();
-        originPos = headLookPoint.position;
     }
 
     private void OnAnimatorIK(int layerIndex) {
-        animator.SetLookAtWeight(1);
-        animator.SetLookAtPosition(headLookPoint.position);
+        if (!acitve || headLookPoint == null) {
+            animator.SetLookAtWeight(0f);
+        } else {
+            animator.SetLookAtWeight(1);
+            animator.SetLookAtPosition(headLookPoint.position);
+        }
     }
 }
