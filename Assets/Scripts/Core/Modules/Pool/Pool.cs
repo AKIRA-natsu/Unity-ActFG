@@ -15,6 +15,7 @@ namespace AKIRA.Manager {
         public abstract void Free();
     }
     #endregion
+    
     /// <summary>
     /// 池
     /// </summary>
@@ -22,6 +23,8 @@ namespace AKIRA.Manager {
     public class Pool<T> : PoolBase where T : Component, IPool {
         // 先进先出
         private Queue<T> pool;
+        // 使用中
+        private List<T> onUse;
 
         /// <summary>
         /// 池子初始化
@@ -32,6 +35,7 @@ namespace AKIRA.Manager {
         /// <returns></returns>
         public Pool<T> Init(Transform root, string name, int maxCount = 2000) {
             pool = new Queue<T>();
+            onUse = new List<T>();
             poolParent = new GameObject(name).transform;
             poolParent.SetParent(root);
             this.maxCount = maxCount;
@@ -56,8 +60,8 @@ namespace AKIRA.Manager {
             }
             com = com.Instantiate();
             com.name = poolParent.name;
-            pool.Enqueue(com);
-            com?.Wake();
+            com.Wake();
+            onUse.Add(com);
             return com;
         }
 
@@ -74,8 +78,8 @@ namespace AKIRA.Manager {
             // 池子中没有空闲对象，加载实例化
             com = target.Instantiate();
             com.name = poolParent.name;
-            pool.Enqueue(com);
-            com?.Wake();
+            com.Wake();
+            onUse.Add(com);
             return com;
         }
 
@@ -86,18 +90,15 @@ namespace AKIRA.Manager {
         private bool TryGetFree(out T com) {
             com = null;
             // 循环池子拿出空闲对象
-            for (int i = 0; i < pool.Count; i++) {
-                var poolCom = pool.Dequeue();
-                if (!poolCom.gameObject.activeSelf) {
-                    com = poolCom;
-                    poolCom.gameObject.SetActive(true);
-                    poolCom?.Wake();
-                    return true;
-                }
-                pool.Enqueue(poolCom);
+            if (pool.Count != 0) {
+                com = pool.Dequeue();
+                com.gameObject.SetActive(true);
+                com.Wake();
+                onUse.Add(com);
+                return true;
             }
             // 判断超过个数
-            if (pool.Count >= maxCount) {
+            if (pool.Count + onUse.Count >= maxCount) {
                 $"{this}超过最大个数".Colorful(Color.red).Log();
                 return false;
             }
@@ -109,16 +110,20 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="com"></param>
         public void Destory(T com) {
-            com?.Recycle();
+            com.Recycle();
             com.SetParent(poolParent);
             com.gameObject.SetActive(false);
             pool.Enqueue(com);
+            onUse.Remove(com);
         }
 
         public override void Free() {
             while (pool.Count != 0)
                 pool.Dequeue().Destory();
+            for (int i = 0; i < onUse.Count; i++)
+                onUse[i].Destory();
             poolParent.Destory();
+            onUse.Clear();
             maxCount = 0;
         }
     }
@@ -128,6 +133,7 @@ namespace AKIRA.Manager {
     /// </summary>
     public class Pool : PoolBase {
         private Queue<GameObject> pool;
+        private List<GameObject> onUse;
 
         /// <summary>
         /// 池子初始化
@@ -138,6 +144,7 @@ namespace AKIRA.Manager {
         /// <returns></returns>
         public Pool Init(Transform root, string parentName, int maxCount = 2000) {
             pool = new Queue<GameObject>();
+            onUse = new List<GameObject>();
             poolParent = new GameObject(parentName).transform;
             poolParent.SetParent(root);
             this.maxCount = maxCount;
@@ -162,7 +169,7 @@ namespace AKIRA.Manager {
             }
             go = go.Instantiate();
             go.name = poolParent.name;
-            pool.Enqueue(go);
+            onUse.Add(go);
             return go;
         }
 
@@ -179,7 +186,7 @@ namespace AKIRA.Manager {
             // 池子中没有空闲对象，加载实例化
             go = target.Instantiate();
             go.name = poolParent.name;
-            pool.Enqueue(go);
+            onUse.Add(go);
             return go;
         }
 
@@ -187,20 +194,17 @@ namespace AKIRA.Manager {
         /// 获得空闲对象
         /// </summary>
         /// <returns></returns>
-        private bool TryGetFree(out GameObject com) {
-            com = null;
+        private bool TryGetFree(out GameObject go) {
+            go = null;
             // 循环池子拿出空闲对象
-            for (int i = 0; i < pool.Count; i++) {
-                var poolGo = pool.Dequeue();
-                if (!poolGo.gameObject.activeSelf) {
-                    com = poolGo;
-                    poolGo.gameObject.SetActive(true);
-                    return true;
-                }
-                pool.Enqueue(poolGo);
+            if (pool.Count != 0) {
+                go = pool.Dequeue();
+                go.gameObject.SetActive(true);
+                onUse.Add(go);
+                return true;
             }
             // 判断超过个数
-            if (pool.Count >= maxCount) {
+            if (pool.Count + onUse.Count >= maxCount) {
                 $"{this}超过最大个数".Colorful(Color.red).Log();
                 return false;
             }
@@ -215,12 +219,16 @@ namespace AKIRA.Manager {
             go.transform.SetParent(poolParent);
             go.gameObject.SetActive(false);
             pool.Enqueue(go);
+            onUse.Remove(go);
         }
 
         public override void Free() {
             while (pool.Count != 0)
                 pool.Dequeue().Destory();
+            for (int i = 0; i < onUse.Count; i++)
+                onUse[i].Destory();
             poolParent.Destory();
+            onUse.Clear();
             maxCount = 0;
         }
     }
@@ -229,8 +237,9 @@ namespace AKIRA.Manager {
     /// 引用池
     /// </summary>
     /// <typeparam name="K"></typeparam>
-    public class RPool<K> : PoolBase where K : ReferenceBase, new() {
+    public class RPool<K> : PoolBase where K : class, IPool, new() {
         private Queue<K> rpool;
+        private List<K> onUse;
 
         /// <summary>
         /// 初始化
@@ -239,6 +248,7 @@ namespace AKIRA.Manager {
         /// <returns></returns>
         public RPool<K> Init(int maxCount = 2000) {
             rpool = new Queue<K>();
+            onUse = new List<K>();
             this.maxCount = maxCount;
             return this;
         }
@@ -248,13 +258,13 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <returns></returns>
         public K Instantiate() {
-            if (!TryGetFree(out K @class)) return null;
+            if (!TryGetFree(out K @class)) return default;
             // 获得空闲对象
             if (@class != null) return @class;
             // new
             @class = new K();
-            rpool.Enqueue(@class);
-            @class?.Wake();
+            @class.Wake();
+            onUse.Add(@class);
             return @class;
         }
 
@@ -262,18 +272,15 @@ namespace AKIRA.Manager {
         /// 尝试获得空闲对象
         /// </summary>
         private bool TryGetFree(out K @class) {
-            @class = null;
-            for (int i = 0; i < rpool.Count; i++) {
-                var c = rpool.Dequeue();
-                if (!c.active) {
-                    @class = c;
-                    @class?.Wake();
-                    return true;
-                }
-                rpool.Enqueue(c);
+            @class = default;
+            if (rpool.Count != 0) {
+                @class = rpool.Dequeue();
+                @class.Wake();
+                onUse.Add(@class);
+                return true;
             }
-            if (rpool.Count >= maxCount) {
-                $"对象已经new最大数量".Colorful(Color.yellow).Log();
+            if (rpool.Count + onUse.Count >= maxCount) {
+                $"对象 {typeof(K)} 已经new最大数量".Colorful(Color.yellow).Log();
                 return false;
             }
             return true;
@@ -283,15 +290,19 @@ namespace AKIRA.Manager {
         /// 对象回收
         /// </summary>
         public void Destroy(K @class) {
-            @class?.Recycle();
+            @class.Recycle();
             rpool.Enqueue(@class);
+            onUse.Remove(@class);
         }
 
         public override void Free() {
             while (rpool.Count != 0) {
                 var c = rpool.Dequeue();
-                c = null;
+                c = default;
             }
+            for (int i = 0; i < onUse.Count; i++)
+                onUse[i] = default;
+            onUse.Clear();
             maxCount = 0;
         }
     }

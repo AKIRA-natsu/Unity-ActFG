@@ -42,7 +42,7 @@ public class SpaceUpdateInfo {
 /// <summary>
 /// 更新组
 /// </summary>
-public class UpdateGroup : ReferenceBase {
+public class UpdateGroup : IPool {
     // 更新列表
     private Dictionary<UpdateMode, List<IUpdate>> updateMap = new Dictionary<UpdateMode, List<IUpdate>>();
     // 间隔更新列表
@@ -121,14 +121,12 @@ public class UpdateGroup : ReferenceBase {
         }
     }
 
-    public override void Wake() {
-        base.Wake();
+    public void Wake() {
         // Updating = true;
         updating = true;
     }
 
-    public override void Recycle() {
-        base.Recycle();
+    public void Recycle() {
         // Updating = false;
         updating = false;
         foreach (var value in updateMap.Values)

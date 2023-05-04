@@ -12,38 +12,15 @@ namespace AKIRA.Manager {
         private Dictionary<string, PoolBase> ObjectPoolMap = new Dictionary<string, PoolBase>();
         // 纯GameObject
         private Dictionary<string, Pool> GameObjectMap = new Dictionary<string, Pool>();
-
-        private GameObject root;
-        /// <summary>
-        /// 对象池根节点
-        /// </summary>
-        /// <value></value>
-        public GameObject Root {
-            get {
-                if (root == null) {
-                    root = GameObject.Find("[ObjectPool]");
-                    if (root == null) {
-                        // 不存在创建
-                        root = new GameObject("[ObjectPool]").DontDestory();
-                    }
-                }
-                return root;
-            }
-        }
+        // 父节点
+        private Transform root;
         
-        private ObjectPool() {}
-
-        # region 泛型
-        /// <summary>
-        /// <para>数据访问</para>
-        /// <para>https://cloud.tencent.com/developer/ask/sof/468615</para>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private IEnumerable<Pool<T>> GetPoolType<T>() where T : Component, IPool {
-            return ObjectPoolMap.Values.OfType<Pool<T>>();
+        private ObjectPool() {
+            // 构造函数，创建父节点
+            root = new GameObject("[ObjectPool]").DontDestory().transform;
         }
 
+        #region 泛型
         #region path 获得对象
         /// <summary>
         /// 对象池获得池对象
@@ -107,9 +84,8 @@ namespace AKIRA.Manager {
             if (ObjectPoolMap.ContainsKey(name)) {
                 var pool = ObjectPoolMap[name] as Pool<T>;
                 return pool.Instantiate(path);
-                // return GetPoolType<T>().First().Instantiate(path);
             } else {
-                var pool = new Pool<T>().Init(Root.transform, name);
+                var pool = new Pool<T>().Init(root, name);
                 ObjectPoolMap.Add(name, pool);
                 return pool.Instantiate(path);
             }
@@ -178,9 +154,8 @@ namespace AKIRA.Manager {
             if (ObjectPoolMap.ContainsKey(name)) {
                 var pool = ObjectPoolMap[name] as Pool<T>;
                 return pool.Instantiate(com);
-                // return GetPoolType<T>().First().Instantiate(com);
             } else {
-                var pool = new Pool<T>().Init(Root.transform, name);
+                var pool = new Pool<T>().Init(root, name);
                 ObjectPoolMap.Add(name, pool);
                 return pool.Instantiate(com);
             }
@@ -198,9 +173,8 @@ namespace AKIRA.Manager {
                 // FIXME: 继承类是空
                 var pool = ObjectPoolMap[name] as Pool<T>;
                 pool.Destory(com);
-                // GetPoolType<T>().First().Destory(com);
             } else {
-                var pool = new Pool<T>().Init(Root.transform, name);
+                var pool = new Pool<T>().Init(root, name);
                 ObjectPoolMap.Add(name, pool);
                 pool.Destory(com);
             }
@@ -220,11 +194,44 @@ namespace AKIRA.Manager {
             }
             var pool = ObjectPoolMap[name] as Pool<T>;
             pool.Free();
-            // GetPoolType<T>().First().Free();
             ObjectPoolMap.Remove(name);
         }
+
+        /// <summary>
+        /// 预加载
+        /// </summary>
+        /// <param name="path"></param>
+        /// <typeparam name="T"></typeparam>
+        public void PreLoad<T>(string path, int count) where T : Component, IPool {
+            var temp = new List<T>();
+            for (int i = 0; i < count; i++) {
+                var com = Instantiate<T>(path);
+                if (null == com)
+                    break;
+                temp.Add(com);
+            }
+            for (int i = 0; i < temp.Count; i++)
+                Destory(temp[i]);
+        }
+
+        /// <summary>
+        /// 预加载
+        /// </summary>
+        /// <param name="com"></param>
+        /// <param name="count"></param>
+        /// <typeparam name="T"></typeparam>
+        public void PreLoad<T>(T com, int count) where T : Component, IPool {
+            var temp = new List<T>();
+            for (int i = 0; i < count; i++) {
+                var poolCom = Instantiate(com);
+                if (null == poolCom)
+                    break;
+                temp.Add(poolCom);
+            }
+            for (int i = 0; i < temp.Count; i++)
+                Destory(temp[i]);
+        }
         #endregion
-    
     
         #region 纯GameObject
         #region path 获得对象
@@ -286,7 +293,7 @@ namespace AKIRA.Manager {
             if (GameObjectMap.ContainsKey(name)) {
                 return GameObjectMap[name].Instantiate(path);
             } else {
-                var pool = new Pool().Init(Root.transform, name);
+                var pool = new Pool().Init(root, name);
                 GameObjectMap.Add(name, pool);
                 return pool.Instantiate(path);
             }
@@ -351,7 +358,7 @@ namespace AKIRA.Manager {
             if (GameObjectMap.ContainsKey(name)) {
                 return GameObjectMap[name].Instantiate(target);
             } else {
-                var pool = new Pool().Init(Root.transform, name);
+                var pool = new Pool().Init(root, name);
                 GameObjectMap.Add(name, pool);
                 return pool.Instantiate(target);
             }
@@ -368,7 +375,7 @@ namespace AKIRA.Manager {
             if (GameObjectMap.ContainsKey(name)) {
                 GameObjectMap[name].Destory(go);
             } else {
-                var pool = new Pool().Init(Root.transform, go.name);
+                var pool = new Pool().Init(root, go.name);
                 GameObjectMap.Add(name, pool);
                 pool.Destory(go);
             }
@@ -387,6 +394,41 @@ namespace AKIRA.Manager {
             GameObjectMap[name].Free();
             GameObjectMap.Remove(name);
         }
+
+        /// <summary>
+        /// 预加载
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="count"></param>
+        public void PreLoad(string path, int count) {
+            var temp = new List<GameObject>();
+            for (int i = 0; i < count; i++) {
+                var go = Instantiate(path);
+                if (null == go)
+                    break;
+                temp.Add(go);
+            }
+            for (int i = 0; i < temp.Count; i++)
+                Destory(temp[i]);
+        }
+
+        /// <summary>
+        /// 预加载
+        /// </summary>
+        /// <param name="go"></param>
+        /// <param name="count"></param>
+        public void PreLoad(GameObject go, int count) {
+            var temp = new List<GameObject>();
+            for (int i = 0; i < count; i++) {
+                var poolGo = Instantiate(go);
+                if (null == poolGo)
+                    break;
+                temp.Add(poolGo);
+            }
+            for (int i = 0; i < temp.Count; i++)
+                Destory(temp[i]);
+        }
         #endregion
+    
     }
 }

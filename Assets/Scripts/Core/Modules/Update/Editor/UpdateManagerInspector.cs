@@ -6,7 +6,7 @@ using AKIRA.Manager;
 [CustomEditor(typeof(UpdateManager))]
 public class UpdateManagerInspector : Editor {
     // 折叠数据
-    private class FoldData : ReferenceBase {
+    private class FoldData : IPool {
         // 折叠
         public Dictionary<UpdateMode, bool> data = new Dictionary<UpdateMode, bool>();
 
@@ -15,8 +15,9 @@ public class UpdateManagerInspector : Editor {
                 data.Add(mode, false);
         }
 
-        public override void Recycle() {
-            base.Recycle();
+        public void Wake() {}
+
+        public void Recycle() {
             foreach (var key in data.Keys)
                 data[key] = false;
         }

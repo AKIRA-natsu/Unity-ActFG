@@ -36,8 +36,8 @@ public class ReferencePoolWindow : EditorWindow {
     /// <summary>
     /// 绘制元素
     /// </summary>
-    private void DrawElement(Component component, List<ReferenceBase> refers) {
-        ReorderableList list = new ReorderableList(refers, typeof(ReferenceBase));
+    private void DrawElement(Component component, List<IPool> refers) {
+        ReorderableList list = new ReorderableList(refers, typeof(IPool));
         EditorGUILayout.BeginVertical("framebox");
         GUI.enabled = false;
         EditorGUILayout.ObjectField(component, typeof(Component), allowSceneObjects : true);

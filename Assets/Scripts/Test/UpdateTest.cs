@@ -46,7 +46,7 @@ namespace AKIRA.Test {
         }
     }
 
-    public class UpdateClass : ReferenceBase, IUpdateCallback {
+    public class UpdateClass : IPool, IUpdateCallback {
         public UpdateClass() {}
 
         private UpdateMode mode = UpdateMode.FixedUpdate;
@@ -56,13 +56,11 @@ namespace AKIRA.Test {
             "这是更新测试".Log();
         }
 
-        public override void Wake() {
-            base.Wake();
+        public void Wake() {
             this.Regist(Key, mode);
         }
 
-        public override void Recycle() {
-            base.Recycle();
+        public void Recycle() {
             this.Remove(Key, mode);
         }
 
@@ -77,7 +75,7 @@ namespace AKIRA.Test {
         }
     }
 
-    public class UpdateIntervalClass : ReferenceBase, IUpdate {
+    public class UpdateIntervalClass : IPool, IUpdate {
         public UpdateIntervalClass() {}
 
         public const string Key = "UpdateIntervalClass";
@@ -86,13 +84,11 @@ namespace AKIRA.Test {
             "这是延迟3s更新测试".Log();
         }
 
-        public override void Wake() {
-            base.Wake();
+        public void Wake() {
             this.Regist(3f, Key);
         }
 
-        public override void Recycle() {
-            base.Recycle();
+        public void Recycle() {
             this.RemoveSpaceUpdate(Key);
         }
     }
