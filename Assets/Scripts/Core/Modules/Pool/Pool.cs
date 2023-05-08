@@ -46,10 +46,11 @@ namespace AKIRA.Manager {
         /// 对象池取出对象
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        public T Instantiate(string path) {
+        public T Instantiate(string path, object data = null) {
             // 池子超出限制
-            if (!TryGetFree(out T com)) return null;
+            if (!TryGetFree(data, out T com)) return null;
             // 空闲对象存在
             if (com != null) return com;
             // 池子中没有空闲对象，加载实例化
@@ -60,7 +61,7 @@ namespace AKIRA.Manager {
             }
             com = com.Instantiate();
             com.name = poolParent.name;
-            com.Wake();
+            com.Wake(data);
             onUse.Add(com);
             return com;
         }
@@ -69,16 +70,17 @@ namespace AKIRA.Manager {
         /// 对象池取出对象
         /// </summary>
         /// <param name="target"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        public T Instantiate(T target) {
+        public T Instantiate(T target, object data = null) {
             // 池子超出限制
-            if (!TryGetFree(out T com)) return null;
+            if (!TryGetFree(data, out T com)) return null;
             // 空闲对象存在
             if (com != null) return com;
             // 池子中没有空闲对象，加载实例化
             com = target.Instantiate();
             com.name = poolParent.name;
-            com.Wake();
+            com.Wake(data);
             onUse.Add(com);
             return com;
         }
@@ -87,13 +89,13 @@ namespace AKIRA.Manager {
         /// 获得空闲对象
         /// </summary>
         /// <returns></returns>
-        private bool TryGetFree(out T com) {
+        private bool TryGetFree(object data, out T com) {
             com = null;
             // 循环池子拿出空闲对象
             if (pool.Count != 0) {
                 com = pool.Dequeue();
                 com.gameObject.SetActive(true);
-                com.Wake();
+                com.Wake(data);
                 onUse.Add(com);
                 return true;
             }
@@ -109,8 +111,8 @@ namespace AKIRA.Manager {
         /// 销毁对象
         /// </summary>
         /// <param name="com"></param>
-        public void Destory(T com) {
-            com.Recycle();
+        public void Destory(T com, object data = null) {
+            com.Recycle(data);
             com.SetParent(poolParent);
             com.gameObject.SetActive(false);
             pool.Enqueue(com);
@@ -257,13 +259,13 @@ namespace AKIRA.Manager {
         /// 获得对象
         /// </summary>
         /// <returns></returns>
-        public K Instantiate() {
-            if (!TryGetFree(out K @class)) return default;
+        public K Instantiate(object data = null) {
+            if (!TryGetFree(data, out K @class)) return default;
             // 获得空闲对象
             if (@class != null) return @class;
             // new
             @class = new K();
-            @class.Wake();
+            @class.Wake(data);
             onUse.Add(@class);
             return @class;
         }
@@ -271,11 +273,11 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 尝试获得空闲对象
         /// </summary>
-        private bool TryGetFree(out K @class) {
+        private bool TryGetFree(object data, out K @class) {
             @class = default;
             if (rpool.Count != 0) {
                 @class = rpool.Dequeue();
-                @class.Wake();
+                @class.Wake(data);
                 onUse.Add(@class);
                 return true;
             }
@@ -289,8 +291,8 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 对象回收
         /// </summary>
-        public void Destroy(K @class) {
-            @class.Recycle();
+        public void Destroy(K @class, object data = null) {
+            @class.Recycle(data);
             rpool.Enqueue(@class);
             onUse.Remove(@class);
         }

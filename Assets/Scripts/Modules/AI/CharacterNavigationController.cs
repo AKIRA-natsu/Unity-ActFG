@@ -22,11 +22,11 @@ namespace AKIRA.Behaviour.AI {
         // // 旋转速度
         // public float turnSpeed = 1f;
 
-        public override void Recycle() {
+        public override void Recycle(object data = null) {
             this.Remove(Group, mode);
         }
 
-        public override void Wake() {
+        public override void Wake(object data = null) {
             this.Regist(Group, mode);
         }
         

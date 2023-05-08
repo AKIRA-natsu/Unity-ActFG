@@ -58,11 +58,11 @@ namespace AKIRA.UIFramework {
             return (1 - t) * (1 - t) * start + 2 * t * (1 - t) * center + t * t * end;
         }
 
-        public void Wake() {
+        public void Wake(object data = null) {
             this.Regist(UI.UIGroup);
         }
 
-        public void Recycle() {
+        public void Recycle(object data = null) {
             this.Remove(UI.UIGroup);
         }
     }

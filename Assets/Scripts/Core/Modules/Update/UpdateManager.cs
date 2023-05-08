@@ -121,12 +121,12 @@ public class UpdateGroup : IPool {
         }
     }
 
-    public void Wake() {
+    public void Wake(object data = null) {
         // Updating = true;
         updating = true;
     }
 
-    public void Recycle() {
+    public void Recycle(object data = null) {
         // Updating = false;
         updating = false;
         foreach (var value in updateMap.Values)

@@ -34,8 +34,8 @@ namespace AKIRA.Behaviour.AI {
         public const string Group = "AI";
 
         // abstract functions
-        public abstract void Wake();
-        public abstract void Recycle();
+        public abstract void Wake(object data = null);
+        public abstract void Recycle(object data = null);
         public abstract void GameUpdate();
         public abstract void OnUpdateStop();
         public abstract void OnUpdateResume();

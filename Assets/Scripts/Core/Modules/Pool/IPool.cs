@@ -5,9 +5,10 @@ public interface IPool {
     /// <summary>
     /// 唤醒
     /// </summary>
-    void Wake();
+    void Wake(object data = null);
+    
     /// <summary>
     /// 回收
     /// </summary>
-    void Recycle();
+    void Recycle(object data = null);
 }

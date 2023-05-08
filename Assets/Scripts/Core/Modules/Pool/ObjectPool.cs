@@ -30,10 +30,11 @@ namespace AKIRA.Manager {
         /// <param name="rotation"></param>
         /// <param name="parent"></param>
         /// <param name="space">默认世界坐标</param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(string path, Vector3 position, Quaternion rotation, Transform parent, Space space = Space.World) where T : Component, IPool {
-            T com = Instantiate<T>(path, parent);
+        public T Instantiate<T>(string path, Vector3 position, Quaternion rotation, Transform parent, Space space = Space.World, object data = null) where T : Component, IPool {
+            T com = Instantiate<T>(path, parent, data);
             if (space == Space.World) {
                 com.transform.position = position;
                 com.transform.rotation = rotation;
@@ -50,10 +51,11 @@ namespace AKIRA.Manager {
         /// <param name="path"></param>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(string path, Vector3 position, Quaternion rotation) where T : Component, IPool {
-            T com = Instantiate<T>(path);
+        public T Instantiate<T>(string path, Vector3 position, Quaternion rotation, object data = null) where T : Component, IPool {
+            T com = Instantiate<T>(path, data);
             com.transform.position = position;
             com.transform.rotation = rotation;
             return com;
@@ -64,10 +66,11 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="path"></param>
         /// <param name="parent"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(string path, Transform parent) where T : Component, IPool {
-            T com = Instantiate<T>(path);
+        public T Instantiate<T>(string path, Transform parent, object data = null) where T : Component, IPool {
+            T com = Instantiate<T>(path, data);
             com.SetParent(parent);
             return com;
         }
@@ -76,18 +79,19 @@ namespace AKIRA.Manager {
         /// 对象池获得池对象
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(string path) where T : Component, IPool {
+        public T Instantiate<T>(string path, object data = null) where T : Component, IPool {
             var names = path.Split('/');
             var name = names[names.Length - 1];
             if (ObjectPoolMap.ContainsKey(name)) {
                 var pool = ObjectPoolMap[name] as Pool<T>;
-                return pool.Instantiate(path);
+                return pool.Instantiate(path, data);
             } else {
                 var pool = new Pool<T>().Init(root, name);
                 ObjectPoolMap.Add(name, pool);
-                return pool.Instantiate(path);
+                return pool.Instantiate(path, data);
             }
         }
         #endregion
@@ -101,10 +105,11 @@ namespace AKIRA.Manager {
         /// <param name="rotation"></param>
         /// <param name="parent"></param>
         /// <param name="space">默认世界坐标</param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(T target, Vector3 position, Quaternion rotation, Transform parent, Space space = Space.World) where T : Component, IPool {
-            T com = Instantiate(target, parent);
+        public T Instantiate<T>(T target, Vector3 position, Quaternion rotation, Transform parent, Space space = Space.World, object data = null) where T : Component, IPool {
+            T com = Instantiate(target, parent, data);
             if (space == Space.World) {
                 com.transform.position = position;
                 com.transform.rotation = rotation;
@@ -121,10 +126,11 @@ namespace AKIRA.Manager {
         /// <param name="target"></param>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(T target, Vector3 position, Quaternion rotation) where T : Component, IPool {
-            T com = Instantiate(target);
+        public T Instantiate<T>(T target, Vector3 position, Quaternion rotation, object data = null) where T : Component, IPool {
+            T com = Instantiate(target, data);
             com.transform.position = position;
             com.transform.rotation = rotation;
             return com;
@@ -135,10 +141,11 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="target"></param>
         /// <param name="parent"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(T target, Transform parent) where T : Component, IPool {
-            T com = Instantiate(target);
+        public T Instantiate<T>(T target, Transform parent, object data = null) where T : Component, IPool {
+            T com = Instantiate(target, data);
             com.SetParent(parent);
             return com;
         }
@@ -147,17 +154,18 @@ namespace AKIRA.Manager {
         /// 对象池获得池对象
         /// </summary>
         /// <param name="com"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Instantiate<T>(T com) where T : Component, IPool {
+        public T Instantiate<T>(T com, object data = null) where T : Component, IPool {
             var name = com.name;
             if (ObjectPoolMap.ContainsKey(name)) {
                 var pool = ObjectPoolMap[name] as Pool<T>;
-                return pool.Instantiate(com);
+                return pool.Instantiate(com, data);
             } else {
                 var pool = new Pool<T>().Init(root, name);
                 ObjectPoolMap.Add(name, pool);
-                return pool.Instantiate(com);
+                return pool.Instantiate(com, data);
             }
         }
         #endregion
@@ -166,8 +174,9 @@ namespace AKIRA.Manager {
         /// 对象池销毁池对象
         /// </summary>
         /// <param name="com"></param>
+        /// <param name="data">Pool 回收参数</param>
         /// <typeparam name="T"></typeparam>
-        public void Destory<T>(T com) where T : Component, IPool {
+        public void Destory<T>(T com, object data = null) where T : Component, IPool {
             var name = com.name;
             if (ObjectPoolMap.ContainsKey(name)) {
                 // FIXME: 继承类是空

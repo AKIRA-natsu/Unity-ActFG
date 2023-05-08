@@ -536,6 +536,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[GamePrepare]'
       objectReference: {fileID: 0}
+    - target: {fileID: 4748938485982313604, guid: 173094d2482fff4419c98551eb0763d4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4748938485982313606, guid: 173094d2482fff4419c98551eb0763d4,
         type: 3}
       propertyPath: calledEndState

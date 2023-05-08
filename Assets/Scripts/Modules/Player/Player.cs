@@ -68,8 +68,8 @@ public class Player : AIBase {
     }
 
     #region dont used methods
-    public override void Wake() { }
-    public override void Recycle() { }
+    public override void Wake(object data = null) { }
+    public override void Recycle(object data = null) { }
     #endregion
 
     public override void GameUpdate() {

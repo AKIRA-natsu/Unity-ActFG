@@ -17,31 +17,33 @@ namespace AKIRA.Manager {
         /// 获得引用对象
         /// </summary>
         /// <param name="target"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="K"></typeparam>
         /// <returns></returns>
-        public K Instantiate<K>() where K : class, IPool, new() {
+        public K Instantiate<K>(object data = null) where K : class, IPool, new() {
             var name = typeof(K).Name;
             if (ReferenceMap.ContainsKey(name)) {
                 return (ReferenceMap[name] as RPool<K>).Instantiate();
             } else {
                 var rpool = new RPool<K>().Init();
                 ReferenceMap.Add(name, rpool);
-                return rpool.Instantiate();
+                return rpool.Instantiate(data);
             }
         }
 
         /// <summary>
         /// <para>回收/销毁对象</para>
         /// </summary>
+        /// <param name="data">Pool 回收参数</param>
         /// <typeparam name="K"></typeparam>
-        public void Destory<K>(K @class) where K : class, IPool, new() {
+        public void Destory<K>(K @class, object data = null) where K : class, IPool, new() {
             var name = typeof(K).Name;
             if (ReferenceMap.ContainsKey(name)) {
                 (ReferenceMap[name] as RPool<K>).Destroy(@class);
             } else {
                 var rpool = new RPool<K>().Init();
                 ReferenceMap.Add(name, rpool);
-                rpool.Destroy(@class);
+                rpool.Destroy(@class, data);
             }
         }
 
@@ -73,10 +75,11 @@ namespace AKIRA.Manager {
         /// 为Component添加对象引用
         /// </summary>
         /// <param name="component"></param>
+        /// <param name="data">Pool 唤醒参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T Attach<T>(this Component component) where T : class, IPool, new() {
-            var refer = ReferencePool.Instance.Instantiate<T>();
+        public static T Attach<T>(this Component component, object data = null) where T : class, IPool, new() {
+            var refer = ReferencePool.Instance.Instantiate<T>(data);
             if (ComponentReferenceMap.ContainsKey(component)) {
                 ComponentReferenceMap[component].Add(refer);
             } else {
@@ -89,9 +92,9 @@ namespace AKIRA.Manager {
         /// 为 <see cref="component" /> 移除 <see cref="T" /> 引用
         /// </summary>
         /// <param name="component"></param>
-        /// <param name="refer"></param>
+        /// <param name="data">Pool 回收参数</param>
         /// <typeparam name="T"></typeparam>
-        public static bool Detach<T>(this Component component) where T : class, IPool, new() {
+        public static bool Detach<T>(this Component component, object data = null) where T : class, IPool, new() {
             bool result = false;
             if (ComponentReferenceMap.ContainsKey(component)) {
                 var componentList = ComponentReferenceMap[component].Where(refer => refer is T);
@@ -99,7 +102,7 @@ namespace AKIRA.Manager {
                 if (result) {
                     // 回收
                     foreach (var refer in componentList) {
-                        ReferencePool.Instance.Destory(refer as T);
+                        ReferencePool.Instance.Destory(refer as T, data);
                     }
                     // 移除键值
                     if (ComponentReferenceMap[component].Count == 0) {
@@ -117,14 +120,15 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="component"></param>
         /// <param name="refer"></param>
+        /// <param name="data">Pool 回收参数</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static bool Detach<T>(this Component component, T refer) where T : class, IPool, new() {
+        public static bool Detach<T>(this Component component, T refer, object data = null) where T : class, IPool, new() {
             if (ComponentReferenceMap.ContainsKey(component)) {
                 var componentList = ComponentReferenceMap[component];
                 if (componentList.Contains(refer)) {
                     componentList.Remove(refer);
-                    ReferencePool.Instance.Destory(refer);
+                    ReferencePool.Instance.Destory(refer, data);
                     if (componentList.Count == 0) {
                         ComponentReferenceMap.Remove(component);
                     }
@@ -139,7 +143,7 @@ namespace AKIRA.Manager {
         }
 
         /// <summary>
-        /// 获得Component的 T 引用（多个中的第一个）
+        /// 获得Component的 T 引用（多个中的第一个，正常应该只Attach一个引用）
         /// </summary>
         /// <param name="component"></param>
         /// <typeparam name="T"></typeparam>

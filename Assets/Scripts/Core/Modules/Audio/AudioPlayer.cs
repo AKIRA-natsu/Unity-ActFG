@@ -15,8 +15,8 @@ namespace AKIRA.Manager.Audio {
         /// </summary>
         public const string DefaultPath = "Prefabs/AudioPlayer";
 
-        public void Wake() {}
-        public void Recycle() {
+        public void Wake(object data = null) {}
+        public void Recycle(object data = null) {
             if (IsPlaying())
                 Stop();
         }

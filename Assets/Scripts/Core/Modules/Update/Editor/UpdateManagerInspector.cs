@@ -8,18 +8,18 @@ public class UpdateManagerInspector : Editor {
     // 折叠数据
     private class FoldData : IPool {
         // 折叠
-        public Dictionary<UpdateMode, bool> data = new Dictionary<UpdateMode, bool>();
+        public Dictionary<UpdateMode, bool> folds = new Dictionary<UpdateMode, bool>();
 
         public FoldData() {
             foreach (UpdateMode mode in System.Enum.GetValues(typeof(UpdateMode)))
-                data.Add(mode, false);
+                folds.Add(mode, false);
         }
 
-        public void Wake() {}
+        public void Wake(object data = null) {}
 
-        public void Recycle() {
-            foreach (var key in data.Keys)
-                data[key] = false;
+        public void Recycle(object data = null) {
+            foreach (var key in folds.Keys)
+                folds[key] = false;
         }
     }
 
@@ -93,8 +93,8 @@ public class UpdateManagerInspector : Editor {
                 var infoCount = spaceUpdateList.Count;
                 if (updateCount + infoCount != 0) {
                     EditorGUILayout.BeginVertical("frameBox");
-                    foldData.data[mode] = EditorGUILayout.Foldout(foldData.data[mode], $"{mode}列表：总数: {updateCount + infoCount}");
-                    if (foldData.data[mode]) {
+                    foldData.folds[mode] = EditorGUILayout.Foldout(foldData.folds[mode], $"{mode}列表：总数: {updateCount + infoCount}");
+                    if (foldData.folds[mode]) {
 
                         if (updateCount != 0) {
                             EditorGUILayout.BeginVertical("frameBox");

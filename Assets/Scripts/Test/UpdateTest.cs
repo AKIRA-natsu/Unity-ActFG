@@ -10,11 +10,11 @@ namespace AKIRA.Test {
         public UpdateMode mode;
 
         private void OnEnable() {
-            UpdateManager.GetOrCreateDefaultInstance().Regist(this);
+            UpdateManager.GetOrCreateDefaultInstance().Regist(this, mode : mode);
         }
 
         private void OnDisable() {
-            this.Remove();
+            this.Remove(mode : mode);
         }
 
         public void GameUpdate() {
@@ -56,11 +56,11 @@ namespace AKIRA.Test {
             "这是更新测试".Log();
         }
 
-        public void Wake() {
+        public void Wake(object data = null) {
             this.Regist(Key, mode);
         }
 
-        public void Recycle() {
+        public void Recycle(object data = null) {
             this.Remove(Key, mode);
         }
 
@@ -84,11 +84,11 @@ namespace AKIRA.Test {
             "这是延迟3s更新测试".Log();
         }
 
-        public void Wake() {
+        public void Wake(object data = null) {
             this.Regist(3f, Key);
         }
 
-        public void Recycle() {
+        public void Recycle(object data = null) {
             this.RemoveSpaceUpdate(Key);
         }
     }
