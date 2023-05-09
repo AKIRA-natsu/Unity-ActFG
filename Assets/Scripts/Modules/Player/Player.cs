@@ -67,11 +67,6 @@ public class Player : AIBase {
             run = !run;
     }
 
-    #region dont used methods
-    public override void Wake(object data = null) { }
-    public override void Recycle(object data = null) { }
-    #endregion
-
     public override void GameUpdate() {
         Move(InputActions.Player.Move.ReadValue<Vector2>());
     }

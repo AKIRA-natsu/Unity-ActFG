@@ -47,7 +47,8 @@ public class RectTransformExtendInspector : DecoratorEditor {
             }
 
             if (GUILayout.Button("Edit")) {
-                System.Diagnostics.Process.Start($"{target.name}Panel".GetScriptLocation());
+                $"{target.name}Component".GetScriptLocation().Log();
+                System.Diagnostics.Process.Start($"{target.name}Component".GetScriptLocation());
             }
         }
         #endregion
