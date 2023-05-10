@@ -44,7 +44,7 @@ namespace AKIRA.UIFramework {
             ManagerGo = root;
             Canvas = ManagerGo.GetComponentInChildren<Canvas>();
             Rect = Canvas.GetComponent<RectTransform>();
-            View = Rect.Find("Root/Views").gameObject;
+            View = Rect.Find("Root/View").gameObject;
             Background = Rect.Find("Root/Background").gameObject;
             Top = Rect.Find("Root/Top").gameObject;
         }
