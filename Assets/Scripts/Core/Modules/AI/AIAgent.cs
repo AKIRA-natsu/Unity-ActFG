@@ -55,7 +55,7 @@ namespace AKIRA.Behaviour.AI {
         protected NavMeshAgent agent { get; private set; }
         // behaviour tree
         [SerializeField]
-        internal BehaviourTree tree;
+        public BehaviourTree tree;
 
         /// <summary>
         /// 到达目标点
