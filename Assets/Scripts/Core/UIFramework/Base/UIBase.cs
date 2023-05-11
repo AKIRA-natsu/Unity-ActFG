@@ -26,5 +26,7 @@
         /// 退出
         /// </summary>
         protected virtual void OnExit() {}
+
+        public abstract void Invoke(string name, params object[] args);
     }
 }

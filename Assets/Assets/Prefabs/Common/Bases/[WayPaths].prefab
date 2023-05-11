@@ -91,7 +91,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3129504785995982467}
   - component: {fileID: 3129504785995982477}
-  - component: {fileID: 3129504785995982476}
   m_Layer: 0
   m_Name: WayPointParent
   m_TagString: Untagged
@@ -136,21 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wayTag: Test
---- !u!114 &3129504785995982476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3129504785995982466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c69a0730fd9ff5349b332ab9eb5018ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pedestrianPrefab: {fileID: 7606402586306910845, guid: 6e3375a4a7a33b94baa8e20992526189,
-    type: 3}
-  pedestriansToSpawn: 0
 --- !u!1 &3129504786082888744
 GameObject:
   m_ObjectHideFlags: 0

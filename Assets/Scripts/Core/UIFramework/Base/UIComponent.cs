@@ -133,5 +133,7 @@ namespace AKIRA.UIFramework {
         public virtual void Destory() {
             this.gameObject.Destory();
         }
+
+        public override void Invoke(string name, params object[] args) { }
     }
 }

@@ -23,6 +23,7 @@ public class RotateSelf : SelfAnim {
 
     // 方向
     private Vector3 rotate;
+    
 
     private void OnValidate() {
         DecideTowards();

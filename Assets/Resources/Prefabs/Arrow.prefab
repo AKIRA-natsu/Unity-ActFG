@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f31740e581f0f4d978805ba924daa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  auto: 0
+  auto: 1
   towards: 2
   rotateSpeed: 1
 --- !u!114 &469626274
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf256ff03420cb74fbfdaa29ebc531a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  auto: 0
+  auto: 1
   towards: 1
   moveSpeed: 1
   moveRadius: 0.7
