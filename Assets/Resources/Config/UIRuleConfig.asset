@@ -41,3 +41,6 @@ MonoBehaviour:
   - controlName: Scrollbar
     ruleNames:
     - Scrollbar
+  - controlName: Animation
+    ruleNames:
+    - Animation

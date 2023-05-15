@@ -2,9 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-[RequireComponent(typeof(Camera))]
+/// <summary>
+/// URP 塞入主摄像头Camera Stack脚本
+/// </summary>
+[RequireComponent(typeof(UnityEngine.Camera))]
 public class CameraStackAdditionHelp : MonoBehaviour {
-    
+        
     private void Start() {
         StartCoroutine(WaitToAddMainCamera());
     }

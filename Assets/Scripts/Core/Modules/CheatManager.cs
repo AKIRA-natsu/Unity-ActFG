@@ -35,11 +35,6 @@ namespace AKIRA.Manager {
         /// </summary>
         public bool KeyBoardUsed = true;
 
-        /// <summary>
-        /// 更新组
-        /// </summary>
-        public const string Group = "Cheat";
-
         public void GameUpdate() {
             if (KeyBoardUsed)
                 return;
@@ -58,7 +53,7 @@ namespace AKIRA.Manager {
         }
 
         private void Start() {
-            UpdateManager.GetOrCreateDefaultInstance().Regist(this, Group);
+            UpdateManager.GetOrCreateDefaultInstance().Regist(this);
         }
 
         /// <summary>
