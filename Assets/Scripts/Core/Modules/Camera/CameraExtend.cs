@@ -45,7 +45,10 @@ public static class CameraExtend {
     /// <param name="behaviour"></param>
     /// <typeparam name="T"></typeparam>
     internal static void RegistCameraBehaviour<T>(T behaviour) where T : CameraBehaviour {
-        CameraMap.Add(typeof(CameraBehaviour), behaviour);
+        var type = behaviour.GetType();
+        if (CameraMap.ContainsKey(type))
+            return;
+        CameraMap.Add(type, behaviour);
     }
 
     /// <summary>
@@ -53,7 +56,12 @@ public static class CameraExtend {
     /// </summary>
     /// <param name="behaviour"></param>
     /// <typeparam name="T"></typeparam>
-    internal static void RemoveCameraBehaviour<T>(T behaviour) where T : CameraBehaviour {}
+    internal static void RemoveCameraBehaviour<T>(T behaviour) where T : CameraBehaviour {
+        var type = behaviour.GetType();
+        if (!CameraMap.ContainsKey(type))
+            return;
+        CameraMap.Remove(type);
+    }
 
     /// <summary>
     /// 获得摄像机脚本
