@@ -23,6 +23,10 @@ namespace AKIRA.Behaviour.Camera {
             this.Remove(CameraGroup, mode);
         }
 
+        protected virtual void OnDestroy() {
+            CameraExtend.RemoveCameraBehaviour(this);
+        }
+
         public abstract void GameUpdate();
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SelectGameObjectsWithMissingScripts : Editor
 {
-    [MenuItem("Tools/Help/Select GameObjects With Missing Scripts")]
+    [MenuItem("Tools/Framework/Select GameObjects With Missing Scripts")]
     static void SelectGameObjects()
     {
         //Get the current scene and all top-level GameObjects in the scene hierarchy

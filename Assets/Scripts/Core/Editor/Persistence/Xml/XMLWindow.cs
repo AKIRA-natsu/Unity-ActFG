@@ -16,7 +16,7 @@ public class XMLWindow : EditorWindow {
     // 过滤字典
     private Dictionary<string, bool> FilterMap;
 
-    [MenuItem("Tools/Help/XmlBuildHelp")]
+    [MenuItem("Tools/Framework/Persistence/XmlBuildHelp")]
     private static void ShowWindow() {
         var window = GetWindow<XMLWindow>();
         window.titleContent = new GUIContent("XMLWindow");
