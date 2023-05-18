@@ -8,11 +8,6 @@ namespace AKIRA.UIFramework {
     [CreateAssetMenu(fileName = "UIRuleConfig", menuName = "Framework/UIFramework/UIRuleConfig", order = 0)]
     public class UIRuleConfig : ScriptableObject {
         /// <summary>
-        /// 默认路径
-        /// </summary>
-        public const string DefaultPath = "Config/UIRuleConfig";
-        
-        /// <summary>
         /// 规则
         /// </summary>
         [SerializeField]

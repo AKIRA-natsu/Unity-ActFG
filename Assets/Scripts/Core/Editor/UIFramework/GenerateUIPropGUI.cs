@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using AKIRA.Data;
 
 public class GenerateUIPropGUI : EditorWindow {
     [MenuItem("Tools/Framework/UI/CreateUIProp(Select Gameobects)")]
     internal static void CreateUIProp() {
         var objs = Selection.gameObjects;
         if (objs == null || objs.Length == 0)
-            $"未选择物体".Colorful(Color.yellow).Log();
+            $"未选择物体".Log(GameData.Log.Warn);
         for (int i = 0; i < objs.Length; i++) {
             var obj = objs[i];
             CreateUIProp(obj);
@@ -18,7 +19,7 @@ public class GenerateUIPropGUI : EditorWindow {
     internal static void UpdateUIProp() {
         var objs = Selection.gameObjects;
         if (objs == null || objs.Length == 0)
-            $"未选择物体".Colorful(Color.yellow).Log();
+            $"未选择物体".Log(GameData.Log.Warn);
         for (int i = 0; i < objs.Length; i++) {
             var obj = objs[i];
             UpdateUIProp(obj);
@@ -39,7 +40,7 @@ public class GenerateUIPropGUI : EditorWindow {
         // =============================================================================================================================
 
         if (File.Exists(componentPropPath)) {
-            $"已经存在prop文件\n进行删除，路劲为{componentPropPath}".Colorful(Color.yellow).Log();
+            $"已经存在prop文件\n进行删除，路劲为{componentPropPath}".Log(GameData.Log.Warn);
             File.Delete(componentPropPath);
         }
         string propContent =
@@ -58,12 +59,12 @@ $@"    }}
         #endregion
 
         File.WriteAllText(componentPropPath, propContent);
-        $"生成prop.cs完毕\n路劲为{componentPropPath}".Colorful(Color.cyan).Log();
+        $"生成prop.cs完毕\n路劲为{componentPropPath}".Log(GameData.Log.Success);
 
         // =============================================================================================================================
 
         if (File.Exists(panelComponentPath)) {
-            $"已经存在panel文件\n进行删除，路劲为{panelComponentPath}".Colorful(Color.yellow).Log();
+            $"已经存在panel文件\n进行删除，路劲为{panelComponentPath}".Log(GameData.Log.Warn);
             File.Delete(panelComponentPath);
         }
         string panelContent =
@@ -83,13 +84,13 @@ $@"        }}
         #endregion
 
         File.WriteAllText(panelComponentPath, panelContent);
-        $"生成panel.cs完毕\n路劲为{panelComponentPath}".Colorful(Color.cyan).Log();
+        $"生成panel.cs完毕\n路劲为{panelComponentPath}".Log(GameData.Log.Success);
 
         // =============================================================================================================================
         
         // 检查是否存在预制体
         if (File.Exists(objPath)) {
-            $"已经存在预制体{obj}\n进行删除，路径为{objPath}".Colorful(Color.yellow).Log();
+            $"已经存在预制体{obj}\n进行删除，路径为{objPath}".Log(GameData.Log.Warn);
             File.Delete(objPath);
         }
 
@@ -103,7 +104,7 @@ $@"        }}
             newObj.SetParent(parent);
             newObj.transform.localScale = Vector3.one;
             newObj.transform.localPosition = Vector3.zero;
-            $"保存预制体{newObj}成功\n路径为{objPath}".Colorful(Color.cyan).Log();
+            $"保存预制体{newObj}成功\n路径为{objPath}".Log(GameData.Log.Success);
         }
         AssetDatabase.Refresh();
     }
@@ -116,7 +117,7 @@ $@"        }}
         var name = obj.name;
         var componentPropPath = $"Assets/Scripts/UI/Component/{name}ComponentProp.cs";
         if (!File.Exists(componentPropPath)) {
-            $"{componentPropPath}下不存在{name}ComponentProp.cs".Colorful(Color.red).Log();
+            $"{componentPropPath}下不存在{name}ComponentProp.cs".Log(GameData.Log.Error);
             return;
         }
 
@@ -137,7 +138,7 @@ $@"    }}
         #endregion
 
         File.WriteAllText(componentPropPath, propContent);
-        $"更新prop.cs完毕\n路劲为{componentPropPath}".Colorful(Color.cyan).Log();
+        $"更新prop.cs完毕\n路劲为{componentPropPath}".Log(GameData.Log.Success);
         AssetDatabase.Refresh();
     }
 }

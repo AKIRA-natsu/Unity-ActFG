@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using UnityEngine;
 
 namespace AKIRA.Behaviour.Camera {
@@ -8,19 +9,17 @@ namespace AKIRA.Behaviour.Camera {
         // 更新模式
         [SerializeField]
         protected UpdateMode mode = UpdateMode.Update;
-        // 摄像机更新组
-        public const string CameraGroup = "Camera";
 
         protected virtual void Awake() {
             CameraExtend.RegistCameraBehaviour(this);
         }
 
         protected virtual void OnEnable() {
-            this.Regist(CameraGroup, mode);
+            this.Regist(GameData.Group.Camera, mode);
         }
 
         protected virtual void OnDisable() {
-            this.Remove(CameraGroup, mode);
+            this.Remove(GameData.Group.Camera, mode);
         }
 
         protected virtual void OnDestroy() {

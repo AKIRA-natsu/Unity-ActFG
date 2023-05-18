@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using UnityEngine;
 
 namespace AKIRA.UIFramework {
@@ -28,12 +29,12 @@ namespace AKIRA.UIFramework {
         private float lastIntervalTime;
 
         protected override void OnEnter() {
-            this.Regist(UI.UIGroup);
+            this.Regist(GameData.Group.UI);
             ShinImg.uvRect = Origin;
         }
 
         protected override void OnExit() {
-            this.Remove(UI.UIGroup);
+            this.Remove(GameData.Group.UI);
         }
 
         public void GameUpdate() {

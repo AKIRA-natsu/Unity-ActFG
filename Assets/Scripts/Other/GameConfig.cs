@@ -1,9 +1,8 @@
 using AKIRA.Manager;
 using AKIRA.Manager.Audio;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace AKIRA.Behaviour.Prepare {
+namespace AKIRA.Behaviour {
     /// <summary>
     /// <para>游戏设置</para>
     /// <para>作弊注册中间件</para>

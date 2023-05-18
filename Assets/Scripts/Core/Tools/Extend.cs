@@ -242,32 +242,6 @@ public static class Extend {
     }
     #endregion
 
-    #region object
-    /// <summary>
-    /// 日志
-    /// </summary>
-    /// <param name="message"></param>
-    public static void Log(this object message) {
-        Debug.Log(message);
-    }
-
-    /// <summary>
-    /// 日志
-    /// </summary>
-    /// <param name="message"></param>
-    public static void Warn(this object message) {
-        Debug.LogWarning(message);
-    }
-
-    /// <summary>
-    /// 日志
-    /// </summary>
-    /// <param name="message"></param>
-    public static void Error(this object message) {
-        Debug.LogError(message);
-    }
-    #endregion
-
     #region Color/String
     /// <summary>
     /// 富文本

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AKIRA.UIFramework;
 using UnityEngine;
+using AKIRA.Data;
 
 namespace AKIRA.Manager {
     [DefaultExecutionOrder(-1)]
@@ -25,7 +26,7 @@ namespace AKIRA.Manager {
         protected override void Awake() {
             base.Awake();
             // ProjectSetting => Qualitv => VSync Count: Dont VSync
-            // Application.targetFrameRate = 60;
+            Application.targetFrameRate = 60;
 
             if (callUIInitialize)
                 UIManager.Instance.Initialize();
@@ -45,7 +46,7 @@ namespace AKIRA.Manager {
             if (State == state)
                 return;
 
-            $"游戏状态：切换{state}".Colorful(Color.cyan).Log();
+            $"游戏状态：切换{state}".Log(GameData.Log.GameState);
             if (StateActionMap.ContainsKey(state))
                 StateActionMap[state]?.Invoke();
             
@@ -64,6 +65,9 @@ namespace AKIRA.Manager {
             } else {
                 StateActionMap.Add(state, action);
             }
+
+            if (IsStateEqual(state))
+                action?.Invoke();
         }
 
         /// <summary>

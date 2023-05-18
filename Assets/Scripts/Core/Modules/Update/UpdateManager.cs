@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AKIRA.Data;
 using AKIRA.Manager;
 using UnityEngine;
 
@@ -216,8 +217,6 @@ public class UpdateGroup : IPool {
 public class UpdateManager : MonoSingleton<UpdateManager> {
     // 更新组列表
     private Dictionary<string, UpdateGroup> groupMap = new Dictionary<string, UpdateGroup>();
-    // 默认组
-    public const string Default = "Default";
 
     // 更新组 面板
     public IReadOnlyDictionary<string, UpdateGroup> GroupMap => groupMap;
@@ -229,7 +228,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// <param name="update"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode">更新类型</param>
-    public void Regist(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
+    public void Regist(IUpdate update, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         if (groupMap.ContainsKey(key)) {
             groupMap[key].Regist(update, mode);
         } else {
@@ -246,7 +245,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// <param name="interval"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public void Regist(IUpdate update, float interval, string key = Default, UpdateMode mode = UpdateMode.Update) {
+    public void Regist(IUpdate update, float interval, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         if (groupMap.ContainsKey(key)) {
             groupMap[key].Regist(update, interval, mode);
         } else {
@@ -262,7 +261,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// <param name="update"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode">更新类型</param>
-    public void Remove(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
+    public void Remove(IUpdate update, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         if (groupMap.ContainsKey(key)) {
             var group = groupMap[key];
             group.Remove(update, mode);
@@ -271,7 +270,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
                 this.Detach(group);
             }
         } else {
-            $"Update Log Message: Remove {key} Not Find!".Colorful(Color.yellow).Log();
+            $"Update Log Message: Remove {key} Not Find!".Log(GameData.Log.Warn);
         }
     }
 
@@ -281,7 +280,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
     /// <param name="update"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public void RemoveSpaceUpdate(IUpdate update, string key = Default, UpdateMode mode = UpdateMode.Update) {
+    public void RemoveSpaceUpdate(IUpdate update, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         if (groupMap.ContainsKey(key)) {
             var group = groupMap[key];
             group.RemoveSpaceUpdate(update, mode);
@@ -290,7 +289,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
                 this.Detach(group);
             }
         } else {
-            $"Update Log Message: Remove {key} Not Find!".Colorful(Color.yellow).Log();
+            $"Update Log Message: Remove {key} Not Find!".Log(GameData.Log.Warn);
         }
     }
 
@@ -303,7 +302,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
             this.Detach(groupMap[key]);
             groupMap.Remove(key);
         } else {
-            $"Update Log Message: Detach Group {key} Not Find!".Colorful(Color.yellow).Log();
+            $"Update Log Message: Detach Group {key} Not Find!".Log(GameData.Log.Warn);
         }
     }
 
@@ -316,7 +315,7 @@ public class UpdateManager : MonoSingleton<UpdateManager> {
         if (groupMap.ContainsKey(key)) {
             groupMap[key].Updating = enable;
         } else {
-            $"Update Log Message: Enable/Disable Group Update {key} Not Find!".Colorful(Color.yellow).Log();
+            $"Update Log Message: Enable/Disable Group Update {key} Not Find!".Log(GameData.Log.Warn);
         }
     }
 
@@ -383,7 +382,7 @@ public static class UpdateExtend {
     /// <param name="update"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public static void Regist(this IUpdate update, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
+    public static void Regist(this IUpdate update, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         UpdateManager.Instance.Regist(update, key, mode);
     }
 
@@ -395,7 +394,7 @@ public static class UpdateExtend {
     /// <param name="interval"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public static void Regist(this IUpdate update, float interval, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
+    public static void Regist(this IUpdate update, float interval, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         UpdateManager.Instance.Regist(update, interval, key, mode);
     }
 
@@ -406,7 +405,7 @@ public static class UpdateExtend {
     /// <param name="update"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public static void Remove(this IUpdate update, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
+    public static void Remove(this IUpdate update, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         UpdateManager.Instance?.Remove(update, key, mode);
     }
 
@@ -417,7 +416,7 @@ public static class UpdateExtend {
     /// <param name="update"></param>
     /// <param name="key">组键值</param>
     /// <param name="mode"></param>
-    public static void RemoveSpaceUpdate(this IUpdate update, string key = UpdateManager.Default, UpdateMode mode = UpdateMode.Update) {
+    public static void RemoveSpaceUpdate(this IUpdate update, string key = GameData.Group.Default, UpdateMode mode = UpdateMode.Update) {
         UpdateManager.Instance?.RemoveSpaceUpdate(update, key, mode);
     }
 

@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -22,7 +23,7 @@ public class ClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandler 
             time += Time.deltaTime;
         } else {
             if (time <= 0) {
-                this.Remove(Group);
+                this.Remove(GameData.Group.SelfAnimation);
                 return;
             }
             time -= Time.deltaTime;
@@ -33,7 +34,7 @@ public class ClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandler 
 
     public void OnPointerDown(PointerEventData eventData) {
         ward = PunchWard.Forward;
-        this.Regist(Group);
+        this.Regist(GameData.Group.SelfAnimation);
     }
 
     public void OnPointerUp(PointerEventData eventData) {

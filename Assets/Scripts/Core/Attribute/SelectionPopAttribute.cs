@@ -1,6 +1,7 @@
 using System.Reflection;
 using System;
 using UnityEngine;
+using AKIRA.Data;
 
 /// <summary>
 /// <para>string 选择面板</para>
@@ -26,6 +27,6 @@ public class SelectionPopAttribute : PropertyAttribute {
     /// DLL为Unity默认DLL
     /// </summary>
     /// <param name="type"></param>
-    public SelectionPopAttribute(string type)
-        => this.type = Assembly.Load(ReflectionHelp.DLLName).GetType(type);
+    public SelectionPopAttribute(string type, string dllName = GameData.DLL.Default)
+        => this.type = Assembly.Load(dllName).GetType(type);
 }

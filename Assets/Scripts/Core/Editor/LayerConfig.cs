@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using AKIRA.Data;
 
 /// <summary>
 /// 层级配置
@@ -24,10 +25,10 @@ public class LayerConfig
         var path = "Layer".GetScriptLocation();
         // 检查文件是否还存在
         if (string.IsNullOrEmpty(path)) {
-            "Layer.cs文件不存在，请在项目内创建一个Layer.cs的脚本！".Colorful(Color.red).Log();
+            "Layer.cs文件不存在，请在项目内创建一个Layer.cs的脚本！".Error();
             return;
         }
-        $"Layer Update: Path => {path}".Log();
+        $"Layer Update: Path => {path}".Log(GameData.Log.Editor);
 
         var content = @"/// <summary>
 /// <para>层级</para>

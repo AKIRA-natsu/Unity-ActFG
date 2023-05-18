@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
 using AKIRA.UIFramework;
+using AKIRA.Data;
 
 /// <summary>
 /// 自动生成 UI 脚本 (EditorGUI)
@@ -15,7 +16,7 @@ public class GenerateUIGUI : EditorWindow {
     internal static void CreateUI() {
         var objs = Selection.gameObjects;
         if (objs == null || objs.Length == 0)
-            $"未选择物体".Colorful(Color.yellow).Log();
+            $"未选择物体".Log(GameData.Log.Warn);
         for (int i = 0; i < objs.Length; i++) {
             var obj = objs[i];
             CreateUI(obj.name, obj);
@@ -26,7 +27,7 @@ public class GenerateUIGUI : EditorWindow {
     internal static void UpdateUI() {
         var obj = Selection.activeGameObject;
         if (obj == null)
-            $"未选择物体".Colorful(Color.yellow).Log();
+            $"未选择物体".Log(GameData.Log.Warn);
         UpdateUI(obj);
     }
 #endregion
@@ -50,7 +51,7 @@ public class GenerateUIGUI : EditorWindow {
         // =============================================================================================================================
 
         if (File.Exists(propPath)) {
-            $"已经存在prop文件\n进行删除，路劲为{propPath}".Colorful(Color.yellow).Log();
+            $"已经存在prop文件\n进行删除，路劲为{propPath}".Log(GameData.Log.Warn);
             File.Delete(propPath);
         }
         string propContent =
@@ -69,12 +70,12 @@ $@"    }}
         #endregion
 
         File.WriteAllText(propPath, propContent);
-        $"生成prop.cs完毕\n路劲为{propPath}".Colorful(Color.cyan).Log();
+        $"生成prop.cs完毕\n路劲为{propPath}".Log(GameData.Log.Success);
 
         // =============================================================================================================================
 
         if (File.Exists(panelPath)) {
-            $"已经存在panel文件\n进行删除，路劲为{panelPath}".Colorful(Color.yellow).Log();
+            $"已经存在panel文件\n进行删除，路劲为{panelPath}".Log(GameData.Log.Warn);
             File.Delete(panelPath);
         }
 
@@ -104,13 +105,13 @@ $@"        }}
         #endregion
 
         File.WriteAllText(panelPath, panelContent);
-        $"生成panel.cs完毕\n路劲为{panelPath}".Colorful(Color.cyan).Log();
+        $"生成panel.cs完毕\n路劲为{panelPath}".Log(GameData.Log.Success);
 
         // =============================================================================================================================
         
         // 检查是否存在预制体
         if (File.Exists(objPath)) {
-            $"已经存在预制体{obj}\n进行删除，路径为{objPath}".Colorful(Color.yellow).Log();
+            $"已经存在预制体{obj}\n进行删除，路径为{objPath}".Log(GameData.Log.Warn);
             File.Delete(objPath);
         }
 
@@ -122,7 +123,7 @@ $@"        }}
             var newObj = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
             newObj.SetParent(parent);
             newObj.transform.localScale = Vector3.one;
-            $"保存预制体{newObj}成功\n路径为{objPath}".Colorful(Color.cyan).Log();
+            $"保存预制体{newObj}成功\n路径为{objPath}".Log(GameData.Log.Success);
         }
         AssetDatabase.Refresh();
     }
@@ -135,7 +136,7 @@ $@"        }}
         var name = obj.name;
         var propPath = $"Assets/Scripts/UI/{name}PanelProp.cs";
         if (!File.Exists(propPath)) {
-            $"{propPath}下不存在{name}PanelProp.cs".Colorful(Color.red).Log();
+            $"{propPath}下不存在{name}PanelProp.cs".Log(GameData.Log.Error);
             return;
         }
 
@@ -156,7 +157,7 @@ $@"    }}
         #endregion
 
         File.WriteAllText(propPath, propContent);
-        $"更新prop.cs完毕\n路劲为{propPath}".Colorful(Color.cyan).Log();
+        $"更新prop.cs完毕\n路劲为{propPath}".Log(GameData.Log.Success);
         AssetDatabase.Refresh();
     }
 
@@ -169,7 +170,7 @@ $@"    }}
     internal static StringBuilder LinkControlContent(Transform _transform) {
         if (nodes.Count != 0) nodes.Clear();
         if (btns.Count != 0) btns.Clear();
-        if (rule == null) rule = UIRuleConfig.DefaultPath.Load<UIRuleConfig>();
+        if (rule == null) rule = GameData.Path.UIConfig.Load<UIRuleConfig>();
         TraverseUI(_transform.transform, "");
         StringBuilder content = new StringBuilder();
         // 最后一个是transform根节点

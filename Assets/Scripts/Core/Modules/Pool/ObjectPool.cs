@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using AKIRA.Data;
 
 namespace AKIRA.Manager {
     /// <summary>
@@ -198,7 +199,7 @@ namespace AKIRA.Manager {
             // var name = typeof(T).Name;
             var name = com.name;
             if (!ObjectPoolMap.ContainsKey(name)) {
-                $"{name} 池子不存在！".Colorful(Color.red).Log();
+                $"{name} 池子不存在！".Log(GameData.Log.Error);
                 return;
             }
             var pool = ObjectPoolMap[name] as Pool<T>;
@@ -397,7 +398,7 @@ namespace AKIRA.Manager {
         public void Free(GameObject go) {
             var name = go.name;
             if (!GameObjectMap.ContainsKey(name)) {
-                $"{name} 池子不存在！".Colorful(Color.red).Log();
+                $"{name} 池子不存在！".Log(GameData.Log.Error);
                 return;
             }
             GameObjectMap[name].Free();

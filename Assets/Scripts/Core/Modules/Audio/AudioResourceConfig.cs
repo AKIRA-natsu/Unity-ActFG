@@ -5,11 +5,6 @@ namespace AKIRA.Manager.Audio {
     [CreateAssetMenu(fileName = "AudioResourceConfig", menuName = "Framework/UIFramework/AudioResourceConfig", order = 0)]
     public class AudioResourceConfig : ScriptableObject {
         /// <summary>
-        /// 默认路径
-        /// </summary>
-        public const string DefaultPath = "Config/AudioResourceConfig";
-
-        /// <summary>
         /// 音频数据
         /// </summary>
         [System.Serializable]

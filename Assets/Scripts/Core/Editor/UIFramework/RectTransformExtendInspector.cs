@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using AKIRA.UIFramework;
 using System.Reflection;
+using AKIRA.Data;
 
 /// <summary>
 /// RectTransform 扩展更新UI组件
@@ -118,7 +119,7 @@ public class RectTransformExtendInspector : DecoratorEditor {
             if (attributes.Length == 0)
                 continue;
             if (info.GetParameters().Length != 0) {
-                $"UIBtnMethodAttribute 暂时仅支持无参方法".Colorful(Color.yellow).Log();
+                $"UIBtnMethodAttribute 暂时仅支持无参方法".Log(GameData.Log.Warn);
                 continue;
             }
             var attribute = attributes[0];

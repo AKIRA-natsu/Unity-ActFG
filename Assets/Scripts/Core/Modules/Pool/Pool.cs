@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AKIRA.Data;
 using UnityEngine;
 
 namespace AKIRA.Manager {
@@ -56,7 +57,7 @@ namespace AKIRA.Manager {
             // 池子中没有空闲对象，加载实例化
             com = path.Load<T>();
             if (com == null) {
-                $"{path} 下 {typeof(T).Name} 错误！".Colorful(Color.yellow).Log();
+                $"{path} 下 {typeof(T).Name} 错误！".Log(GameData.Log.Warn);
                 return default;
             }
             com = com.Instantiate();
@@ -101,7 +102,7 @@ namespace AKIRA.Manager {
             }
             // 判断超过个数
             if (pool.Count + onUse.Count >= maxCount) {
-                $"{this}超过最大个数".Colorful(Color.red).Log();
+                $"{this}超过最大个数".Log(GameData.Log.Error);
                 return false;
             }
             return true;
@@ -166,7 +167,7 @@ namespace AKIRA.Manager {
             // 池子中没有空闲对象，加载实例化
             go = path.Load<GameObject>();
             if (go == null) {
-                $"{path} 下 {poolParent.name} 错误！".Colorful(Color.yellow).Log();
+                $"{path} 下 {poolParent.name} 错误！".Log(GameData.Log.Warn);
                 return default;
             }
             go = go.Instantiate();
@@ -207,7 +208,7 @@ namespace AKIRA.Manager {
             }
             // 判断超过个数
             if (pool.Count + onUse.Count >= maxCount) {
-                $"{this}超过最大个数".Colorful(Color.red).Log();
+                $"{this}超过最大个数".Log(GameData.Log.Error);
                 return false;
             }
             return true;
@@ -282,7 +283,7 @@ namespace AKIRA.Manager {
                 return true;
             }
             if (rpool.Count + onUse.Count >= maxCount) {
-                $"对象 {typeof(K)} 已经new最大数量".Colorful(Color.yellow).Log();
+                $"对象 {typeof(K)} 已经new最大数量".Log(GameData.Log.Warn);
                 return false;
             }
             return true;

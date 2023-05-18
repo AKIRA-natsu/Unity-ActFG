@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using AKIRA.Data;
 
 public class XMLWindow : EditorWindow {
     // 
@@ -132,7 +133,7 @@ public class XMLWindow : EditorWindow {
                     File.Delete(Path.Combine(Application.streamingAssetsPath, kvp.Key.Replace("_", " ")));
                 }
 
-                $"清除存档文档 及 PlayerPrefs存档结束".Colorful(Color.green).Log();
+                $"清除存档文档 及 PlayerPrefs存档结束".Log(GameData.Log.Editor);
                 AssetDatabase.Refresh();
             }
             EditorGUILayout.EndVertical();

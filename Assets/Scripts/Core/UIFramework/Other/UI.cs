@@ -18,11 +18,6 @@ namespace AKIRA.UIFramework {
         // 顶部 最上层
         public static GameObject Top { get; private set; }
 
-        /// <summary>
-        /// UI更新组
-        /// </summary>
-        public const string UIGroup = "UI";
-
         private static Camera uiCamera;
         /// <summary>
         /// UI摄像机

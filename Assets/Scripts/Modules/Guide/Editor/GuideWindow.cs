@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 using AKIRA.Manager;
 using UnityEditorInternal;
+using AKIRA.Data;
 
 /// <summary>
 /// Guide Editor
@@ -182,7 +183,7 @@ public class GuideWindow : EditorWindow {
                 data.AppendChild(node);
             }
         });
-        "Guide Information => 保存xml".Colorful(Color.green).Log();
+        "Guide Information => 保存xml".Log(GameData.Log.Success);
     }
 
     /// <summary>

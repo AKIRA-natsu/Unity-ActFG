@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using AKIRA.Data;
 
 namespace AKIRA.Manager {
     /// <summary>
@@ -56,7 +57,7 @@ namespace AKIRA.Manager {
             if (ReferenceMap.ContainsKey(name)) {
                 (ReferenceMap[name] as RPool<K>).Free();
                 ReferenceMap.Remove(name);
-                $"释放所有 {name} 的引用".Colorful(Color.yellow).Log();
+                $"释放所有 {name} 的引用".Log(GameData.Log.Warn);
             }
         }
     }
@@ -109,7 +110,7 @@ namespace AKIRA.Manager {
                         ComponentReferenceMap.Remove(component);
                     }
                 } else {
-                    $"{component}不包含{typeof(T)}引用".Colorful(Color.yellow).Log();
+                    $"{component}不包含{typeof(T)}引用".Log(GameData.Log.Warn);
                 }
             }
             return result;
@@ -134,7 +135,7 @@ namespace AKIRA.Manager {
                     }
                     return true;
                 } else {
-                    $"{component}不包含{typeof(T)}引用".Colorful(Color.red).Log();
+                    $"{component}不包含{typeof(T)}引用".Log(GameData.Log.Error);
                     return false;
                 }
             } else {

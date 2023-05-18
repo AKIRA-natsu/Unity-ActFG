@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using AKIRA.Manager;
+using AKIRA.Data;
 
 [CustomEditor(typeof(GameManager))]
 public class GameManagerInspector : Editor {
@@ -16,7 +17,7 @@ public class GameManagerInspector : Editor {
         if (EditorGUI.EndChangeCheck()) {
             if (GameManager.IsStateEqual(state))
                 return;
-            $"GameManager Inspacetor Log: 编辑器下修改状态{state}".Colorful(System.Drawing.Color.RoyalBlue).Log();
+            $"GameManager Inspacetor Log: 编辑器下修改状态{state}".Log(GameData.Log.Editor);
             GameManager.Instance.Switch(state);
         }
 

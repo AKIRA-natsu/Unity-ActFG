@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using AKIRA.Manager;
 using DG.Tweening;
 using UnityEngine;
@@ -59,11 +60,11 @@ namespace AKIRA.UIFramework {
         }
 
         public void Wake(object data = null) {
-            this.Regist(UI.UIGroup);
+            this.Regist(GameData.Group.UI);
         }
 
         public void Recycle(object data = null) {
-            this.Remove(UI.UIGroup);
+            this.Remove(GameData.Group.UI);
         }
     }
 }

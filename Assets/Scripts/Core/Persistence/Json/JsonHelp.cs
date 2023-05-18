@@ -2,6 +2,7 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
+using AKIRA.Data;
 
 /// <summary>
 /// <para>Json存储</para>
@@ -23,7 +24,7 @@ public static class JsonHelp {
         string json = JsonConvert.SerializeObject(target.Data, Formatting.Indented);
         // string json = JsonUtility.ToJson(target.Data);
         File.WriteAllText(target.Path, json, Encoding.UTF8);
-        $"Json: {target} save".Colorful(Color.cyan).Log();
+        $"Json: {target} save".Log(GameData.Log.Success);
     }
 
     /// <summary>

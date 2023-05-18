@@ -1,17 +1,14 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using AKIRA.Data;
 
 /// <summary>
 /// 反射相关的拓展
 /// </summary>
 public static class ReflectionHelp {
-    /// <summary>
-    /// DLL 名称
-    /// </summary>
-    public const string DLLName = "Assembly-CSharp";
     // 程序集
-    private static Assembly asm = Assembly.Load(DLLName);
+    private static Assembly asm = Assembly.Load(GameData.DLL.Default);
 
     /// <summary>
     /// 不同程序集查找类型

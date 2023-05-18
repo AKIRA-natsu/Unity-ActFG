@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AKIRA.Data;
 
 namespace AKIRA.Manager {
     /// <summary>
@@ -53,6 +54,7 @@ namespace AKIRA.Manager {
             if (!EventMap.ContainsKey(key))
                 return;
 
+            $"Event: Trigger Event {key}".Log(GameData.Log.Event);
             EventMap[key]?.Invoke(value);
         }
 

@@ -3,6 +3,7 @@ using AKIRA.Manager;
 using System;
 using UnityEngine.InputSystem;
 using Cysharp.Threading.Tasks;
+using AKIRA.Data;
 #if UNITY_ANDROID || UNITY_IOS
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -64,7 +65,7 @@ namespace AKIRA.UIFramework {
             }
 
             Rigid.enabled = true;
-            this.Regist(UI.UIGroup);
+            this.Regist(GameData.Group.UI);
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace AKIRA.UIFramework {
         /// 结束教程
         /// </summary>
         private void EndGuide() {
-            this.Remove(UI.UIGroup);
+            this.Remove(GameData.Group.UI);
             Rigid.enabled = false;
             Mask.Active(false);
             GuideManager.Instance.NextGuide(0.3f);

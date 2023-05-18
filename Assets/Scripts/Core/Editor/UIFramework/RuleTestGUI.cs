@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
 using AKIRA.UIFramework;
+using AKIRA.Data;
 
 /// <summary>
 /// UI测试
@@ -31,11 +32,11 @@ public class RuleTestGUI : EditorWindow {
         EditorGUILayout.LabelField("自动生成 UI (GUI)");
         EditorGUILayout.Space();
 
-        rule = UIRuleConfig.DefaultPath.Load<UIRuleConfig>();
+        rule = GameData.Path.UIConfig.Load<UIRuleConfig>();
 
         if (rule == null) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.LabelField($"路径下没有规则文件 => {UIRuleConfig.DefaultPath}");
+            EditorGUILayout.LabelField($"路径下没有规则文件 => {GameData.Path.UIConfig}");
             EditorGUI.EndDisabledGroup();
 
             // if (GUILayout.Button("规则文件位置")) {

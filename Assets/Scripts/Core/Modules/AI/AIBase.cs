@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using UnityEngine;
 
 namespace AKIRA.Behaviour.AI {
@@ -26,11 +27,6 @@ namespace AKIRA.Behaviour.AI {
         [SerializeField]
         protected UpdateMode mode = UpdateMode.Update;
 
-        /// <summary>
-        /// 更新组
-        /// </summary>
-        public const string Group = "AI";
-
         // abstract functions
         public abstract void GameUpdate();
         public abstract void OnUpdateStop();
@@ -43,7 +39,7 @@ namespace AKIRA.Behaviour.AI {
         [ContextMenu("Begin Update")]
         #endif
         public void BeginUpdate() {
-            this.Regist(Group, mode);
+            this.Regist(GameData.Group.AI, mode);
         }
 
         /// <summary>
@@ -53,7 +49,7 @@ namespace AKIRA.Behaviour.AI {
         [ContextMenu("Stop Update")]
         #endif
         public void StopUpdate() {
-            this.Remove(Group, mode);
+            this.Remove(GameData.Group.AI, mode);
         }
     }
 }

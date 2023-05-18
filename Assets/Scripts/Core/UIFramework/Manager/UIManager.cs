@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using AKIRA.Manager;
+using AKIRA.Data;
 
 namespace AKIRA.UIFramework {
     /// <summary>
@@ -57,7 +58,7 @@ namespace AKIRA.UIFramework {
         private void AddUI(UIComponent com) {
             var name = $"{com.gameObject.name}Panel";
             if (UIMap.ContainsKey(name)) {
-                $"UI has contained {name}".Colorful(Color.red).Log();
+                $"UI has contained {name}".Log(GameData.Log.Error);
                 return;
             }
             UIMap[name] = com;
@@ -86,7 +87,7 @@ namespace AKIRA.UIFramework {
         public UIComponent Get(Type type) {
             var name = type.Name;
             if (!UIMap.ContainsKey(name)) {
-                $"UI dont contains {name}".Colorful(Color.red).Log();
+                $"UI dont contains {name}".Log(GameData.Log.Error);
                 return null;
             }
             return UIMap[name];

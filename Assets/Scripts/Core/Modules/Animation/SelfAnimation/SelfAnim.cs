@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using UnityEngine;
 
 /// <summary>
@@ -18,19 +19,14 @@ public abstract class SelfAnim : MonoBehaviour, IUpdate {
     [SerializeField]
     protected bool auto = false;
 
-    /// <summary>
-    /// 更新组
-    /// </summary>
-    public const string Group = "SelfAnimation";
-
     protected virtual void OnEnable() {
         if (auto)
-            this.Regist(Group);
+            this.Regist(GameData.Group.SelfAnimation);
     }
 
     protected virtual void OnDisable() {
         if (auto)
-            this.Remove(Group);
+            this.Remove(GameData.Group.SelfAnimation);
     }
 
     public abstract void GameUpdate();

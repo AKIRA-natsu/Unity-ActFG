@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using AKIRA.Data;
 
 namespace AKIRA.Manager.Audio {
     /// <summary>
@@ -34,7 +35,7 @@ namespace AKIRA.Manager.Audio {
         private Dictionary<string, AudioClip> ClipMap = new();
 
         protected AudioManager() {
-            config = AudioResourceConfig.DefaultPath.Load<AudioResourceConfig>();
+            config = GameData.Path.AudioConfig.Load<AudioResourceConfig>();
             audioEnabled = MusicEnableKey.GetInt(1) == 1 ? true : false;
         }
 
@@ -116,7 +117,7 @@ namespace AKIRA.Manager.Audio {
 
             audio.clip = FindAudio(tag);
             if (audio.clip == null) {
-                $"音频： Tag => {tag} 不存在".Colorful(Color.yellow).Log();
+                $"音频： Tag => {tag} 不存在".Log(GameData.Log.Warn);
                 return false;
             } else {
                 audio.player = ObjectPool.Instance.Instantiate<AudioPlayer>(AudioPlayer.DefaultPath);

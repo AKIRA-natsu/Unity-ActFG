@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AKIRA.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -47,7 +48,7 @@ namespace AKIRA.Manager {
                 
                 if ((InputSystem.FindControl(value.keycode) as KeyControl).wasPressedThisFrame) {
                     CheatMap[value.cheat]?.Invoke();
-                    $"作弊触发：{value.cheat}".Colorful(System.Drawing.Color.Coral).Log();
+                    $"作弊触发：{value.cheat}".Log(GameData.Log.Cheat);
                 }
             }
         }

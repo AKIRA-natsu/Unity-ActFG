@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Xml;
+using AKIRA.Data;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -56,7 +57,7 @@ public class XML {
         create.Invoke(xml);
         
         xml.Save(path);
-        $"XML: 创建{path}成功".Colorful(Color.green).Log();
+        $"XML: 创建{path}成功".Log(GameData.Log.Success);
     }
 
     /// <summary>
@@ -65,7 +66,7 @@ public class XML {
     /// <param name="read"></param>
     public void Read(Action<XmlDocument> read) {
         read.Invoke(xml);
-        $"XML: 读取{path}成功".Colorful(Color.green).Log();
+        $"XML: 读取{path}成功".Log(GameData.Log.Success);
     }
 
     /// <summary>
@@ -76,7 +77,7 @@ public class XML {
         update.Invoke(xml);
 
         xml.Save(path);
-        $"XML: 更新{path}成功".Colorful(Color.green).Log();
+        $"XML: 更新{path}成功".Log(GameData.Log.Success);
     }
 
     /// <summary>

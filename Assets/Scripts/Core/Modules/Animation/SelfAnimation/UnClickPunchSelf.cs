@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -54,12 +55,12 @@ public class UnClickPunchSelf : PunchSelf, IPointerDownHandler, IPointerUpHandle
 
     public void OnPointerDown(PointerEventData eventData) {
         if (auto)
-            this.Remove(Group);
+            this.Remove(GameData.Group.SelfAnimation);
         this.transform.localScale = originScale;
     }
 
     public void OnPointerUp(PointerEventData eventData) {
         if (auto)
-            this.Regist(Group);
+            this.Regist(GameData.Group.SelfAnimation);
     }
 }

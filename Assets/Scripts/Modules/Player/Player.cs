@@ -1,4 +1,5 @@
 using AKIRA.Behaviour.AI;
+using AKIRA.Data;
 using AKIRA.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,18 +35,18 @@ public class Player : AIBase {
 
     private void Start() {
         var inputSystem = PlayerInputSystem.Instance;
-        inputSystem.RegistOnInputSwitchPlayer(() => this.Regist(Group, mode));
-        inputSystem.RegistOnInputSwitchUI(() => this.Remove(Group, mode));
+        inputSystem.RegistOnInputSwitchPlayer(() => this.Regist(GameData.Group.AI, mode));
+        inputSystem.RegistOnInputSwitchUI(() => this.Remove(GameData.Group.AI, mode));
         InputActions.Player.Run.performed += OnRunPreformed;
         InputActions.Player.Jump.performed += OnJumpPreformed;
     }
 
     private void OnEnable() {
-        this.Regist(Group, mode);
+        this.Regist(GameData.Group.AI, mode);
     }
 
     private void OnDisable() {
-        this.Remove(Group, mode);
+        this.Remove(GameData.Group.AI, mode);
     }
 
     /// <summary>

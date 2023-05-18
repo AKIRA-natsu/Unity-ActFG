@@ -1,4 +1,5 @@
 using System;
+using AKIRA.Data;
 using AKIRA.Manager;
 using DG.Tweening;
 using TMPro;
@@ -32,14 +33,14 @@ namespace AKIRA.UIFramework {
             btnShowPosition = btnRect.anchoredPosition3D;
             btnHidePosition = Vector3.down * (height - btnRect.sizeDelta.y) / 2;
 
-            this.Regist(UI.UIGroup);
+            this.Regist(GameData.Group.UI);
             this.Hide();
         }
 
         public void GameUpdate() {
             if (Keyboard.current.backquoteKey.wasPressedThisFrame) {
                 this.Show();
-                this.Remove(UI.UIGroup);
+                this.Remove(GameData.Group.UI);
             }
         }
 
