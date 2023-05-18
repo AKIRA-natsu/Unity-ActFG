@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a1150468e176547a5a845d3fd8e284, type: 3}
   m_Name: LogConfig
   m_EditorClassIdentifier: 
+  logfully: 1
   datas:
   - name: Editor
     color: {r: 0.53524387, g: 0.49247953, b: 0.8773585, a: 1}
