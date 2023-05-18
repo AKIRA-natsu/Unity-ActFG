@@ -33,7 +33,7 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="key"></param>
         /// <param name="action"></param>
-        public void RemoveEventListener<T>(string key, Action<object> action) {
+        public void RemoveEventListener(string key, Action<object> action) {
             if (String.IsNullOrEmpty(key) || action == null)
                 return;
 
@@ -48,6 +48,9 @@ namespace AKIRA.Manager {
         /// <param name="value"></param>
         public void TriggerEvent(string key, object value = null) {
             if (String.IsNullOrEmpty(key))
+                return;
+
+            if (!EventMap.ContainsKey(key))
                 return;
 
             EventMap[key]?.Invoke(value);
@@ -72,9 +75,4 @@ namespace AKIRA.Manager {
             EventMap.Clear();
         }
     }
-
-    /// <summary>
-    /// Event
-    /// </summary>
-    public partial class Event { }
 }

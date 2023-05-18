@@ -23,7 +23,7 @@ namespace AKIRA.Manager {
         public K Instantiate<K>(object data = null) where K : class, IPool, new() {
             var name = typeof(K).Name;
             if (ReferenceMap.ContainsKey(name)) {
-                return (ReferenceMap[name] as RPool<K>).Instantiate();
+                return (ReferenceMap[name] as RPool<K>).Instantiate(data);
             } else {
                 var rpool = new RPool<K>().Init();
                 ReferenceMap.Add(name, rpool);
