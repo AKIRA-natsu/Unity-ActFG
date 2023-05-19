@@ -12,8 +12,8 @@ using UnityEngine.InputSystem.Layouts;
 [InputControlLayout()]
 [System.Serializable]
 public class CheatKeyBind {
-    [InputControl]
     // 键盘按键
+    [InputControl]
     public string keycode;
     // 名称
     public string cheat;
@@ -23,6 +23,7 @@ namespace AKIRA.Manager {
     /// <summary>
     /// 键盘映射事件管理中心
     /// </summary>
+    [Source("Source/Manager/[CheatManager]", GameData.Source.Manager)]
     public class CheatManager : MonoSingleton<CheatManager>, IUpdate {
         // 特殊事件字典
         private Dictionary<string, Action> CheatMap = new Dictionary<string, Action>();

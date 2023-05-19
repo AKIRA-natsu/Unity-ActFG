@@ -89,7 +89,7 @@ public static class Extend {
     /// <param name="time">销毁等待时间</param>
     /// <typeparam name="T"></typeparam>
     public static void Destory<T>(this T com, float time = 0) where T : Component {
-        GameObject.Destroy(com.gameObject, time);
+        GameObject.Destroy(com, time);
     }
 
     /// <summary>

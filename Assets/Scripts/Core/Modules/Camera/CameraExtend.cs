@@ -40,6 +40,14 @@ public static class CameraExtend {
     public static bool ExistMainCamera => MainCamera != null;
 
     /// <summary>
+    /// 摄像机标签
+    /// </summary>
+    /// <typeparam name="string"></typeparam>
+    /// <typeparam name="GameObject"></typeparam>
+    /// <returns></returns>
+    private static Dictionary<string, GameObject> TagMap = new Dictionary<string, GameObject>();
+
+    /// <summary>
     /// 注册摄像机表现脚本
     /// </summary>
     /// <param name="behaviour"></param>
@@ -71,4 +79,29 @@ public static class CameraExtend {
         var type = typeof(T);
         return CameraMap.ContainsKey(type) ? CameraMap[type] as T : default;
     }
+    
+    /// <summary>
+    /// 添加摄像机
+    /// </summary>
+    /// <param name="tag"></param>
+    internal static void AddCamera(string tag, GameObject camera) {
+        if (TagMap.ContainsKey(tag)) {
+            $"{camera} add error: Camera contains tag => {tag}".Error();
+        } else {
+            $"{camera} add, tag => {tag}".Log();
+            TagMap.Add(tag, camera);
+        }
+    }
+
+    /// <summary>
+    /// 获得摄像机，主要用于Cine虚拟摄像机，主摄像机还是通过MainCamera获得
+    /// </summary>
+    /// <param name="tag"></param>
+    public static GameObject GetCamera(string tag) {
+        if (!TagMap.ContainsKey(tag))
+            return default;
+        else
+            return TagMap[tag];
+    }
+
 }

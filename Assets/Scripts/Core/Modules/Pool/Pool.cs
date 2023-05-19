@@ -122,10 +122,10 @@ namespace AKIRA.Manager {
 
         public override void Free() {
             while (pool.Count != 0)
-                pool.Dequeue().Destory();
+                pool.Dequeue().gameObject.Destory();
             for (int i = 0; i < onUse.Count; i++)
-                onUse[i].Destory();
-            poolParent.Destory();
+                onUse[i].gameObject.Destory();
+            poolParent.gameObject.Destory();
             onUse.Clear();
             maxCount = 0;
         }
@@ -230,7 +230,7 @@ namespace AKIRA.Manager {
                 pool.Dequeue().Destory();
             for (int i = 0; i < onUse.Count; i++)
                 onUse[i].Destory();
-            poolParent.Destory();
+            poolParent.gameObject.Destory();
             onUse.Clear();
             maxCount = 0;
         }

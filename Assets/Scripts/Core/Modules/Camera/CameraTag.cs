@@ -1,0 +1,22 @@
+using AKIRA.Data;
+using UnityEngine;
+
+namespace AKIRA.Behaivour.Camera {
+    /// <summary>
+    /// 摄像机标签
+    /// </summary>
+    public class CameraTag : MonoBehaviour {
+        /// <summary>
+        /// 标签
+        /// </summary>
+        [SerializeField]
+        [SelectionPop(typeof(GameData.Camera))]
+        private string tag;
+
+        private void Awake() {
+            CameraExtend.AddCamera(tag, this.gameObject);
+            this.gameObject.SetActive(false);
+            this.Destory();
+        }
+    }
+}

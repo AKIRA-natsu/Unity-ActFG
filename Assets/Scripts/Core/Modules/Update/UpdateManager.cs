@@ -214,6 +214,7 @@ public class UpdateGroup : IPool {
 /// <summary>
 /// 更新驱动管理
 /// </summary>
+[Source("Source/Manager/[UpdateManager]", GameData.Source.Manager, -1)]
 public class UpdateManager : MonoSingleton<UpdateManager> {
     // 更新组列表
     private Dictionary<string, UpdateGroup> groupMap = new Dictionary<string, UpdateGroup>();

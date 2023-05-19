@@ -93,6 +93,22 @@ namespace AKIRA.Data {
             /// </summary>
             public const string Event = "Event";
             /// <summary>
+            /// 资源
+            /// </summary>
+            public const string Source = "Source";
+            /// <summary>
+            /// 指引
+            /// </summary>
+            public const string Guide = "Guide";
+            /// <summary>
+            /// UI
+            /// </summary>
+            public const string UI = "UI";
+            /// <summary>
+            /// AI
+            /// </summary>
+            public const string AI = "AI";
+            /// <summary>
             /// 作弊
             /// </summary>
             public const string Cheat = "Cheat";
@@ -108,11 +124,46 @@ namespace AKIRA.Data {
         #endregion
 
         #region 事件
-        public class Event {}
+        public class Event {
+            /// <summary>
+            /// 资源加载结束，SourceSystem结束
+            /// </summary>
+            public const string OnAppSourceEnd = "OnAppSourceEnd";
+        }
         #endregion
 
-        #region 作弊
-        public class Cheat {}
+        #region 资源父名称
+        public class Source {
+            /// <summary>
+            /// 管理器
+            /// </summary>
+            public const string Manager = "[Manager]";
+            /// <summary>
+            /// 其他基础部分
+            /// </summary>
+            public const string Base = "[Base]";
+            /// <summary>
+            /// 测试
+            /// </summary>
+            public const string Test = "[Test]";
+        }
+        #endregion
+
+        #region 摄像机
+        public class Camera {
+            /// <summary>
+            /// 主摄像机
+            /// </summary>
+            public const string Main = "Main";
+            /// <summary>
+            /// 副摄像机
+            /// </summary>
+            public const string Sub = "Sub";
+            /// <summary>
+            /// UI
+            /// </summary>
+            public const string UI = "UI";
+        }
         #endregion
     }
 }

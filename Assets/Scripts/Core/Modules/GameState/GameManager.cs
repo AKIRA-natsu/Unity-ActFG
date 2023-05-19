@@ -7,7 +7,7 @@ using UnityEngine;
 using AKIRA.Data;
 
 namespace AKIRA.Manager {
-    [DefaultExecutionOrder(-1)]
+    [Source("Source/Manager/[GameManager]", GameData.Source.Manager)]
     public class GameManager : MonoSingleton<GameManager> {
         /// <summary>
         /// 游戏状态
@@ -30,6 +30,8 @@ namespace AKIRA.Manager {
 
             if (callUIInitialize)
                 UIManager.Instance.Initialize();
+            
+            EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => Switch(GameState.Ready));
         }
 
         // private void Start() {

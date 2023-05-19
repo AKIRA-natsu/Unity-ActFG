@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using AKIRA.Data;
 using AKIRA.UIFramework;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -10,7 +11,8 @@ namespace AKIRA.Manager {
     /// <summary>
     /// 指引管理器
     /// </summary>
-    public class GuideManager : MonoSingleton<GuideManager> {
+    [Source("Source/Manager/[GuideManager]", GameData.Source.Manager)]
+    public class GuideManager : MonoSingleton<GuideManager>, ISource {
         // 路径
         public const string GuideDataPath = "GuideXML.xml";
 
@@ -51,12 +53,34 @@ namespace AKIRA.Manager {
         /// <value></value>
         public IGuide CurrentIGuide { get; private set; }
 
-        private void Start() {
+        public async UniTask Load() {
             if (skip)
                 return;
+            
+            "指引异步加载开始".Log(GameData.Log.Guide);
             currentIndex = GuideIndexKey.GetInt();
-            UIManager.Instance.RegistAfterUIIInitAction(Init);
+            Init();
+            await UniTask.Delay(200);
+            "Xml加载完成(等待0.2f加载)".Log(GameData.Log.Guide);
+            if (currentIndex >= infos.Count || infos.Count == 0) {
+                "不包含指引，指引异步加载完成".Log(GameData.Log.Guide);
+            } else {
+                EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => StartGuide(currentIndex));
+                "注册事件，指引异步加载完成".Log(GameData.Log.Guide);
+            }
         }
+
+        // protected override void Awake() {
+        //     base.Awake();
+        //     if (skip)
+        //         return;
+
+        //     currentIndex = GuideIndexKey.GetInt();
+        //     Init();
+        //     if (currentIndex >= infos.Count || infos.Count == 0)
+        //         return;
+        //     EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => StartGuide(currentIndex));
+        // }
 
         /// <summary>
         /// 初始化
@@ -97,11 +121,6 @@ namespace AKIRA.Manager {
                     }
                 });
             }
-            
-            if (currentIndex >= infos.Count || infos.Count == 0)
-                return;
-            // 开始指引
-            StartGuide(currentIndex);
         }
 
         /// <summary>
@@ -109,7 +128,9 @@ namespace AKIRA.Manager {
         /// </summary>
         private async void StartGuide(int index) {
             var info = infos[index];
-            
+
+            $"当前指引键值： {index}，指引类型 {info.completeType} 是否是IGuide接口 {info.controlByIGuide}".Log(GameData.Log.Guide);
+
             // 如果是IGuide控制，while直到解锁为止
             if (info.controlByIGuide) {
                 CurrentIGuide = info.arrowTarget.GetComponent<IGuide>();

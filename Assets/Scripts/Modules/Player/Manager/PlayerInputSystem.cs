@@ -1,4 +1,5 @@
 using System;
+using AKIRA.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -7,6 +8,7 @@ namespace AKIRA.Manager {
     /// <summary>
     /// 输入管理
     /// </summary>
+    [Source("Source/Manager/[PlayerInputSystemManager]", GameData.Source.Manager)]
     public class PlayerInputSystem : MonoSingleton<PlayerInputSystem>, IUpdate {
         private PlayerInputAction inputActions;
         /// <summary>

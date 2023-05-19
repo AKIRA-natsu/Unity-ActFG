@@ -1,4 +1,4 @@
-using AKIRA.Behaviour.Prepare;
+using AKIRA.Data;
 using Cinemachine;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerCameraBodyPoint : MonoBehaviour {
     private void Start() {
         // 主摄像机参数设置
-        var camera = Environment.GetCamera<CinemachineFreeLook>();
+        var camera = CameraExtend.GetCamera(GameData.Camera.Main).GetComponent<CinemachineFreeLook>();
         camera.gameObject.SetActive(true);
         camera.LookAt = this.transform;
         camera.Follow = this.transform.parent;

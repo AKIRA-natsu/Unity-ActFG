@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using AKIRA.Manager;
 using AKIRA.Manager.Audio;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace AKIRA.Behaviour {
     /// <para>作弊注册中间件</para>
     /// <para>模块的装载卸载</para>
     /// </summary>
+    [Source("Source/Base/[GameConfig]", GameData.Source.Base, 1)]
     public class GameConfig : MonoBehaviour {
         [Space]
         /// <summary>

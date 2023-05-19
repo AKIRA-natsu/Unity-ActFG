@@ -20,11 +20,23 @@ MonoBehaviour:
   - name: GameState
     color: {r: 0, g: 1, b: 0.9683552, a: 1}
     logable: 1
-  - name: Cheat
-    color: {r: 1, g: 0.4827122, b: 0, a: 1}
-    logable: 1
   - name: Event
     color: {r: 0, g: 1, b: 0.63107514, a: 1}
+    logable: 1
+  - name: Source
+    color: {r: 0.70089984, g: 1, b: 0, a: 1}
+    logable: 1
+  - name: Guide
+    color: {r: 1, g: 0.48235297, b: 0, a: 1}
+    logable: 1
+  - name: UI
+    color: {r: 0.048891068, g: 0, b: 1, a: 1}
+    logable: 1
+  - name: AI
+    color: {r: 0.8666667, g: 0.627451, b: 0.8666667, a: 1}
+    logable: 1
+  - name: Cheat
+    color: {r: 0.8716521, g: 0, b: 1, a: 1}
     logable: 1
   - name: Test
     color: {r: 0.36845854, g: 0.52357036, b: 0.6792453, a: 1}
