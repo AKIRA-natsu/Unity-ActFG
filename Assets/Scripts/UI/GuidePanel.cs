@@ -18,15 +18,11 @@ namespace AKIRA.UIFramework {
             Hide();
             Mask.Active(false);
             
-            if (GuideManager.Instance == null) {
-                // 没有引导，销毁页面
-                UIManager.Instance.Destory<GuidePanel>();
-            } else {
-                // 注册指引事件
+            EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => {
                 GuideManager.Instance.RegistOnGuideFinishAction(Hide);
                 GuideManager.Instance.RegistOnGuideUIResumeAction(Show);
                 GuideManager.Instance.RegistOnGuideUIPauseAction(Hide);
-            }
+            });
 
 #if UNITY_ANDROID || UNITY_IOS
         EnhancedTouchSupport.Enable();

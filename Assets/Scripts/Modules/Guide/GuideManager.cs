@@ -70,18 +70,6 @@ namespace AKIRA.Manager {
             }
         }
 
-        // protected override void Awake() {
-        //     base.Awake();
-        //     if (skip)
-        //         return;
-
-        //     currentIndex = GuideIndexKey.GetInt();
-        //     Init();
-        //     if (currentIndex >= infos.Count || infos.Count == 0)
-        //         return;
-        //     EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => StartGuide(currentIndex));
-        // }
-
         /// <summary>
         /// 初始化
         /// </summary>
