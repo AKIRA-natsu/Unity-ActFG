@@ -7,7 +7,9 @@ using UnityEngine.UI;
 /// 遮罩
 /// </summary>
 public class GuideMask : MonoBehaviour, IUpdate {
-    // 图片
+    /// <summary>
+    /// 图片
+    /// </summary>
     private Image maskImg;
 
     /// <summary>
