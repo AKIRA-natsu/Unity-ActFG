@@ -8,7 +8,7 @@ namespace AKIRA {
     /// </summary>
     public class GameApp : MonoBehaviour {
         private void Awake() {
-            EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => this.gameObject.Destory());
+            // EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => this.gameObject.Destory());
             SourceSystem.Instance.Load();
         }
 
@@ -18,5 +18,9 @@ namespace AKIRA {
             SourceSystem.Instance.Test();
         }
 #endif
+
+        private void OnApplicationFocus(bool focusStatus) {
+            EventManager.Instance.TriggerEvent(GameData.Event.OnAppFocus, focusStatus);
+        }
     }
 }

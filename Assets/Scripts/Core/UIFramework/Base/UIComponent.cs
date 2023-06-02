@@ -26,7 +26,6 @@ namespace AKIRA.UIFramework {
             set {
                 if (active == value)
                     return;
-                active = value;
                 if (value) {
                     Show();
                 } else {

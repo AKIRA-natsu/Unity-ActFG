@@ -117,6 +117,7 @@ namespace AKIRA.Behaviour.AI {
                 EditorUtility.SetDirty(composite);
             }
         }
+#endif
 
         /// <summary>
         /// 
@@ -142,7 +143,6 @@ namespace AKIRA.Behaviour.AI {
 
             return children;
         }
-#endif
 
         public void Traverse(Node node, System.Action<Node> visiter) {
             if (node) {

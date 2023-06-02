@@ -129,6 +129,10 @@ namespace AKIRA.Data {
             /// 资源加载结束，SourceSystem结束
             /// </summary>
             public const string OnAppSourceEnd = "OnAppSourceEnd";
+            /// <summary>
+            /// 游戏Focus
+            /// </summary>
+            public const string OnAppFocus = "OnAppFocus";
         }
         #endregion
 
