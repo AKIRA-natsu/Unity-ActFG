@@ -133,6 +133,10 @@ namespace AKIRA.Data {
             /// 游戏Focus
             /// </summary>
             public const string OnAppFocus = "OnAppFocus";
+            /// <summary>
+            /// 语言切换事件
+            /// </summary>
+            public const string OnLanguageChanged = "OnLanguageChanged";
         }
         #endregion
 

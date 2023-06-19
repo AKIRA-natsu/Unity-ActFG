@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
 using AKIRA.Data;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -117,5 +118,42 @@ public class XML {
         }
 #endif
         return true;
+    }
+
+    /// <summary>
+    /// 类转XML，序列化
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static string XmlSerialize<T>(T obj) where T : class {
+        try {
+            using (StringWriter sw = new StringWriter()) {
+                Type type = typeof(T);
+                XmlSerializer serializer = new XmlSerializer(type);
+                serializer.Serialize(sw, obj);
+                sw.Close();
+                return sw.ToString();
+            }
+        } catch (Exception e) {
+            e.Error();
+        }
+        return default;
+    }
+
+    /// <summary>
+    /// XML转类，反序列化
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public static T DeSerialize<T>(string serialize) where T : class {
+        try {
+            using (StringReader sr = new StringReader(serialize)) {
+                XmlSerializer serializer = new XmlSerializer(typeof(T));
+                return serializer.Deserialize(sr) as T;
+            }
+        } catch (Exception e) {
+            e.Error();
+        }
+        return default;
     }
 }

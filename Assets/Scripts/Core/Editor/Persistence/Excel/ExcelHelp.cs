@@ -12,8 +12,8 @@ public static class ExcelHelp {
     /// Excel读取并转换 <paramref name="T"/>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public static List<T> ExcelConvertToClass<T>(this string path, int sheetIndex = 0) where T : class {
-        return ReadExcel(path).ConvertToClass<T>(sheetIndex);
+    public static List<T> ExcelConvertToClass<T>(this string path, string dllName, int sheetIndex = 0) where T : class {
+        return ReadExcel(path).ConvertToClass<T>(dllName, sheetIndex);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public static class ExcelHelp {
     /// XML转Class
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    private static List<T> ConvertToClass<T>(this DataTableCollection table, int sheetIndex = 0) where T : class {
+    private static List<T> ConvertToClass<T>(this DataTableCollection table, string dllName, int sheetIndex = 0) where T : class {
         DataTable sheet;
         try {
             sheet = table[sheetIndex];
@@ -105,11 +105,11 @@ public static class ExcelHelp {
         // 获得字段
         List<string> fieldNames = new List<string>();
         for (int i = 0; i < sheet.Columns.Count; i++) {
-            fieldNames.Add(sheet.Rows[0][i].ToString().ToLower());
+            fieldNames.Add(sheet.Rows[0][i].ToString());
         }
         
         for (int i = 1; i < sheet.Rows.Count; i++) {
-            var data = typeof(T).CreateInstance<T>();
+            var data = typeof(T).CreateInstance<T>(dllName);
             for (int j = 0; j < sheet.Columns.Count; j++) {
                 var field = data.GetType().GetField(fieldNames[j]);
                 field.SetValue(data, sheet.Rows[i][j].ConvertTo(field.FieldType));

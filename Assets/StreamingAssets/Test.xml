@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfLanguageText xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <LanguageText>
+    <textID>GameTitle</textID>
+    <English>Title</English>
+    <Japanese>タイトル</Japanese>
+    <ChineseSimplified>标题</ChineseSimplified>
+    <ChineseTraditional>標題</ChineseTraditional>
+  </LanguageText>
+  <LanguageText>
+    <textID>Start</textID>
+    <English>Start</English>
+    <Japanese>スタート</Japanese>
+    <ChineseSimplified>开始</ChineseSimplified>
+    <ChineseTraditional>開始</ChineseTraditional>
+  </LanguageText>
+</ArrayOfLanguageText>

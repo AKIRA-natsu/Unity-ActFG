@@ -37,6 +37,17 @@ public static class ReflectionHelp {
     }
 
     /// <summary>
+    /// 生成实例，非默认程序集
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="dllName"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T CreateInstance<T>(this Type type, string dllName) {
+        return (T)Assembly.Load(dllName).CreateInstance(type.FullName);
+    }
+
+    /// <summary>
     /// 从整个程序集类中获得含有 <paramref name="T"/> 的类集合
     /// </summary>
     /// <typeparam name="T"></typeparam>
