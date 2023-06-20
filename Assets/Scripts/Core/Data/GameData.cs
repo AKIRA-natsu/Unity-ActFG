@@ -42,6 +42,10 @@ namespace AKIRA.Data {
             /// 自身动画
             /// </summary>
             public const string SelfAnimation = "SelfAnimation";
+            /// <summary>
+            /// 游戏时间/计时器
+            /// </summary>
+            public const string Timer = "Timer";
         }
         #endregion
 

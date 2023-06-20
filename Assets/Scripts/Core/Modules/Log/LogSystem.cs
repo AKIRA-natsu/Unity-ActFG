@@ -15,7 +15,7 @@ namespace AKIRA.Manager {
         
         protected LogSystem() {
             config = GameData.Path.LogConfig.Load<LogConfig>();
-            fully = config.logfully;
+            fully = config?.logfully ?? true;
 
             // 默认四种
             ColorMap.Add(GameData.Log.Default, (Color.white, true));
