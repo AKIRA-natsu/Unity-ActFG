@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AKIRA.Data;
 using AKIRA.Manager;
@@ -24,24 +25,19 @@ namespace AKIRA.Manager {
             ColorMap.Add(GameData.Log.Error, (Color.red, true));
         }
 
-        public void Log(object message) {
-            Debug.Log(message);
-        }
-
-        public void Log(string message, string key) {
+        public void Log(object message, string key) {
             var data = GetData(key);
             if (!data.logable)
                 return;
-            AddFullTag(ref message, key);
-            Log(message.Colorful(data.color));
+            Debug.Log(AddFullTag(message, key).Colorful(data.color));
         }
 
         public void Warn(object message) {
-            Debug.LogWarning(message);
+            Debug.LogWarning(AddFullTag(message, GameData.Log.Warn));
         }
 
         public void Error(object message) {
-            Debug.LogError(message);
+            Debug.LogError(AddFullTag(message, GameData.Log.Error));
         }
 
         /// <summary>
@@ -64,11 +60,11 @@ namespace AKIRA.Manager {
         /// </summary>
         /// <param name="message"></param>
         /// <param name="key"></param>
-        private void AddFullTag(ref string message, string key) {
+        private string AddFullTag(object message, string key) {
             if (!fully)
-                return;
-
-            message = $"{key}日志： {message}";
+                return $"<b>{message}</b>";
+            else
+                return $"<b>{key}日志： {message}</b>";
         }
     }
 }
@@ -78,8 +74,8 @@ public static class LogExtend {
     /// 日志
     /// </summary>
     /// <param name="message"></param>
-    public static void Log(this object message) {
-        LogSystem.Instance.Log(message);
+    public static void Log(this object message, string key = GameData.Log.Default) {
+        LogSystem.Instance.Log(message, key);
     }
 
     /// <summary>
@@ -96,15 +92,6 @@ public static class LogExtend {
     /// <param name="message"></param>
     public static void Error(this object message) {
         LogSystem.Instance.Error(message);
-    }
-
-    /// <summary>
-    /// string color 日志
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="key"></param>
-    public static void Log(this string message, string key = GameData.Log.Default) {
-        LogSystem.Instance.Log(message, key);
     }
 
 }
