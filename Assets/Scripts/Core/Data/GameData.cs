@@ -63,6 +63,14 @@ namespace AKIRA.Data {
             /// 日志配置文件
             /// </summary>
             public const string LogConfig = "Config/LogConfig";
+            /// <summary>
+            /// 语言配置文件
+            /// </summary>
+            public const string LanguageConfig = "Config/LanguageConfig";
+            /// <summary>
+            /// 语音配置文件
+            /// </summary>
+            public const string VoiceConfig = "Config/VoiceConfig";
         }
         #endregion
 

@@ -27,8 +27,7 @@ namespace AKIRA.UIFramework {
             EventManager.Instance.AddEventListener(GameData.Event.OnLanguageChanged, UpdateText);
             text = this.GetComponent<TextMeshProUGUI>();
             texts = XML.DeSerialize<List<LanguageText>>(File.ReadAllText(Path.Combine(Application.streamingAssetsPath, $"{xmlName}.xml")));
-
-            UpdateText(LanguageManager.Instance.Language);
+            UpdateText(null);
         }
 
         /// <summary>
@@ -38,8 +37,10 @@ namespace AKIRA.UIFramework {
         private void UpdateText(object data) {
             if (String.IsNullOrEmpty(textID))
                 return;
+            var manager = LanguageManager.Instance;
             text.text = 
-                texts.SingleOrDefault(text => text.textID.Equals(textID))?.GetLanguageTextValue((int)data);
+                texts.SingleOrDefault(text => text.textID.Equals(textID))?.GetLanguageTextValue(manager.Language);
+            text.font = TMP_FontAsset.CreateFontAsset(manager.GetFont());
         }
     }
 }

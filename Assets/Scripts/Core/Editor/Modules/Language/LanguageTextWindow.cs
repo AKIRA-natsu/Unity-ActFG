@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using AKIRA.Data;
+using AKIRA.Manager;
 
 /// <summary>
 /// 文本类更新脚本
@@ -76,10 +77,13 @@ public class LanguageTextWindow : EditorWindow {
     /// 写入文本
     /// </summary>
     private void WriteScript() {
-        var content = @"/// <summary>
+        var content = @"using UnityEngine;
+        
+/// <summary>
 /// <para>文本</para>
 /// <para>Create&Update By LanguageTextWindow</para>
 /// </summary>
+[System.Serializable]
 public class LanguageText {
     public string textID;
             ";
@@ -89,7 +93,7 @@ public class LanguageText {
     /// <summary>
     /// 通过language返回对应的语言文本
     /// </summary>
-    public string GetLanguageTextValue(int language) {
+    public string GetLanguageTextValue(SystemLanguage language) {
         switch (language) {";
 
         for (int i = 0; i < chooses.Length; i++) {
@@ -100,7 +104,7 @@ public class LanguageText {
             ";
             
             function += @$"
-            case {i}:
+            case SystemLanguage.{names[i]}:
             return {names[i]};
             ";
         }
@@ -115,6 +119,12 @@ public class LanguageText {
 }";
 
         File.WriteAllText(path, content);
+
+        // 更改配置文件
+        var config = GameData.Path.LanguageConfig.Load<LanguageConfig>();
+        config.UpdateFontConfig(chooses);
+        Selection.activeObject = config;
+
         AssetDatabase.Refresh();
     }
 }
