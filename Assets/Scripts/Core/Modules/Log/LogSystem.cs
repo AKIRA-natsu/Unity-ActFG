@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using AKIRA.Data;
 using AKIRA.Manager;
 using UnityEngine;
+using Object = UnityEngine.Object;
+#if UNITY_EDITOR
+using System.Reflection;
+using System.Text.RegularExpressions;
+using UnityEditor;
+#endif
 
 namespace AKIRA.Manager {
     public class LogSystem : Singleton<LogSystem> {
@@ -25,19 +31,19 @@ namespace AKIRA.Manager {
             ColorMap.Add(GameData.Log.Error, (Color.red, true));
         }
 
-        public void Log(object message, string key) {
+        public void Log(object message, string key, Object context = null) {
             var data = GetData(key);
             if (!data.logable)
                 return;
-            Debug.Log(AddFullTag(message, key).Colorful(data.color));
+            Debug.Log(AddFullTag(message, key).Colorful(data.color), context);
         }
 
-        public void Warn(object message) {
-            Debug.LogWarning(AddFullTag(message, GameData.Log.Warn));
+        public void Warn(object message, Object context = null) {
+            Debug.LogWarning(AddFullTag(message, GameData.Log.Warn), context);
         }
 
-        public void Error(object message) {
-            Debug.LogError(AddFullTag(message, GameData.Log.Error));
+        public void Error(object message, Object context = null) {
+            Debug.LogError(AddFullTag(message, GameData.Log.Error), context);
         }
 
         /// <summary>
@@ -74,24 +80,88 @@ public static class LogExtend {
     /// 日志
     /// </summary>
     /// <param name="message"></param>
-    public static void Log(this object message, string key = GameData.Log.Default) {
-        LogSystem.Instance.Log(message, key);
+    /// <param name="key"></param>
+    /// <param name="context">聚焦到Hierarchy，Debug.Log第二个参数</param>
+    public static void Log(this object message, string key = GameData.Log.Default, Object context = null) {
+        LogSystem.Instance.Log(message, key, context);
     }
 
     /// <summary>
     /// 日志
     /// </summary>
     /// <param name="message"></param>
-    public static void Warn(this object message) {
-        LogSystem.Instance.Warn(message);
+    /// <param name="context">聚焦到Hierarchy，Debug.Log第二个参数</param>
+    public static void Warn(this object message, Object context = null) {
+        LogSystem.Instance.Warn(message, context);
     }
 
     /// <summary>
     /// 日志
     /// </summary>
     /// <param name="message"></param>
-    public static void Error(this object message) {
-        LogSystem.Instance.Error(message);
+    /// <param name="context">聚焦到Hierarchy，Debug.Log第二个参数</param>
+    public static void Error(this object message, Object context = null) {
+        LogSystem.Instance.Error(message, context);
     }
 
 }
+
+#if UNITY_EDITOR
+/// <summary>
+/// <para>双击打开日志文件所在位置</para>
+/// <para>来源：http://www.cppblog.com/heath/archive/2016/06/21/213777.html</para>
+/// </summary>
+public class LogEditor {
+    [UnityEditor.Callbacks.OnOpenAsset(0)]
+    private static bool OnOpenAsset(int instanceID, int line) {
+        string stackTrace = GetStackTrace();
+        // 过滤标签
+        if (!string.IsNullOrEmpty(stackTrace) && stackTrace.Contains("日志")) {
+            Match matches = Regex.Match(stackTrace, @"\(at (.+)\)", RegexOptions.IgnoreCase);
+            string pathline = "";
+            while (matches.Success) {
+                pathline = matches.Groups[1].Value;
+
+                // 过滤进入LogSystem的行
+                if (!pathline.Contains("LogSystem.cs")) {
+                    int splitIndex = pathline.LastIndexOf(":");
+                    string path = pathline.Substring(0, splitIndex);
+                    line = Convert.ToInt32(pathline.Substring(splitIndex + 1));
+                    string fullPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("Assets"));
+                    fullPath = fullPath + path;
+                    UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(fullPath.Replace('/', '\\'), line);
+                    break;
+                }
+                matches = matches.NextMatch();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 获得日志输出信息
+    /// </summary>
+    /// <returns></returns>
+    private static string GetStackTrace() {
+        var consoleWindowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow");
+        var fieldInfo = consoleWindowType.GetField("ms_ConsoleWindow", BindingFlags.Static | BindingFlags.NonPublic);
+        var consoleWindowInstance = fieldInfo.GetValue(null);
+        if (consoleWindowInstance == null)
+            return default;
+        if ((object)EditorWindow.focusedWindow != consoleWindowInstance)
+            return default;
+        // 
+        var listViewStateType = typeof(EditorWindow).Assembly.GetType("UnityEditor.ListViewState");
+        fieldInfo = consoleWindowType.GetField("m_ListView", BindingFlags.Instance | BindingFlags.NonPublic);
+        var listView = fieldInfo.GetValue(consoleWindowInstance);
+        // 
+        fieldInfo = listViewStateType.GetField("row", BindingFlags.Instance | BindingFlags.Public);
+        var row = (int)fieldInfo.GetValue(listView);
+        // 
+        fieldInfo = consoleWindowType.GetField("m_ActiveText", BindingFlags.Instance | BindingFlags.NonPublic);
+        string activeText = fieldInfo.GetValue(consoleWindowInstance).ToString();
+        return activeText;
+    }
+}
+#endif
