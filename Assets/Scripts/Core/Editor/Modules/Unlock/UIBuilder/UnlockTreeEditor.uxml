@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Scripts/Unlock/Editor/UIBuilder/UnlockTreeEditor.uss?fileID=7433441132597879392&amp;guid=55f5ad3fa3573824c917507d7884a0a8&amp;type=3#UnlockTreeEditor" />
+    <uie:Toolbar style="background-color: rgb(40, 40, 40);">
+        <uie:ToolbarMenu display-tooltip-when-elided="true" text="Assets" />
+        <uie:ToolbarButton text="ResetAll" display-tooltip-when-elided="true" name="ResetAllBtn" style="justify-content: flex-start; -unity-text-align: middle-center;" />
+    </uie:Toolbar>
+    <AKIRA.Editor.AI.SplitView fixed-pane-initial-dimension="250" style="flex-grow: 1;">
+        <ui:VisualElement name="left-panel">
+            <ui:Label text="Inspector" display-tooltip-when-elided="true" style="background-color: rgb(47, 47, 47);" />
+            <AKIRA.Editor.Unlock.InspectorView />
+        </ui:VisualElement>
+        <ui:VisualElement name="right-panel" style="flex-grow: 1;">
+            <ui:Label text="TreeView" display-tooltip-when-elided="true" style="background-color: rgb(47, 47, 47);" />
+            <AKIRA.Editor.Unlock.UnlockTreeView focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </AKIRA.Editor.AI.SplitView>
+</ui:UXML>
