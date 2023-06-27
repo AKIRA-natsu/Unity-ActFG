@@ -12,13 +12,6 @@ namespace AKIRA {
             SourceSystem.Instance.Load();
         }
 
-#if UNITY_EDITOR
-        [ContextMenu("Test")]
-        private void Test() {
-            SourceSystem.Instance.Test();
-        }
-#endif
-
         private void OnApplicationFocus(bool focusStatus) {
             EventManager.Instance.TriggerEvent(GameData.Event.OnAppFocus, focusStatus);
         }

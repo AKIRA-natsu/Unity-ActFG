@@ -22,19 +22,16 @@ namespace AKIRA.Manager {
         /// <returns></returns>
         public async void Load() {
             // 字典
-            Dictionary<int, List<SourceAttribute>> map = new Dictionary<int, List<SourceAttribute>>();
-
-            GetAttributes(ref map, GameData.DLL.AKIRA_Runtime);
-            GetAttributes(ref map, GameData.DLL.Default);
+            Dictionary<int, List<SourceAttribute>> map = GetSources();
 
             foreach (var values in map.Values) {
                 foreach (var source in values) {
-                    $"加载 {source.path}".Log(GameData.Log.Source);
                     var request = await Resources.LoadAsync(source.path) as GameObject;
                     if (request == null) {
                         $"{source.ToString()} 路径不存在，跳过。。".Log(GameData.Log.Source);
                         continue;
                     }
+                    $"加载 {source.path}".Log(GameData.Log.Source);
                     var s = request.Instantiate();
                     var parent = root.transform.Find(source.parentName)?.gameObject;
                     if (parent == null) {
@@ -76,20 +73,11 @@ namespace AKIRA.Manager {
         /// <summary>
         /// 测试加载
         /// </summary>
-        public void Test() {
-            "测试入口，测试资源加载（非真正加载，已经按照顺序加载）".Log();
+        public Dictionary<int, List<SourceAttribute>> GetSources() {
             Dictionary<int, List<SourceAttribute>> map = new Dictionary<int, List<SourceAttribute>>();
-
             GetAttributes(ref map, GameData.DLL.AKIRA_Runtime);
             GetAttributes(ref map, GameData.DLL.Default);
-
-            foreach (var values in map.Values) {
-                foreach (var source in values) {
-                    source.ToString().Log(GameData.Log.Source);
-                }
-            }
-
-            $"测试结束，调用EventManager触发 {GameData.Event.OnAppSourceEnd}".Log();
+            return map;
         }
     }
 

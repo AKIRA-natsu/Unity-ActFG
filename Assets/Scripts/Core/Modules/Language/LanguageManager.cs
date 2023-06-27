@@ -26,7 +26,7 @@ namespace AKIRA.Manager {
 
         protected LanguageManager() {
             var value = LanguageKey.GetInt(-1);
-            language = value == -1 ? Application.systemLanguage : (SystemLanguage)value;
+            language = value == -1 ? SystemLanguage.English : (SystemLanguage)value;
             config = GameData.Path.LanguageConfig.Load<LanguageConfig>();
             $"当前系统读取的语言 {Language}".Log();
         }

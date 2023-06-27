@@ -15,6 +15,8 @@ namespace AKIRA.Behaviour.Unlock {
         private List<Node> unlockNodes = new List<Node>();
 
         private void Start() {
+            if (tree == null || tree.node == null)
+                return;
             lockNodes.Add(tree.node);
         }
 
