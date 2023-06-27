@@ -9,12 +9,15 @@ namespace AKIRA.Manager {
     public class SourceSystem : Singleton<SourceSystem> {
         // 
         private GameObject root;
-
-        protected SourceSystem() {
-            if (!Application.isPlaying)
-                return;
-            root = new GameObject("[Source]").DontDestory();
+        public GameObject Root {
+            get {
+                if (root == null)
+                    root = new GameObject("[Source]").DontDestory();
+                return root;
+            }
         }
+
+        protected SourceSystem() { }
 
         /// <summary>
         /// 加载开始
@@ -28,15 +31,15 @@ namespace AKIRA.Manager {
                 foreach (var source in values) {
                     var request = await Resources.LoadAsync(source.path) as GameObject;
                     if (request == null) {
-                        $"{source.ToString()} 路径不存在，跳过。。".Log(GameData.Log.Source);
+                        $"{source.path} 路径不存在，跳过。。".Log(GameData.Log.Source);
                         continue;
                     }
                     $"加载 {source.path}".Log(GameData.Log.Source);
                     var s = request.Instantiate();
-                    var parent = root.transform.Find(source.parentName)?.gameObject;
+                    var parent = Root.transform.Find(source.parentName)?.gameObject;
                     if (parent == null) {
                         parent = new GameObject(source.parentName);
-                        parent.SetParent(root);
+                        parent.SetParent(Root);
                     }
                     s.SetParent(parent);
 
