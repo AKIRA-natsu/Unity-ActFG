@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using AKIRA.Data;
+using AKIRA.Manager;
 using UnityEngine;
 
 namespace AKIRA.Behaviour.Unlock {
+    [Source("Source/Base/[UnlockObjects]", GameData.Source.Base)]
     public class UnlockTreeRunner : MonoBehaviour {
         // 解锁树
         public UnlockTree tree;

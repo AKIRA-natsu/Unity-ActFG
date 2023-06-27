@@ -44,7 +44,14 @@ namespace AKIRA.Behaviour.Unlock {
         public static Transform LockRoot { 
             get {
                 if (lockRoot == null)
-                    lockRoot = GameObject.Find("[UnlockObjects]").transform;
+                    #if UNITY_EDITOR
+                    if (Application.isPlaying)
+                        lockRoot = GameObject.FindObjectOfType<UnlockTreeRunner>().transform;
+                    else
+                        lockRoot = GameObject.Find("[UnlockObjects]").transform;
+                    #else
+                        lockRoot = GameObject.FindObjectOfType<UnlockTreeRunner>().transform;
+                    #endif
                 return lockRoot;
             }
         }

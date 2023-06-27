@@ -31,6 +31,10 @@ namespace AKIRA.Manager {
                 foreach (var source in values) {
                     $"加载 {source.path}".Log(GameData.Log.Source);
                     var request = await Resources.LoadAsync(source.path) as GameObject;
+                    if (request == null) {
+                        $"{source.ToString()} 路径不存在，跳过。。".Log(GameData.Log.Source);
+                        continue;
+                    }
                     var s = request.Instantiate();
                     var parent = root.transform.Find(source.parentName)?.gameObject;
                     if (parent == null) {
