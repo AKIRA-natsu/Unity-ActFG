@@ -185,5 +185,14 @@ namespace AKIRA.Data {
             public const string UI = "UI";
         }
         #endregion
+    
+        #region 作弊
+        public class Cheat {
+            /// <summary>
+            /// 获得金钱
+            /// </summary>
+            public const string GetMoney = "Get Money";
+        }
+        #endregion
     }
 }

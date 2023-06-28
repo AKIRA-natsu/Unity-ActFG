@@ -16,6 +16,7 @@ public class CheatKeyBind {
     [InputControl]
     public string keycode;
     // 名称
+    [SelectionPop(typeof(GameData.Cheat))]
     public string cheat;
 }
 

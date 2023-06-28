@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomPropertyDrawer(typeof(SelectionPopAttribute))]
-public class SelectionPopAttributeDrawer: PropertyDrawer {
+public class SelectionPopAttributeDrawer : PropertyDrawer {
+    private bool extendY = false;
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         var selection = attribute as SelectionPopAttribute;
         var type = selection.type;
@@ -22,7 +24,19 @@ public class SelectionPopAttributeDrawer: PropertyDrawer {
             names.Add(new GUIContent(name));
         }
 
-        index = EditorGUI.Popup(position, label, index, names.ToArray());
-        property.stringValue = names[index].text;
+        extendY = names.Count == 0;
+        if (extendY) {
+            Rect strPosition = new Rect(position.x, position.y, position.width, position.height / 2);
+            property.stringValue = EditorGUI.TextField(strPosition, label, property.stringValue);
+            Rect boxPosition = new Rect(position.x, position.y + strPosition.height + 3f, position.width, position.height / 2 - 3f);
+            EditorGUI.HelpBox(boxPosition, $"No const value in {type}", MessageType.Info);
+        } else {
+            index = EditorGUI.Popup(position, label, index, names.ToArray());
+            property.stringValue = names[index].text;
+        }
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
+        return base.GetPropertyHeight(property, label) * (extendY ? 2.2f : 1);
     }
 }
