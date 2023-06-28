@@ -23,6 +23,9 @@ namespace AKIRA.UIFramework {
         // 文本列表
         private List<LanguageText> texts = new List<LanguageText>();
 
+        // 字体字存典储
+        private static Dictionary<SystemLanguage, TMP_FontAsset> fontMap = new();
+
         private void Awake() {
             EventManager.Instance.AddEventListener(GameData.Event.OnLanguageChanged, UpdateText);
             text = this.GetComponent<TextMeshProUGUI>();
@@ -38,9 +41,17 @@ namespace AKIRA.UIFramework {
             if (String.IsNullOrEmpty(textID))
                 return;
             var manager = LanguageManager.Instance;
+            var language = manager.Language;
             text.text = 
-                texts.SingleOrDefault(text => text.textID.Equals(textID))?.GetLanguageTextValue(manager.Language);
-            text.font = TMP_FontAsset.CreateFontAsset(manager.GetFont());
+                texts.SingleOrDefault(text => text.textID.Equals(textID))?.GetLanguageTextValue(language);
+            
+            if (fontMap.ContainsKey(language)) {
+                text.font = fontMap[language];
+            } else {
+                var font = TMP_FontAsset.CreateFontAsset(manager.GetFont());
+                fontMap.Add(language, font);
+                text.font = font;
+            }
         }
     }
 }
