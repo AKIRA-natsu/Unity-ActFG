@@ -1,7 +1,7 @@
 using AKIRA.Data;
 using UnityEngine;
 
-namespace AKIRA.Behaivour.Camera {
+namespace AKIRA.Behaviour.Camera {
     /// <summary>
     /// 摄像机标签
     /// </summary>

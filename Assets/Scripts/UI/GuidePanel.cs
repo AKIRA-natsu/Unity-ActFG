@@ -19,7 +19,7 @@ namespace AKIRA.UIFramework {
             Mask.Active(false);
             
             EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => {
-                GuideManager.Instance.RegistOnGuideFinishAction(Hide);
+                EventManager.Instance.AddEventListener(GameData.Event.OnGuidenceCompleted, _ => Hide());
                 GuideManager.Instance.RegistOnGuideUIResumeAction(Show);
                 GuideManager.Instance.RegistOnGuideUIPauseAction(Hide);
             });

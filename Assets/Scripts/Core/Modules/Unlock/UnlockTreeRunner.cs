@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AKIRA.Behaviour.Unlock {
     [Source("Source/Base/[UnlockObjects]", GameData.Source.Base)]
-    public class UnlockTreeRunner : MonoBehaviour {
+    public class UnlockTreeRunner : MonoBehaviour, IUpdate {
         // 解锁树
         public UnlockTree tree;
         // 锁住节点
@@ -18,9 +18,20 @@ namespace AKIRA.Behaviour.Unlock {
             if (tree == null || tree.node == null)
                 return;
             lockNodes.Add(tree.node);
+            EventManager.Instance.AddEventListener(GameData.Event.OnGameStart, OnGameStart);
         }
 
-        private void Update() {
+        /// <summary>
+        /// 游戏开始，开始更新判断解锁
+        /// </summary>
+        /// <param name="data"></param>
+        private void OnGameStart(object data) {
+            $"进入游戏，开始解锁".Log();
+            this.Regist();
+            EventManager.Instance.RemoveEventListener(GameData.Event.OnGameStart, OnGameStart);
+        }
+
+        public void GameUpdate() {
             for (int i = 0; i < lockNodes.Count; i++) {
                 var node = lockNodes[i];
                 var state = node.Update();
@@ -35,6 +46,10 @@ namespace AKIRA.Behaviour.Unlock {
                     lockNodes.AddRange(unlockNodes[i].children);
                 lockNodes = lockNodes.Where((x, i) => lockNodes.FindIndex(z => z.guid == x.guid) == i).ToList();
                 unlockNodes.Clear();
+            }
+
+            if (lockNodes.Count == 0 && unlockNodes.Count == 0) {
+                this.Remove();
             }
         }
     }

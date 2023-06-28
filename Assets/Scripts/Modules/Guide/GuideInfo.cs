@@ -81,6 +81,13 @@ public class GuideInfo {
     /// </summary>
     /// <returns></returns>
     public const string UIRemovePathName = "Canvas (Environment)/";
+    /// <summary>
+    /// <para>3d剔除名字</para>
+    /// <para>从Prefab拿取3d下路径，剔除常量 <see cref="TDRemovePathName" /></para>
+    /// <para>实际游戏运行是拿UI相对路径下</para>
+    /// </summary>
+    /// <returns></returns>
+    public const string TDRemovePathName = "[Guidence]/";
 
 #if UNITY_EDITOR
     /// <summary>

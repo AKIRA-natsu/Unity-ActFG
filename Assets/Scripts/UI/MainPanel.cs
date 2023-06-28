@@ -1,3 +1,4 @@
+using AKIRA.Data;
 using AKIRA.Manager;
 
 namespace AKIRA.UIFramework {
@@ -5,7 +6,7 @@ namespace AKIRA.UIFramework {
     public class MainPanel : MainPanelProp {
         public override void Awake(object obj) {
             base.Awake(obj);
-            this.EnterBtn.onClick.AddListener(() => GameManager.Instance.Switch(GameState.Playing));
+            this.EnterBtn.onClick.AddListener(OnGameStart);
             this.SettingBtn.onClick.AddListener(() => {});
             this.ExitBtn.onClick.AddListener(
                 #if UNITY_EDITOR
@@ -17,6 +18,14 @@ namespace AKIRA.UIFramework {
 
             GameManager.Instance.RegistStateAction(GameState.Playing, Hide);
             GameManager.Instance.RegistStateAction(GameState.Ready, Show);
+        }
+
+        /// <summary>
+        /// 游戏开始事件
+        /// </summary>
+        private void OnGameStart() {
+            GameManager.Instance.Switch(GameState.Playing);
+            EventManager.Instance.TriggerEvent(GameData.Event.OnGameStart);
         }
     }
 }

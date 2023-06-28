@@ -4,6 +4,7 @@ using UnityEngine;
 /// 移动效果
 /// </summary>
 public class MoveSelf : SelfAnim {
+    
     [CNName("移动朝向")]
     [SerializeField]
     private RotateTowards towards;

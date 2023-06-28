@@ -15,7 +15,11 @@ namespace AKIRA.Manager {
     public class GuideManager : MonoSingleton<GuideManager>, ISource {
         // 路径
         public const string GuideDataPath = "GuideXML.xml";
+        // 3d指引物品路径
+        public const string Guide3DRootPath = "Prefabs/Guidence/[Guidence]";
 
+        // 3d指引父物体
+        private Transform Guide3DRoot;
         // 指引列表转换
         private List<GuideInfo> infos = new List<GuideInfo>();
         // 上一个指引类型
@@ -28,8 +32,6 @@ namespace AKIRA.Manager {
         // 存储名称
         private const string GuideIndexKey = "GuideIndexKey";
 
-        // 指引结束事件
-        private Action onGuideFinish;
         // UI指引恢复
         private Action onGuideUIResume;
         // UI指引暂停
@@ -59,13 +61,15 @@ namespace AKIRA.Manager {
             
             "指引异步加载开始".Log(GameData.Log.Guide);
             currentIndex = GuideIndexKey.GetInt();
+            Guide3DRoot = Guide3DRootPath.Load<GameObject>().Instantiate().transform;
+            await UniTask.NextFrame();
             Init();
             await UniTask.Delay(200);
             "Xml加载完成(等待0.2f加载)".Log(GameData.Log.Guide);
             if (currentIndex >= infos.Count || infos.Count == 0) {
                 "不包含指引，指引异步加载完成".Log(GameData.Log.Guide);
             } else {
-                EventManager.Instance.AddEventListener(GameData.Event.OnAppSourceEnd, _ => StartGuide(currentIndex));
+                EventManager.Instance.AddEventListener(GameData.Event.OnGameStart, OnGameStart);
                 "注册事件，指引异步加载完成".Log(GameData.Log.Guide);
             }
         }
@@ -91,8 +95,7 @@ namespace AKIRA.Manager {
                             target = UIManager.Instance.Get(type).transform.Find(path.Replace($"{prefabName}/", "")).gameObject;
                         } else {
                             // 3D物体下简单找到对象
-                            // FIXME: 修改为预制体
-                            target = GameObject.Find(path);
+                            target = Guide3DRoot.Find(path).gameObject;
                         }
 
                         infos.Add(new GuideInfo() {
@@ -109,6 +112,16 @@ namespace AKIRA.Manager {
                     }
                 });
             }
+        }
+
+        /// <summary>
+        /// 游戏开始事件，开始指引更新
+        /// </summary>
+        /// <param name="data"></param>
+        private void OnGameStart(object data) {
+            $"进入游戏，开始指引".Log();
+            StartGuide(currentIndex);
+            EventManager.Instance.RemoveEventListener(GameData.Event.OnGameStart, OnGameStart);
         }
 
         /// <summary>
@@ -156,7 +169,7 @@ namespace AKIRA.Manager {
             CurrentIGuide = null;
             GuideIndexKey.Save(++currentIndex);
             if (currentIndex >= infos.Count) {
-                onGuideFinish?.Invoke();
+                EventManager.Instance.TriggerEvent(GameData.Event.OnGuidenceCompleted);
                 return;
             }
 
@@ -181,14 +194,6 @@ namespace AKIRA.Manager {
         /// <returns></returns>
         public bool IsGuideOfInterface(int index) {
             return !Skip && currentIndex == index && CurrentIGuide.UnlockCondition();
-        }
-
-        /// <summary>
-        /// 注册指引结束事件
-        /// </summary>
-        /// <param name="onGuideFinish"></param>
-        public void RegistOnGuideFinishAction(Action onGuideFinish) {
-            this.onGuideFinish += onGuideFinish;
         }
 
         /// <summary>
@@ -261,8 +266,8 @@ namespace AKIRA.Manager {
         private float distance;
 
         // 箭头路径
-        private const string Arrow3DPath = "Prefabs/Arrow";
-        private const string Arrow2DPath = "Prefabs/Arrow2D";
+        private const string Arrow3DPath = "Prefabs/Guidence/Arrow";
+        private const string Arrow2DPath = "Prefabs/Guidence/Arrow2D";
         // 箭头
         private GameObject arrow3D;
         // 玩家身下的箭头
@@ -294,7 +299,7 @@ namespace AKIRA.Manager {
                 heightOffset += move.moveRadius;
 
             // 指引结束回收箭头
-            GuideManager.Instance.RegistOnGuideFinishAction(() => {
+            EventManager.Instance.AddEventListener(GameData.Event.OnGuidenceCompleted, _ => {
                 GameObject.Destroy(arrow3D);
                 GameObject.Destroy(arrow2D.gameObject);
             });

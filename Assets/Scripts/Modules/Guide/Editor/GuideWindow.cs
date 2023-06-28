@@ -97,8 +97,7 @@ public class GuideWindow : EditorWindow {
                             target = prefab.transform.Find(path.Replace($"{prefabName}/", "")).gameObject;
                         } else {
                             // 3D物体下简单找到对象
-                            // FIXME: 也修改为预制体
-                            target = GameObject.Find(path);
+                            target = GuideManager.Guide3DRootPath.Load<Transform>().Find(path).gameObject;
                         }
 
                         infos.Add(new GuideInfo() {
@@ -251,7 +250,7 @@ public class GuideWindow : EditorWindow {
         node.SetAttribute(GuideInfoName.Dialog, info.dialog);
         node.SetAttribute(GuideInfoName.DialogDirection, ((int)info.dialogDirection).ToString());
         node.SetAttribute(GuideInfoName.UseArrow, (info.useArrow ? 1 : 0).ToString());
-        node.SetAttribute(GuideInfoName.ArrowTargetPath, info.arrowTarget.GetPath().Replace(GuideInfo.UIRemovePathName, ""));
+        node.SetAttribute(GuideInfoName.ArrowTargetPath, info.arrowTarget.GetPath().Replace(GuideInfo.TDRemovePathName, "").Replace(GuideInfo.UIRemovePathName, ""));
         node.SetAttribute(GuideInfoName.ReachDistance, info.reachDistance.ToString());
         node.SetAttribute(GuideInfoName.ControlByIGuide, (info.controlByIGuide ? 1 : 0).ToString());
     }

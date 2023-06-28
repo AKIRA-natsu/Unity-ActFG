@@ -149,6 +149,18 @@ namespace AKIRA.Data {
             /// 语言切换事件
             /// </summary>
             public const string OnLanguageChanged = "OnLanguageChanged";
+            /// <summary>
+            /// 游戏开始事件，开始界面进入游戏
+            /// </summary>
+            public const string OnGameStart = "OnGameStart";
+            /// <summary>
+            /// 游戏开始事件，退出游戏进入开始界面
+            /// </summary>
+            public const string OnGameExit = "OnGameExit";
+            /// <summary>
+            /// 指引完成事件
+            /// </summary>
+            public const string OnGuidenceCompleted = "OnGuidenceCompleted";
         }
         #endregion
 
