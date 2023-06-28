@@ -62,6 +62,8 @@ namespace AKIRA.Manager {
             "指引异步加载开始".Log(GameData.Log.Guide);
             currentIndex = GuideIndexKey.GetInt();
             Guide3DRoot = Guide3DRootPath.Load<GameObject>().Instantiate().transform;
+            var sceneRoot = GameObject.Find(GameData.Source.Scene)?.transform ?? new GameObject(GameData.Source.Scene).transform;
+            Guide3DRoot.SetParent(sceneRoot);
             await UniTask.NextFrame();
             Init();
             await UniTask.Delay(200);

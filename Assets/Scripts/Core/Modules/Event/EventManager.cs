@@ -54,7 +54,7 @@ namespace AKIRA.Manager {
             if (!EventMap.ContainsKey(key))
                 return;
 
-            $"Event: Trigger Event {key}".Log(GameData.Log.Event);
+            $"Trigger Event {key}".Log(GameData.Log.Event);
             EventMap[key]?.Invoke(value);
         }
 

@@ -175,6 +175,10 @@ namespace AKIRA.Data {
             /// </summary>
             public const string Base = "[Base]";
             /// <summary>
+            /// 场景基础部分，不设置DontDestory
+            /// </summary>
+            public const string Scene = "[Scene]";
+            /// <summary>
             /// 测试
             /// </summary>
             public const string Test = "[Test]";

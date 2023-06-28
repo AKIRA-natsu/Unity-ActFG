@@ -36,11 +36,11 @@ namespace AKIRA.Manager {
                     }
                     $"加载 {source.path}".Log(GameData.Log.Source);
                     var s = request.Instantiate();
-                    var parent = Root.transform.Find(source.parentName)?.gameObject;
-                    if (parent == null) {
+                    var parent = Root.transform.Find(source.parentName)?.gameObject ?? GameObject.Find(source.parentName);
+                    if (parent == null)
                         parent = new GameObject(source.parentName);
+                    if (source.parentName.Equals(GameData.Source.Manager) || source.parentName.Equals(GameData.Source.Base))
                         parent.SetParent(Root);
-                    }
                     s.SetParent(parent);
 
                     // 如果存在异步加载接口，触发接口

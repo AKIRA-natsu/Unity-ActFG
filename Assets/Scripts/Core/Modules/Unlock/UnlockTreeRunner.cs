@@ -5,7 +5,7 @@ using AKIRA.Manager;
 using UnityEngine;
 
 namespace AKIRA.Behaviour.Unlock {
-    [Source("Source/Base/[UnlockObjects]", GameData.Source.Base)]
+    [Source("Source/Base/[UnlockObjects]", GameData.Source.Scene)]
     public class UnlockTreeRunner : MonoBehaviour, IUpdate {
         // 解锁树
         public UnlockTree tree;
