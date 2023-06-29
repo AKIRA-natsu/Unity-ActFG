@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -27,6 +28,42 @@ public static class MathTool {
     /// <param name="time"></param>
     public static Vector3 Damp(Vector3 value1, Vector3 value2, float lambda) {
         return Vector3.Lerp(value1, value2, 1 - Mathf.Exp(-lambda * Time.deltaTime));
+    }
+
+    /// <summary>
+    /// 2进制
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static long ToBinary(this int value) {
+        return Convert.ToInt64(Convert.ToString(value, 2));
+    }
+
+    /// <summary>
+    /// 8进制
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static long ToOctal(this int value) {
+        return Convert.ToInt64(Convert.ToString(value, 8));
+    }
+
+    /// <summary>
+    /// 10进制
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static int ToDecimal(this int value) {
+        return Convert.ToInt32(Convert.ToString(value, 10));
+    }
+
+    /// <summary>
+    /// 16进制
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string ToHexadecimal(this int value) {
+        return Convert.ToString(value, 16);
     }
 
 }
