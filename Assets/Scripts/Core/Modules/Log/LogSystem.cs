@@ -118,21 +118,27 @@ public class LogEditor {
         // 过滤标签
         if (!string.IsNullOrEmpty(stackTrace) && stackTrace.Contains("日志")) {
             Match matches = Regex.Match(stackTrace, @"\(at (.+)\)", RegexOptions.IgnoreCase);
-            string pathline = "";
-            while (matches.Success) {
-                pathline = matches.Groups[1].Value;
+            // 获得当前点击的对象文件路径
+            string pathline = AssetDatabase.GetAssetPath(instanceID);
+            if (pathline.Contains("LogSystem.cs")) {
+                while (matches.Success) {
+                    pathline = matches.Groups[1].Value;
 
-                // 过滤进入LogSystem的行
-                if (!pathline.Contains("LogSystem.cs")) {
-                    int splitIndex = pathline.LastIndexOf(":");
-                    string path = pathline.Substring(0, splitIndex);
-                    line = Convert.ToInt32(pathline.Substring(splitIndex + 1));
-                    string fullPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("Assets"));
-                    fullPath = fullPath + path;
-                    UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(fullPath.Replace('/', '\\'), line);
-                    break;
+                    // 过滤进入LogSystem的行
+                    if (!pathline.Contains("LogSystem.cs")) {
+                        int splitIndex = pathline.LastIndexOf(":");
+                        string path = pathline.Substring(0, splitIndex);
+                        line = Convert.ToInt32(pathline.Substring(splitIndex + 1));
+                        string fullPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("Assets"));
+                        fullPath = fullPath + path;
+                        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(fullPath.Replace('/', '\\'), line);
+                        break;
+                    }
+                    matches = matches.NextMatch();
                 }
-                matches = matches.NextMatch();
+            } else {
+                // 直接打开对应文件和对应列
+                UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(pathline.Replace('/', '\\'), line);
             }
             return true;
         }
