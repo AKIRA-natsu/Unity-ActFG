@@ -1,4 +1,5 @@
 using System.Linq;
+using AKIRA.Data;
 using UnityEngine;
 
 namespace AKIRA.Manager.Audio {
@@ -12,6 +13,7 @@ namespace AKIRA.Manager.Audio {
             /// <summary>
             /// 标签
             /// </summary>
+            [SelectionPop(typeof(GameData.Audio))]
             public string tag;
             /// <summary>
             /// 音频

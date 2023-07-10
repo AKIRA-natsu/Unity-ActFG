@@ -19,6 +19,7 @@ namespace AKIRA.Manager.Audio {
         public void Recycle(object data = null) {
             if (IsPlaying())
                 Stop();
+            UpdateSpeed(1f);
         }
 
         private void Awake() {
@@ -66,5 +67,15 @@ namespace AKIRA.Manager.Audio {
         /// </summary>
         /// <returns></returns>
         public bool IsPlaying() => musicSource.clip != null && musicSource.isPlaying;
+    
+
+        /// <summary>
+        /// 更新音频播放速度
+        /// </summary>
+        /// <param name="speed"></param>
+        public void UpdateSpeed(float speed) {
+            musicSource.pitch = speed;
+        }
+    
     }
 }

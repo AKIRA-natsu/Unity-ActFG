@@ -80,7 +80,7 @@ $@"    }}
         }
 
         string @type = default;
-        if (parent.name.Equals("Views"))
+        if (parent.name.Equals("View"))
             @type = "WinType.Normal";
         if (parent.name.Equals("Top"))
             @type = "WinType.Interlude";
